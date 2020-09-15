@@ -1,9 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import login from "@/page/login"
-import index from "@/components/index"
-import home from "@/page/home"
-
+import login from "../page/login"
+import index from "../components/index"
+import home from "../page/home"
+import product from "../page/product"
+import transaction from "../page/transaction"
+import configuration from "../page/configuration"
+import comment from "../page/comment"
+import frame from "../page/frame"
+import lens from "../page/lens"
+import addFrame from "../page/addFrame"
 
 Vue.use(Router)
 
@@ -26,7 +32,42 @@ export default new Router({
         {
           path: '/home',
           component: home,
-          meta: { title: '首页' }
+          meta: { title: '控制台' }
+        },
+        {
+          path: '/product',
+          component: product,
+          meta: { title: '商品管理' }
+        },
+        {
+          path: '/transaction',
+          component: transaction,
+          meta: { title: '交易管理' }
+        },
+        {
+          path: '/configuration',
+          component: configuration,
+          meta: { title: '配置管理' }
+        },
+        {
+          path: '/comment',
+          component: comment,
+          meta: { title: '评论管理' }
+        },
+        {
+          path: '/frame',
+          component: frame,
+          meta: { title: '镜框管理' }
+        },
+        {
+          path: '/lens',
+          component: lens,
+          meta: { title: '镜片管理' }
+        },
+        {
+          path: '/addFrame',
+          component: addFrame,
+          meta: { title: '添加镜框' }
         }
       ]
     }

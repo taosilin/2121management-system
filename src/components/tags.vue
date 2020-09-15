@@ -1,6 +1,6 @@
 <template>
   <div class="tags" v-if="showTags">
-    <ul>
+    <ul class="tags-ul">
       <li class="tags-li" v-for="(item,index) in tagsList" :class="{'active': isActive(item.path)}" :key="index">
         <router-link :to="item.path" class="tags-li-title">
           {{item.title}}
@@ -115,19 +115,20 @@ export default {
 .tags {
   position: relative;
   height: 30px;
-  overflow: hidden;
+  /*overflow: hidden;*/
   background: #fff;
   padding-right: 120px;
   box-shadow: 0 5px 10px #ddd;
 }
 
-.tags ul {
+.tags-ul {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
 }
 
 .tags-li {
+  /*display: block;*/
   float: left;
   margin: 3px 5px 2px 3px;
   border-radius: 3px;
@@ -151,7 +152,7 @@ export default {
 }
 
 .tags-li.active {
-  color: #fff;
+  color: #72c9fa;
 }
 
 .tags-li-title {
@@ -165,7 +166,7 @@ export default {
 }
 
 .tags-li.active .tags-li-title {
-  color: #fff;
+  color: #72c9fa;
 }
 
 .tags-close-box {
@@ -181,4 +182,12 @@ export default {
   box-shadow: -3px 0 15px 3px rgba(0, 0, 0, .1);
   z-index: 10;
 }
+
+
+.el-button+.el-tooltip {
+  margin-left: 10px;
+}
+
+
+
 </style>

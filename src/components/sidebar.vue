@@ -68,7 +68,21 @@ export default {
           subs:[
             {
               index: 'product',
-              title: '商品管理'
+              title: '商品管理',
+              subs:[
+                {
+                  index: 'frame',
+                  title: '镜框管理'
+                },
+                {
+                  index: 'lens',
+                  title: '镜片管理'
+                },
+                {
+                  index: 'product',
+                  title: '商品管理'
+                }
+              ]
             },
             {
               index: 'transaction',
@@ -126,6 +140,7 @@ export default {
   bottom: 0;
   overflow-y: scroll;
   width: 250px;
+  text-align: left;
 }
 .sidebar::-webkit-scrollbar {
   width: 0;
