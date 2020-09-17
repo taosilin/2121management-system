@@ -1,7 +1,7 @@
 <template>
   <div>
     镜片管理！！
-    <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">添加镜片</el-button>
+    <el-button type="primary" icon="el-icon-plus" @click="openAddLens">添加镜片</el-button>
     <el-table
       :data="lensList"
       border
@@ -86,7 +86,7 @@
       </el-pagination>
     </div>
 
-    <el-dialog class="addLens" title="添加镜片" :visible.sync="dialogFormVisible">
+    <el-dialog class="addLens" title="添加镜片" :visible.sync="addLensVisible">
       <el-form
         :model="newLens"
         label-width="100px">
@@ -144,8 +144,19 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item label="膜层" >
+          <el-select v-model="newLens.film" placeholder="请选择膜层">
+            <el-option label="绿膜" value="绿膜"></el-option>
+            <el-option label="前蓝后紫膜+ESPF" value="前蓝后紫膜+ESPF"></el-option>
+            <el-option label="前紫后紫膜+ESPF" value="前紫后紫膜+ESPF"></el-option>
+            <el-option label="染灰片" value="染灰片"></el-option>
+            <el-option label="染茶片" value="染茶片"></el-option>
+            <el-option label="染绿片" value="染绿片"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="设计" >
-          <el-select v-model="newLens.variety" placeholder="请选择设计">
+          <el-select v-model="newLens.design" placeholder="请选择设计">
             <el-option label="单光" value="单光"></el-option>
             <el-option label="渐进" value="渐进"></el-option>
           </el-select>
@@ -157,9 +168,9 @@
 
         <el-form-item label="状态">
           <el-radio-group v-model="newLens.state">
-            <el-radio label="待上架" value="0"></el-radio>
-            <el-radio label="上架中" value="1"></el-radio>
-            <el-radio label="已下架" value="2"></el-radio>
+            <el-radio label="0">待上架</el-radio>
+            <el-radio label="1">上架中</el-radio>
+            <el-radio label="2">已下架</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -169,8 +180,108 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="addLensVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddLens">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog class="updateLens" title="编辑镜片" :visible.sync="updateLensVisible">
+      <el-form
+        :model="newLens"
+        label-width="100px">
+
+        <el-form-item label="规则编码" >
+          <el-input v-model="newLens.lensID"
+                    :disabled="true"></el-input>
+        </el-form-item>
+
+        <el-form-item label="镜片名称" >
+          <el-input v-model="newLens.lensName"></el-input>
+        </el-form-item>
+
+        <el-form-item label="价格" >
+          <el-input v-model="newLens.price">
+            <el-button slot="prepend">$</el-button>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item label="折射率" >
+          <el-select v-model="newLens.refractiveIndex" placeholder="请选择折射率">
+            <el-option label="1.56" value="1.56"></el-option>
+            <el-option label="1.59" value="1.59"></el-option>
+            <el-option label="1.60" value="1.60"></el-option>
+            <el-option label="1.67" value="1.67"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="材质" >
+          <el-select v-model="newLens.material" placeholder="请选择材质">
+            <el-option label="UNO-400" value="UNO-400"></el-option>
+            <el-option label="PC" value="PC"></el-option>
+            <el-option label="PC 抗蓝光" value="PC 抗蓝光"></el-option>
+            <el-option label="树脂MR-7" value="树脂MR-7"></el-option>
+            <el-option label="树脂MR-7 灰" value="树脂MR-7 灰"></el-option>
+            <el-option label="树脂MR-8" value="树脂MR-8"></el-option>
+            <el-option label="树脂MR-8 灰" value="树脂MR-8 灰"></el-option>
+            <el-option label="亚克力变灰" value="亚克力变灰"></el-option>
+            <el-option label="亚克力变茶" value="亚克力变茶"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="弧度" >
+          <el-select v-model="newLens.radian" placeholder="请选择弧度">
+            <el-option label="球面" value="球面"></el-option>
+            <el-option label="非球面" value="非球面"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="品种" >
+          <el-select v-model="newLens.variety" placeholder="请选择品种">
+            <el-option label="光学" value="光学"></el-option>
+            <el-option label="基片变色" value="基片变色"></el-option>
+            <el-option label="膜层变色" value="膜层变色"></el-option>
+            <el-option label="光学墨镜" value="光学墨镜"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="膜层" >
+          <el-select v-model="newLens.film" placeholder="请选择膜层">
+            <el-option label="绿膜" value="绿膜"></el-option>
+            <el-option label="前蓝后紫膜+ESPF" value="前蓝后紫膜+ESPF"></el-option>
+            <el-option label="前紫后紫膜+ESPF" value="前紫后紫膜+ESPF"></el-option>
+            <el-option label="染灰片" value="染灰片"></el-option>
+            <el-option label="染茶片" value="染茶片"></el-option>
+            <el-option label="染绿片" value="染绿片"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="设计" >
+          <el-select v-model="newLens.design" placeholder="请选择设计">
+            <el-option label="单光" value="单光"></el-option>
+            <el-option label="渐进" value="渐进"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="库存量" >
+          <el-input v-model="newLens.stock"></el-input>
+        </el-form-item>
+
+        <el-form-item label="状态">
+          <el-radio-group v-model="newLens.state">
+            <el-radio label="0">待上架</el-radio>
+            <el-radio label="1">上架中</el-radio>
+            <el-radio label="2">已下架</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="说明">
+          <el-input type="textarea" v-model="newLens.description"></el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="updateLensVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleUpdateLens">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -188,7 +299,8 @@ export default {
       pageSize: 20,
       resultNum: 0,
       lensList: [],
-      dialogFormVisible: false,
+      addLensVisible: false,
+      updateLensVisible: false,
       newLens: {
         lensID: '',
         lensName: '',
@@ -219,24 +331,154 @@ export default {
       });
   },
   methods: {
+
     handleEdit(index, row) {
       console.log(index, row);
+      this.newLens = this.lensList[index];
+      this.updateLensVisible = true;
     },
+
+    //删除镜片
     handleDelete(index, row) {
       console.log(index, row);
+      this.$confirm('此操作将永久删除该镜片, 是否继续?', '提示', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        axios.post('http://localhost:8088/lens/delete',{
+          lensID : this.lensList[index].lensID
+        })
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
+
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
+
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+
+    openAddLens(){
+      this.newLens = [];
+      this.addLensVisible = true;
+    },
+
+    //添加镜片
+    handleAddLens(){
+      console.log(this.newLens);
+      axios.post('http://localhost:8088/lens/add', {
+        lensID: this.newLens.lensID,
+        lensName: this.newLens.lensName,
+        price: this.newLens.price,
+        refractiveIndex: this.newLens.refractiveIndex,
+        material: this.newLens.material,
+        radian: this.newLens.radian,
+        variety: this.newLens.variety,
+        film: this.newLens.film,
+        design: this.newLens.design,
+        stock: this.newLens.stock,
+        state: this.newLens.state,
+        description: this.newLens.description
+      })
+        .then(response=>{
+          console.log(response.data);
+          if (response.data.code==200){
+            this.$message({
+              showClose: true,
+              message: '添加镜片成功！',
+              type: 'success'
+            });
+          }
+          else{
+            this.$message({
+              showClose: true,
+              message: '添加失败，请联系管理员',
+              type: 'error'
+            });
+          }
+
+        }).catch(function(error){
+          console.log(error);
+      })
+      this.addLensVisible = false;
+    },
+
+    //编辑镜片
+    handleUpdateLens(){
+      console.log(this.newLens);
+      axios.post('http://localhost:8088/lens/update', {
+        lensID: this.newLens.lensID,
+        lensName: this.newLens.lensName,
+        price: this.newLens.price,
+        refractiveIndex: this.newLens.refractiveIndex,
+        material: this.newLens.material,
+        radian: this.newLens.radian,
+        variety: this.newLens.variety,
+        film: this.newLens.film,
+        design: this.newLens.design,
+        stock: this.newLens.stock,
+        state: this.newLens.state,
+        description: this.newLens.description
+      })
+        .then(response=>{
+          console.log(response.data);
+          if (response.data.code==200){
+            this.$message({
+              showClose: true,
+              message: '编辑镜片成功！',
+              type: 'success'
+            });
+          }
+          else{
+            this.$message({
+              showClose: true,
+              message: '编辑失败，请联系管理员',
+              type: 'error'
+            });
+          }
+
+        }).catch(function(error){
+        console.log(error);
+      })
+      this.updateLensVisible = false;
+      this.newLens = [];
+    },
+
+    open1() {
+      this.$message({
+        showClose: true,
+        message: '这是一条消息提示'
+      });
+    },
+
+    open3() {
+      this.$message({
+        showClose: true,
+        message: '警告哦，这是一条警告消息',
+        type: 'warning'
+      });
     }
+
   }
 }
 </script>
 
 <style scoped>
-.addLens{
+.addLens {
+  text-align: left;
+}
+.updateLens{
   text-align: left;
 }
 </style>

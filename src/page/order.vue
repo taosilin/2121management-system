@@ -1,67 +1,67 @@
 <template>
   <div>
-    商品管理！！
-    <el-button type="primary" icon="el-icon-plus" @click="handleAddProduct">添加商品</el-button>
     <el-table
-      :data="productList"
+      :data="orderList"
       border
       style="width: 100%">
-
       <el-table-column
-        prop="productID"
-        label="商品ID">
+        prop="orderID"
+        label="订单ID">
       </el-table-column>
-
       <el-table-column
-        prop="productName"
-        label="商品名称">
+        prop="userID"
+        label="用户ID">
       </el-table-column>
-
       <el-table-column
-        prop="sketch"
-        label="简述">
+        prop="addressID"
+        label="地址">
       </el-table-column>
-
       <el-table-column
-        prop="coverImage"
-        label="封面图片">
+        prop="couponID"
+        label="优惠券">
       </el-table-column>
-
       <el-table-column
-        prop="imageList"
-        label="商品图片">
+        prop="totalAmount"
+        label="总金额">
       </el-table-column>
-
       <el-table-column
-        prop="description"
-        label="商品详情">
+        prop="actualPayment"
+        label="实际付款">
       </el-table-column>
-
       <el-table-column
-        prop="classification"
-        label="分类">
+        prop="orderTime"
+        label="下单时间">
       </el-table-column>
-
       <el-table-column
-        prop="tab"
-        label="标签">
+        prop="paymentTime"
+        label="支付时间">
       </el-table-column>
-
       <el-table-column
-        prop="keyword"
-        label="关键词">
+        prop="receiptTime"
+        label="收货时间">
       </el-table-column>
-
       <el-table-column
         prop="state"
         label="状态">
+      </el-table-column>
+      <el-table-column
+        prop="remark"
+        label="订单备注">
+      </el-table-column>
+      <el-table-column
+        prop="courierID"
+        label="配送方式">
+      </el-table-column>
+      <el-table-column
+        prop="deliveryMethod"
+        label="配送方式">
       </el-table-column>
 
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            @click="handleDetail(scope.$index, scope.row)">查看详情</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -69,7 +69,6 @@
         </template>
       </el-table-column>
     </el-table>
-
     <div class="block">
       <el-pagination
         @size-change="handleSizeChange"
@@ -81,7 +80,6 @@
         :total="resultNum">
       </el-pagination>
     </div>
-
   </div>
 </template>
 
@@ -89,22 +87,22 @@
 import axios from "axios";
 
 export default {
-  name: "product",
+  name: "order",
   data() {
     return {
       currentPage: 0,
       pageSize:20,
       resultNum: 0,
-      productList: []
+      orderList: []
     }
   },
   created() {
-    axios.post('http://localhost:8088/product/list',{
+    axios.post('http://localhost:8088/order/list',{
       page:this.currentPage,
       size:this.pageSize
     })
       .then(response=>{
-        this.productList = response.data.data;
+        this.orderList = response.data.data;
         this.resultNum = response.data.data.length;
       })
       .catch(function (error) {       //发生错误
@@ -112,8 +110,9 @@ export default {
       });
   },
   methods: {
-    handleEdit(index, row) {
+    handleDetail(index, row) {
       console.log(index, row);
+      this.$router.push('/orderDetail')
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -123,9 +122,6 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-    },
-    handleAddProduct(){
-      this.$router.push('/addProduct')
     }
   }
 }

@@ -86,7 +86,13 @@ export default {
             },
             {
               index: 'transaction',
-              title: '交易管理'
+              title: '交易管理',
+              subs: [
+                {
+                  index: 'order',
+                  title: '订单管理'
+                }
+              ]
             },
             {
               index: 'configuration',

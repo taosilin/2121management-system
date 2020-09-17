@@ -10,6 +10,10 @@ import comment from "../page/comment"
 import frame from "../page/frame"
 import lens from "../page/lens"
 import addFrame from "../page/addFrame"
+import addProduct from "../page/addProduct"
+import order from "../page/order"
+import orderDetail from "../page/orderDetail";
+
 
 Vue.use(Router)
 
@@ -68,6 +72,21 @@ export default new Router({
           path: '/addFrame',
           component: addFrame,
           meta: { title: '添加镜框' }
+        },
+        {
+          path: '/addProduct',
+          component: addProduct,
+          meta: { title: '添加商品' }
+        },
+        {
+          path: '/order',
+          component: order,
+          meta: { title: '订单管理' }
+        },
+        {
+          path: '/orderDetail',
+          component: orderDetail,
+          meta: { title: '订单详情' }
         }
       ]
     }
