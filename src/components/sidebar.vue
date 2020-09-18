@@ -112,7 +112,13 @@ export default {
         {
           icon: 'el-icon-present',
           index: 'market',
-          title: '营销活动'
+          title: '营销活动',
+          subs: [
+            {
+              index: 'coupon',
+              title: '优惠券管理'
+            }
+          ]
         },
         {
           icon: 'el-icon-setting',

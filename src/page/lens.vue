@@ -289,10 +289,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"
 
 export default {
-  name: "lens",
+  name: 'lens',
   data() {
     return {
       currentPage: 0,
@@ -323,24 +323,24 @@ export default {
       size:this.pageSize
     })
       .then(response=>{
-        this.lensList = response.data.data;
-        this.resultNum = response.data.data.length;
+        this.lensList = response.data.data
+        this.resultNum = response.data.data.length
       })
       .catch(function (error) {       //发生错误
-        console.log(error);
+        console.log(error)
       });
   },
   methods: {
 
     handleEdit(index, row) {
-      console.log(index, row);
-      this.newLens = this.lensList[index];
-      this.updateLensVisible = true;
+      console.log(index, row)
+      this.newLens = this.lensList[index]
+      this.updateLensVisible = true
     },
 
     //删除镜片
     handleDelete(index, row) {
-      console.log(index, row);
+      console.log(index, row)
       this.$confirm('此操作将永久删除该镜片, 是否继续?', '提示', {
         confirmButtonText: '确认删除',
         cancelButtonText: '取消',
@@ -352,31 +352,31 @@ export default {
         this.$message({
           type: 'success',
           message: '删除成功!'
-        });
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });
-      });
+        })
+      })
     },
 
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      console.log(`每页 ${val} 条`)
     },
 
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`)
     },
 
     openAddLens(){
-      this.newLens = [];
-      this.addLensVisible = true;
+      this.newLens = []
+      this.addLensVisible = true
     },
 
     //添加镜片
     handleAddLens(){
-      console.log(this.newLens);
+      console.log(this.newLens)
       axios.post('http://localhost:8088/lens/add', {
         lensID: this.newLens.lensID,
         lensName: this.newLens.lensName,
@@ -392,31 +392,31 @@ export default {
         description: this.newLens.description
       })
         .then(response=>{
-          console.log(response.data);
+          console.log(response.data)
           if (response.data.code==200){
             this.$message({
               showClose: true,
               message: '添加镜片成功！',
               type: 'success'
-            });
+            })
           }
           else{
             this.$message({
               showClose: true,
               message: '添加失败，请联系管理员',
               type: 'error'
-            });
+            })
           }
 
         }).catch(function(error){
-          console.log(error);
+          console.log(error)
       })
-      this.addLensVisible = false;
+      this.addLensVisible = false
     },
 
     //编辑镜片
     handleUpdateLens(){
-      console.log(this.newLens);
+      console.log(this.newLens)
       axios.post('http://localhost:8088/lens/update', {
         lensID: this.newLens.lensID,
         lensName: this.newLens.lensName,
@@ -432,34 +432,34 @@ export default {
         description: this.newLens.description
       })
         .then(response=>{
-          console.log(response.data);
+          console.log(response.data)
           if (response.data.code==200){
             this.$message({
               showClose: true,
               message: '编辑镜片成功！',
               type: 'success'
-            });
+            })
           }
           else{
             this.$message({
               showClose: true,
               message: '编辑失败，请联系管理员',
               type: 'error'
-            });
+            })
           }
 
         }).catch(function(error){
-        console.log(error);
+        console.log(error)
       })
-      this.updateLensVisible = false;
-      this.newLens = [];
+      this.updateLensVisible = false
+      this.newLens = []
     },
 
     open1() {
       this.$message({
         showClose: true,
         message: '这是一条消息提示'
-      });
+      })
     },
 
     open3() {
@@ -467,7 +467,7 @@ export default {
         showClose: true,
         message: '警告哦，这是一条警告消息',
         type: 'warning'
-      });
+      })
     }
 
   }

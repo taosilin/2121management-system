@@ -84,10 +84,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"
 
 export default {
-  name: "order",
+  name: 'order',
   data() {
     return {
       currentPage: 0,
@@ -102,26 +102,31 @@ export default {
       size:this.pageSize
     })
       .then(response=>{
-        this.orderList = response.data.data;
-        this.resultNum = response.data.data.length;
+        this.orderList = response.data.data
+        this.resultNum = response.data.data.length
       })
       .catch(function (error) {       //发生错误
-        console.log(error);
-      });
+        console.log(error)
+      })
   },
   methods: {
     handleDetail(index, row) {
-      console.log(index, row);
-      this.$router.push('/orderDetail')
+      console.log(index, row)
+      this.$router.push({
+        path:'/orderDetail',
+        query:{
+          orderID:this.orderList[index].orderID
+        }
+      })
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      console.log(index, row)
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      console.log(`每页 ${val} 条`)
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`)
     }
   }
 }

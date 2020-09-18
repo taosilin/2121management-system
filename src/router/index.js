@@ -12,7 +12,9 @@ import lens from "../page/lens"
 import addFrame from "../page/addFrame"
 import addProduct from "../page/addProduct"
 import order from "../page/order"
-import orderDetail from "../page/orderDetail";
+import orderDetail from "../page/orderDetail"
+import coupon from "../page/coupon"
+import productDetail from "../page/productDetail"
 
 
 Vue.use(Router)
@@ -87,6 +89,16 @@ export default new Router({
           path: '/orderDetail',
           component: orderDetail,
           meta: { title: '订单详情' }
+        },
+        {
+          path: '/coupon',
+          component: coupon,
+          meta: { title: '优惠券管理' }
+        },
+        {
+          path: '/productDetail',
+          component: productDetail,
+          meta: { title: '商品详情' }
         }
       ]
     }
