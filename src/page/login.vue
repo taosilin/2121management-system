@@ -8,7 +8,7 @@
 
       <el-input class="input"
         placeholder="请输入用户名"
-        v-model="username"
+        v-model="adminID"
         clearable>
         <i slot="prefix" class="el-input__icon el-icon-user-solid"></i>
       </el-input>
@@ -27,18 +27,42 @@
 </template>
 
 <script>
+import axios from "axios"
+
 export default {
   name: "login",
   data(){
     return {
-      username: "",
-      password: ""
+      adminID: '',
+      password: ''
     }
   },
   methods: {
     handleLogin(){
       //此处填写管理员登录接口
-      this.$router.push("/")
+      axios.post('http://localhost:8088/admin/login',{
+        adminID: this.adminID,
+        password: this.password
+      }).then(response=>{
+        if (response.data.code==200){
+          this.$router.push("/home")
+          this.$message({
+            showClose: true,
+            message: '登录成功！',
+            type: 'success'
+          })
+        }
+        else{
+          this.$message({
+            showClose: true,
+            message: '用户名或密码错误',
+            type: 'error'
+          })
+        }
+
+      }).catch(error=>{
+        console.log(error)
+      })
     }
   }
 }

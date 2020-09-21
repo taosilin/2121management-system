@@ -124,9 +124,33 @@ export default {
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      axios.post('http://localhost:8088/order/list',{
+        page:this.currentPage,
+        size:this.pageSize
+      })
+        .then(response=>{
+          this.orderList = response.data.data
+          this.resultNum = response.data.data.length
+        })
+        .catch(function (error) {       //发生错误
+          console.log(error)
+        })
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+      this.currentPage = val
+      axios.post('http://localhost:8088/order/list',{
+        page:this.currentPage,
+        size:this.pageSize
+      })
+        .then(response=>{
+          this.orderList = response.data.data
+          this.resultNum = response.data.data.length
+        })
+        .catch(function (error) {       //发生错误
+          console.log(error)
+        })
     }
   }
 }

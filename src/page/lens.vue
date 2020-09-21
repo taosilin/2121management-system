@@ -328,7 +328,7 @@ export default {
       })
       .catch(function (error) {       //发生错误
         console.log(error)
-      });
+      })
   },
   methods: {
 
@@ -363,14 +363,38 @@ export default {
 
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      axios.post('http://localhost:8088/lens/list',{
+        page:this.currentPage,
+        size:this.pageSize
+      })
+        .then(response=>{
+          this.lensList = response.data.data
+          this.resultNum = response.data.data.length
+        })
+        .catch(function (error) {       //发生错误
+          console.log(error)
+        });
     },
 
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+      this.currentPage = val
+      axios.post('http://localhost:8088/lens/list',{
+        page:this.currentPage,
+        size:this.pageSize
+      })
+        .then(response=>{
+          this.lensList = response.data.data
+          this.resultNum = response.data.data.length
+        })
+        .catch(function (error) {       //发生错误
+          console.log(error)
+        });
     },
 
     openAddLens(){
-      this.newLens = []
+      this.newLens = {}
       this.addLensVisible = true
     },
 
@@ -452,7 +476,7 @@ export default {
         console.log(error)
       })
       this.updateLensVisible = false
-      this.newLens = []
+      this.newLens = {}
     },
 
     open1() {
