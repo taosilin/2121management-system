@@ -81,7 +81,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">下一步</el-button>
+        <el-button type="primary" @click="onSubmit">添加商品</el-button>
       </el-form-item>
     </el-form>
 
@@ -89,30 +89,88 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: "addProduct",
+  name: 'addProduct',
   data(){
     return {
       form: {
         productID: '',
         productName: '',
         sketch: '',
-        coverImage: '',
-        imageList: '',
+        coverImage: null,
+        imageList: null,
         description: '',
         classification: '',
         tab: '',
         keyword: '',
         state: '0',
-        classes: [],
-        tabs: [],
-        keywords: []
+        classes: [{
+          value: '无框',
+          label: '无框'
+        }, {
+          value: '圆框',
+          label: '圆框'
+        }, {
+          value: '方框',
+          label: '方框'
+        }],
+        tabs: [{
+          value: '新品',
+          label: '新品'
+        }, {
+          value: '爆品',
+          label: '爆品'
+        }, {
+          value: '一起拼',
+          label: '一起拼'
+        }],
+        keywords: [{
+          value: '近视',
+          label: '近视'
+        }, {
+          value: '太阳镜',
+          label: '太阳镜'
+        }, {
+          value: '防蓝光',
+          label: '防蓝光'
+        }]
       }
     }
   },
   methods: {
     onSubmit(){
-      console.log(this.form);
+      axios.post('http://localhost:8088/product/add',{
+        productID: this.form.productID,
+        productName: this.form.productName,
+        sketch: this.form.sketch,
+        coverImage: this.form.coverImage,
+        imageList: this.form.imageList,
+        description: this.form.description,
+        classification: this.form.classification.toString(),
+        tab: this.form.tab.toString(),
+        keyword: this.form.keyword.toString(),
+        state: this.form.state
+      }).then(response=>{
+        if (response.data.code==200){
+          this.$message({
+            showClose: true,
+            message: '添加成功！',
+            type: 'success'
+          })
+          this.$router.push('/product')
+        }
+        else{
+          this.$message({
+            showClose: true,
+            message: '添加失败，请联系管理员',
+            type: 'error'
+          })
+        }
+      }).catch(error=>{
+        console.log(error)
+      })
     }
   }
 }

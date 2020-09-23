@@ -3,7 +3,7 @@
 
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>商品详情</span>
+        <span>商品信息</span>
         <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
       </div>
       <div class="text item">
@@ -11,6 +11,30 @@
       </div>
       <div class="text item">
         <div>商品名称：{{productDetail.productName}}</div>
+      </div>
+      <div class="text item">
+        <div>商品简述：{{productDetail.sketch}}</div>
+      </div>
+      <div class="text item">
+        <div>商品描述：{{productDetail.description}}</div>
+      </div>
+      <div class="text item">
+        <div>商品分类：{{productDetail.classification}}</div>
+      </div>
+      <div class="text item">
+        <div>商品标签：{{productDetail.tab}}</div>
+      </div>
+      <div class="text item">
+        <div>关键词：{{productDetail.keyword}}</div>
+      </div>
+      <div class="text item">
+        <div>状态：
+          <el-radio-group v-model="productDetail.state">
+            <el-radio label="0">待上架</el-radio>
+            <el-radio label="1">上架中</el-radio>
+            <el-radio label="2">已下架</el-radio>
+          </el-radio-group>
+        </div>
       </div>
     </el-card>
 
@@ -71,10 +95,89 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>规格SKU管理</span>
-        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+        <el-dropdown @command="handleCommand1">
+          <span class="el-dropdown-link">
+            操作<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-plus" command="add">添加SKU</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-edit" command="edit">编辑</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-delete" command="delete">删除</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+
+      <div>
+        <el-table
+          :data="specs"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="specID"
+            label="规格ID">
+          </el-table-column>
+          <el-table-column
+            prop="productID"
+            label="商品ID">
+          </el-table-column>
+          <el-table-column
+            prop="productSpec"
+            label="商品规格">
+          </el-table-column>
+          <el-table-column
+            prop="quantity"
+            label="库存">
+          </el-table-column>
+          <el-table-column
+            prop="price"
+            label="价格">
+          </el-table-column>
+          <el-table-column
+            prop="specImage"
+            label="规格图片地址">
+          </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
 
     </el-card>
+
+    <!--添加SKU对话框-->
+    <el-dialog class="addSKU" title="添加SKU" :visible.sync="addSKUVisible">
+      <el-form
+        :model="newSKU"
+        label-width="100px">
+
+        <el-form-item label="规格编码" >
+          <el-input v-model="newSKU.specID"></el-input>
+        </el-form-item>
+
+        <el-form-item label="库存量" >
+          <el-input v-model="newSKU.quantity"></el-input>
+        </el-form-item>
+
+        <el-form-item label="价格" >
+          <el-input v-model="newSKU.price">
+            <el-button slot="prepend">$</el-button>
+          </el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addSKUVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddSKU">确 定</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -88,10 +191,12 @@ export default {
       inputVisible: false,
       inputValue: '',
       addVisible: false,
+      addSKUVisible: false,
       inputAttribute: '',
       productDetail: {},
       attributes: [],
-      specs: []
+      specs: [],
+      newSKU: {}
     }
   },
   created() {
@@ -109,10 +214,24 @@ export default {
   },
   methods: {
 
+    handleEdit(index, row) {
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
+    },
+
     handleCommand(command){
       console.log(command)
       if (command=='add'){
         this.addVisible = true
+      }
+    },
+
+    handleCommand1(command){
+      console.log(command)
+      if (command=='add'){
+        this.addSKUVisible = true
       }
     },
 
@@ -180,6 +299,31 @@ export default {
       }
       this.inputVisible = false
       this.inputValue = ''
+    },
+    handleAddSKU(){
+      axios.post('http://localhost:8088/spec/add',{
+        specID: this.newSKU.specID,
+        productID: this.productDetail.productID,
+        productSpec: this.newSKU.productSpec,
+        quantity: this.newSKU.quantity,
+        price: this.newSKU.price,
+        specImage: this.newSKU.specImage
+      }).then(response=>{
+        if (response.data.code==200){
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
+        }
+      }).catch(error=>{
+        this.$message({
+          showClose: true,
+          message: '添加失败，请联系管理员',
+          type: 'error'
+        })
+      })
+      this.addSKUVisible = false
+      this.newSKU = {}
     }
   }
 

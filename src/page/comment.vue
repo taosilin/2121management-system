@@ -50,23 +50,11 @@
           <el-button
             v-if="commentList[scope.$index].reply==null"
             size="mini"
-            @click="handleReply(scope.$index, scope.row)">回复</el-button>
+            @click="openReply(scope.$index, scope.row)">回复</el-button>
           <el-button
             size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          <el-popover
-            placement="top"
-            width="160"
-            v-model="replyVisible">
-            <p>回复：</p>
-            <el-input v-model="replyInput" placeholder="请输入回复内容"></el-input>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="replyVisible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="handleReply">确定</el-button>
-            </div>
-            <el-button slot="reference" @click="openReply">删除</el-button>
-          </el-popover>
         </template>
       </el-table-column>
     </el-table>
@@ -81,6 +69,15 @@
         :total="resultNum">
       </el-pagination>
     </div>
+
+    <el-dialog title="回复" :visible.sync="replyVisible">
+      <el-input v-model="replyInput" placeholder="请输入回复内容" type="textarea" autocomplete="off"></el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="replyVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleReply">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -96,7 +93,8 @@ export default {
       resultNum: 0,
       commentList: [],
       replyVisible: false,
-      replyInput: ''
+      replyInput: '',
+      replyID: ''
     }
   },
   created() {
@@ -114,14 +112,34 @@ export default {
   },
   methods: {
 
-    handleReply(index, row) {
-      console.log(index, row)
-      this.replyVisible = false
+    handleReply() {
+      axios.post('http://localhost:8088/comment/reply',{
+        commentID: this.replyID,
+        reply: this.replyInput,
+        replyTime: new Date()
+      }).then(response=>{
+        if (response.data.code==200){
+          this.$message({
+            type: 'success',
+            message: '回复成功!'
+          })
+        }
+      }).catch(error=>{
+        console.log(error)
+        this.$message({
+          showClose: true,
+          message: '回复失败，请联系管理员',
+          type: 'error'
+        })
+      })
 
+      this.replyVisible = false
+      this.replyID = ''
     },
 
-    openReply(){
+    openReply(index, row){
       this.replyVisible = true
+      this.replyID = this.commentList[index].commentID
     },
 
     handleDelete(index, row) {

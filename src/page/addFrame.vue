@@ -70,9 +70,9 @@
 
         <el-form-item label="状态">
           <el-radio-group v-model="form.state">
-            <el-radio label="待上架" value="0"></el-radio>
-            <el-radio label="上架中" value="1"></el-radio>
-            <el-radio label="已下架" value="2"></el-radio>
+            <el-radio label="0">待上架</el-radio>
+            <el-radio label="1">上架中</el-radio>
+            <el-radio label="2">已下架</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -81,7 +81,7 @@
         </el-form-item>
 
         <el-form-item label="商品详情">
-          <el-input type="textarea" v-model="form.description"></el-input>
+          <el-input type="textarea" placeholder="请输入商品详细描述" v-model="form.description"></el-input>
         </el-form-item>
 
         <el-form-item label="所属分类">
