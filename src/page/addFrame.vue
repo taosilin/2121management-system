@@ -50,19 +50,19 @@
 
         <el-form-item label="维度">
           <el-col :span="6">
-            <el-input v-model="form.price">
+            <el-input v-model="form.dimensions[0]">
               <el-button slot="append">mm</el-button>
             </el-input>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="6">
-            <el-input v-model="form.price">
+            <el-input v-model="form.dimensions[1]">
               <el-button slot="append">mm</el-button>
             </el-input>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="6">
-            <el-input v-model="form.price">
+            <el-input v-model="form.dimensions[2]">
               <el-button slot="append">mm</el-button>
             </el-input>
           </el-col>
@@ -135,20 +135,12 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item>
-          <el-button type="primary" @click="onNext">下一步</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-
-    <div class="uploadDiv" v-else-if="active===1">
-      <el-form ref="form" :model="form" label-width="140px">
-
         <el-form-item label="商品封面图片">
 
           <el-upload
-            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"
+            action="http://localhost:8088/uploadimg"
             list-type="picture-card"
+            :limit=limitNum
             :headers="token"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
@@ -192,14 +184,13 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button @click="onPrevious">上一步</el-button>
-          <el-button type="primary" @click="onNext">下一步</el-button>
+          <el-button type="primary" @click="onAdd">下一步</el-button>
         </el-form-item>
-
       </el-form>
     </div>
 
-    <div v-else-if="active===2">
+
+    <div class="uploadDiv" v-else-if="active===1">
       <el-button @click="onPrevious">上一步</el-button>
       <el-button type="primary" @click="onNext">下一步</el-button>
     </div>
@@ -222,10 +213,10 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: "addFrame",
-
-
+  name: 'addFrame',
   data() {
     const generateData = _ => {
       const data = [];
@@ -254,6 +245,7 @@ export default {
         price: 0.00,
         material: '',
         shape: '',
+        dimensions: [0,0,0],
         nosePad: '',
         state: "0",
         description: '',
@@ -298,16 +290,63 @@ export default {
       },
       dialogImageUrl: '',
       dialogVisible: false,
-      imgUrl: ''
+      imgUrl: '',
+      // 上传数量限制
+      limitNum: 1
     }
   },
   created() {
 
   },
   methods: {
+
+    onAdd(){
+
+      axios.post('http://localhost:8088/frame/add',{
+        frameID: this.form.frameID,
+        frameName: this.form.frameName,
+        price: this.form.price,
+        material: this.form.material,
+        shape: this.form.shape,
+        nosePad: this.form.nosePad,
+        dimension: this.form.dimensions.join('-'),
+        state: this.form.state,
+        imageList: this.form.imageList.toString(),
+        description: this.form.description,
+        classification: this.form.classification.toString(),
+        tab: this.form.tab.toString(),
+        coverImage: this.form.coverImage,
+        sketch: this.form.sketch,
+        keyword: this.form.keyword.toString()
+      }).then(response=>{
+        console.log(response.data)
+        if (response.data.code==200){
+          this.$message({
+            showClose: true,
+            message: '添加镜框成功！',
+            type: 'success'
+          })
+          this.active++
+        }
+        else{
+          this.$message({
+            showClose: true,
+            message: '添加失败，请联系管理员',
+            type: 'error'
+          })
+        }
+
+      }).catch(error=>{
+        console.log(error)
+      })
+
+    },
+
+
     onNext() {
       this.active++
     },
+
     onPrevious() {
       this.active--
     },

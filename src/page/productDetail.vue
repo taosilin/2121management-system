@@ -140,7 +140,7 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                @click="openUpdateSKU(scope.$index, scope.row)">编辑</el-button>
               <el-button
                 size="mini"
                 type="danger"
@@ -172,10 +172,50 @@
           </el-input>
         </el-form-item>
 
+        <div v-for="(a,i) in attributes">
+          <el-form-item v-bind:label="a.attribute.attributeName">
+            <el-radio-group v-model="sku[i]" size="medium">
+              <el-radio-button v-for="(v,j) in a.values" v-bind:label="v.valueName"></el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+        </div>
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addSKUVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleAddSKU">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--编辑SKU对话框-->
+    <el-dialog class="updateSKU" title="编辑SKU" :visible.sync="updateSKUVisible">
+      <el-form
+        :model="newSKU"
+        label-width="100px">
+
+        <el-form-item label="规格编码" >
+          <el-input v-model="newSKU.specID" disabled></el-input>
+        </el-form-item>
+
+        <el-form-item label="规格" >
+          <el-input v-model="newSKU.productSpec" disabled></el-input>
+        </el-form-item>
+
+        <el-form-item label="库存量" >
+          <el-input v-model="newSKU.quantity"></el-input>
+        </el-form-item>
+
+        <el-form-item label="价格" >
+          <el-input v-model="newSKU.price">
+            <el-button slot="prepend">$</el-button>
+          </el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="updateSKUVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleEdit">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -192,13 +232,21 @@ export default {
       inputValue: '',
       addVisible: false,
       addSKUVisible: false,
+      updateSKUVisible: false,
       inputAttribute: '',
+
       productDetail: {},
+
       attributes: [],
+
       specs: [],
-      newSKU: {}
+
+      newSKU: {},
+
+      sku: []
     }
   },
+
   created() {
     // 取到路由带过来的参数
     let productID = this.$route.query.productID
@@ -212,13 +260,61 @@ export default {
       console.log(error)
     })
   },
-  methods: {
 
-    handleEdit(index, row) {
-      console.log(index, row);
+  methods: {
+    // 打开编辑SKU对话框
+    openUpdateSKU(index, row){
+      this.newSKU = this.specs[index]
+      this.updateSKUVisible = true
     },
+
+    // 提交编辑SKU
+    handleEdit() {
+      axios.post('http://localhost:8088/spec/update',{
+        specID: this.newSKU.specID,
+        quantity: this.newSKU.quantity,
+        price: this.newSKU.price,
+        specImage: this.newSKU.specImage
+      }).then(response=>{
+        if (response.data.code==200){
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+        }
+      }).catch(error=>{
+        console.log(error)
+        this.$message({
+          showClose: true,
+          message: '修改失败，请联系管理员',
+          type: 'error'
+        })
+      })
+      this.updateSKUVisible = false
+      this.newSKU = {}
+    },
+
+    // 删除SKU
     handleDelete(index, row) {
-      console.log(index, row);
+      console.log(index, row)
+      this.$confirm('此操作将永久删除该规格, 是否继续?', '提示', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        axios.post('http://localhost:8088/spec/delete',{
+          specID : this.specs[index].specID
+        })
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
 
     handleCommand(command){
@@ -300,11 +396,13 @@ export default {
       this.inputVisible = false
       this.inputValue = ''
     },
+
     handleAddSKU(){
+
       axios.post('http://localhost:8088/spec/add',{
         specID: this.newSKU.specID,
         productID: this.productDetail.productID,
-        productSpec: this.newSKU.productSpec,
+        productSpec: this.sku.join(";"),
         quantity: this.newSKU.quantity,
         price: this.newSKU.price,
         specImage: this.newSKU.specImage
@@ -331,6 +429,12 @@ export default {
 </script>
 
 <style scoped>
+.addSKU{
+  text-align: left;
+}
+.updateSKU{
+  text-align: left;
+}
 .text {
   font-size: 14px;
   text-align: left;
