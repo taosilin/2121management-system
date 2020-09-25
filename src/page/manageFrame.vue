@@ -11,11 +11,15 @@
         <div>镜框名称：{{frameDetail.frameName}}</div>
         <div>价格：{{frameDetail.price}}</div>
         <div>材质：{{frameDetail.material}}</div>
-        <div>收货时间：{{frameDetail.shape}}</div>
-        <div>订单状态：{{frameDetail.nosePad}}</div>
-        <div>订单备注：{{frameDetail.dimension}}</div>
-        <div>快递单号：{{frameDetail.state}}</div>
-        <div>配送方式：{{frameDetail.sketch}}</div>
+        <div>外观形状：{{frameDetail.shape}}</div>
+        <div>鼻托类型：{{frameDetail.nosePad}}</div>
+        <div>镜架维度：{{frameDetail.dimension}}</div>
+        <div>状态：
+          <el-tag v-if="frameDetail.state=='0'">待上架</el-tag>
+          <el-tag v-else-if="frameDetail.state='1'" type="success">上架中</el-tag>
+          <el-tag v-else type="info">已下架</el-tag>
+        </div>
+        <div>简述：{{frameDetail.sketch}}</div>
       </div>
     </el-card>
 
@@ -102,8 +106,7 @@
 import axios from 'axios'
 export default {
   name: 'manageFrame',
-  data() {
-
+  data () {
     return {
 
       filterMethod(query, item) {
@@ -124,8 +127,8 @@ export default {
     let frameID = this.$route.query.frameID
 
     axios.post('http://localhost:8088/lens/list',{
-      page:0,
-      size:20
+      page: 0,
+      size: 20
     }).then(response => {
       const data = []
       for (let i = 0;i<response.data.data.length;i++){

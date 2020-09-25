@@ -92,6 +92,7 @@
       </div>
       <div v-for="p in products" class="text item">
         商品ID：{{p.productID}}
+        商品名称：{{p.productName}}
       </div>
     </el-card>
   </div>

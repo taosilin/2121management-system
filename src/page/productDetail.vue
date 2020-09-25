@@ -29,11 +29,9 @@
       </div>
       <div class="text item">
         <div>状态：
-          <el-radio-group v-model="productDetail.state">
-            <el-radio label="0">待上架</el-radio>
-            <el-radio label="1">上架中</el-radio>
-            <el-radio label="2">已下架</el-radio>
-          </el-radio-group>
+          <el-tag v-if="frameDetail.state=='0'">待上架</el-tag>
+          <el-tag v-else-if="frameDetail.state='1'" type="success">上架中</el-tag>
+          <el-tag v-else type="info">已下架</el-tag>
         </div>
       </div>
     </el-card>

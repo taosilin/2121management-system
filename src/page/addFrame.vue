@@ -1,11 +1,6 @@
 <template>
   <div>
-    <el-steps :active="active" simple>
-      <el-step title="基本信息" icon="el-icon-edit"></el-step>
-      <el-step title="镜框SKU" icon="el-icon-picture"></el-step>
-      <el-step title="可用镜片" icon="el-icon-sort"></el-step>
-    </el-steps>
-    <div class="infoForm" v-if="active===0">
+    <div class="infoForm">
       <el-form ref="form"
                :model="form"
                label-width="80px">
@@ -137,7 +132,7 @@
         <el-form-item label="商品封面图片">
 
           <el-upload
-            action="http://localhost:8088/uploadimg"
+            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"
             list-type="picture-card"
             :limit=limitNum
             :headers="token"
@@ -188,29 +183,6 @@
       </el-form>
     </div>
 
-
-    <div class="uploadDiv" v-else-if="active===1">
-
-
-
-      <el-button @click="onPrevious">上一步</el-button>
-      <el-button type="primary" @click="onNext">下一步</el-button>
-    </div>
-
-    <div v-else>
-      <el-transfer
-        filterable
-        :filter-method="filterMethod"
-        :titles="['备选镜片', '已选镜片']"
-        filter-placeholder="请输入镜片关键词"
-        v-model="value"
-        :data="data"
-        style="width: 100%">
-      </el-transfer>
-      <el-button @click="onPrevious">上一步</el-button>
-      <el-button type="primary" @click="onSubmit">完成</el-button>
-    </div>
-
   </div>
 </template>
 
@@ -219,41 +191,22 @@ import axios from 'axios'
 
 export default {
   name: 'addFrame',
-  data() {
-    const generateData = _ => {
-      const data = [];
-      const cities = ['Lens001_1.59_PC_非球面_光学_绿膜_单光', 'Lens002_1.59_PC抗蓝光_非球面_光学_绿膜_单光', 'Lens003_1.67_树脂MR-7_非球面_光学_绿膜_单光', 'Lens004_1.67_树脂MR-7_非球面_光学_前蓝后紫膜+ESPF_单光'];
-      cities.forEach((city, index) => {
-        data.push({
-          label: city,
-          key: index,
-          cities: cities[index]
-        });
-      });
-      return data;
-    };
+  data () {
     return {
-
-      data: generateData(),
-      value: [],
-      filterMethod(query, item) {
-        return item.cities.indexOf(query) > -1;
-      },
-      showFiles:[],
-      active:0,
+      showFiles: [],
       form: {
         frameID: '',
         frameName: '',
         price: 0.00,
         material: '',
         shape: '',
-        dimensions: [0,0,0],
+        dimensions: [0, 0, 0],
         nosePad: '',
-        state: "0",
+        state: '0',
         description: '',
-        sketch:'',
+        sketch: '',
         classification: [],
-        tab:[],
+        tab: [],
         keyword: [],
         imageList: [],
         classes: [{
@@ -294,14 +247,13 @@ export default {
       limitNum: 1
     }
   },
-  created() {
+  created () {
 
   },
   methods: {
 
-    onAdd(){
-
-      axios.post('http://localhost:8088/frame/add',{
+    onAdd () {
+      axios.post('http://localhost:8088/frame/add', {
         frameID: this.form.frameID,
         frameName: this.form.frameName,
         price: this.form.price,
@@ -317,9 +269,9 @@ export default {
         coverImage: this.form.coverImage,
         sketch: this.form.sketch,
         keyword: this.form.keyword.toString()
-      }).then(response=>{
+      }).then(response => {
         console.log(response.data)
-        if (response.data.code==200){
+        if (response.data.code === 200){
           this.$message({
             showClose: true,
             message: '添加镜框成功！',
@@ -335,41 +287,28 @@ export default {
           })
         }
 
-      }).catch(error=>{
+      }).catch(error => {
         console.log(error)
       })
-
-    },
-
-
-    onNext() {
-      this.active++
-    },
-
-    onPrevious() {
-      this.active--
-    },
-    onSubmit() {
-      console.log(this.form);
     },
 
     //文件列表移除文件时的钩子
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
     },
 
     //点击已上传的文件链接时的钩子,获取服务器返回的数据
-    handlePreview(file) {
-      console.log(file);
+    handlePreview (file) {
+      console.log(file)
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
     },
 
 
     //文件上传成功时的钩子
-    onSuccess(response, file, fileList) {
+    onSuccess (response, file, fileList) {
       console.log(response.data)    //服务器返回的图片信息，可以提交到表格
       this.$message({
         message: '图片上传成功',
@@ -385,8 +324,8 @@ export default {
     addFile(file, fileList) {
       this.files = fileList;//主要用于接收存放所有的图片信息
       //限制上传文件为2M
-      console.log(this.files);
-      console.log(fileList);
+      console.log(this.files)
+      console.log(fileList)
       let sizeIsSatisfy = file.size < 2 * 1024 * 1024 ? true : false;
       if (sizeIsSatisfy) {
         return true;
@@ -442,11 +381,8 @@ export default {
       fileObj.name="file";
       fileObj.url = data.file;
       fileArr.push(fileObj);
-      this.showFiles  = fileArr
-    },
-
-
-
+      this.showFiles = fileArr
+    }
 
   }
 }
