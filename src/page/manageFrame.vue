@@ -1,0 +1,235 @@
+<template>
+  <div>
+
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>镜框详情</span>
+        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+      </div>
+      <div class="text item">
+        <div>镜框ID：{{frameDetail.frameID}}</div>
+        <div>镜框名称：{{frameDetail.frameName}}</div>
+        <div>价格：{{frameDetail.price}}</div>
+        <div>材质：{{frameDetail.material}}</div>
+        <div>收货时间：{{frameDetail.shape}}</div>
+        <div>订单状态：{{frameDetail.nosePad}}</div>
+        <div>订单备注：{{frameDetail.dimension}}</div>
+        <div>快递单号：{{frameDetail.state}}</div>
+        <div>配送方式：{{frameDetail.sketch}}</div>
+      </div>
+    </el-card>
+
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>SKU管理</span>
+        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+      </div>
+
+      <div>
+        <el-table
+          :data="specs"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="specID"
+            label="规格ID">
+          </el-table-column>
+          <el-table-column
+            prop="productID"
+            label="商品ID">
+          </el-table-column>
+          <el-table-column
+            prop="productSpec"
+            label="商品规格">
+          </el-table-column>
+          <el-table-column
+            prop="quantity"
+            label="库存">
+          </el-table-column>
+          <el-table-column
+            prop="price"
+            label="价格">
+          </el-table-column>
+          <el-table-column
+            prop="specImage"
+            label="规格图片">
+          </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="openUpdateSKU(scope.$index, scope.row)">编辑</el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+
+    </el-card>
+
+    <el-card class="box-card">
+
+      <div slot="header" class="clearfix">
+        <span>可选镜片</span>
+      </div>
+
+      <div>
+        <el-transfer class="framelens"
+          filterable
+          :filter-method="filterMethod"
+          :titles="['备选镜片', '已选镜片']"
+          filter-placeholder="请输入镜片关键词"
+          v-model="selectedLens"
+          :data="lensList"
+          :format="{
+            noChecked: '${total}',
+            hasChecked: '${checked}/${total}'
+          }"
+          @change="getObject">
+        </el-transfer>
+        <el-button type="primary" @click="onSave">保存</el-button>
+      </div>
+
+    </el-card>
+
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+export default {
+  name: 'manageFrame',
+  data() {
+
+    return {
+
+      filterMethod(query, item) {
+        return item.lens.indexOf(query) > -1;
+      },
+
+      frameDetail: {},
+      attributes: [],
+      specs: [],
+
+      lensList: [],
+      selectedLens: [],
+      originalSelected: []
+    }
+  },
+  created() {
+    // 取到路由带过来的参数
+    let frameID = this.$route.query.frameID
+
+    axios.post('http://localhost:8088/lens/list',{
+      page:0,
+      size:20
+    }).then(response => {
+      const data = []
+      for (let i = 0;i<response.data.data.length;i++){
+        data.push({
+          key: response.data.data[i].lensID,
+          label: response.data.data[i].lensName,
+          lens: response.data.data[i].lensName
+        })
+      }
+      this.lensList = data
+    }).catch(error => {
+      console.log(error)
+    })
+
+    axios.post('http://localhost:8088/frame/detail',{
+      frameID: frameID
+    }).then(response => {
+      this.frameDetail = response.data.data.frame
+      this.attributes = response.data.data.attributes
+      this.specs = response.data.data.specs
+
+      axios.post('http://localhost:8088/framelens/list',{
+        frameID: frameID
+      }).then(response => {
+        for (let i=0;i<response.data.data.length;i++){
+          this.selectedLens[i]=response.data.data[i].lensID
+        }
+        this.originalSelected = this.selectedLens
+        console.log(this.selectedLens)
+      }).catch(error => {
+        console.log(error)
+      })
+    }).catch(error => {
+      console.log(error)
+    })
+
+
+  },
+  methods: {
+    onSave() {
+      for (let i=0;i<this.selectedLens.length;i++){
+        if (this.originalSelected.indexOf(this.selectedLens[i])==-1){
+          axios.post('http://localhost:8088/framelens/add',{
+            frameID: this.frameDetail.frameID,
+            lensID: this.selectedLens[i]
+          }).then(response => {
+            console.log(response.data)
+            if (response.data.code==200){
+              this.$message({
+                showClose: true,
+                message: '保存成功！',
+                type: 'success'
+              })
+            }
+            else{
+              this.$message({
+                showClose: true,
+                message: '保存失败，请联系管理员',
+                type: 'error'
+              })
+            }
+          }).catch(error => {
+            console.log(error)
+          })
+        }
+      }
+    },
+    //右侧列表元素变化时触发
+    getObject() {
+      console.log("选中的数据有" + this.selectedLens)
+    },
+  }
+}
+</script>
+
+<style scoped>
+.text {
+  font-size: 14px;
+  text-align: left;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both
+}
+.clearfix{
+  font-weight: bold;
+}
+.box-card {
+  width: 100%;
+}
+.el-col{
+  min-height: 1px;
+}
+.framelens{
+  width: 100%;
+  text-align: left;
+}
+</style>

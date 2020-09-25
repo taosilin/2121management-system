@@ -2,7 +2,6 @@
   <div>
     <el-steps :active="active" simple>
       <el-step title="基本信息" icon="el-icon-edit"></el-step>
-      <el-step title="关于" icon="el-icon-upload"></el-step>
       <el-step title="镜框SKU" icon="el-icon-picture"></el-step>
       <el-step title="可用镜片" icon="el-icon-sort"></el-step>
     </el-steps>
@@ -160,7 +159,7 @@
         <el-form-item label="商品展示列表图片">
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="form.imageList"
@@ -173,7 +172,7 @@
         <el-form-item label="商品详情图片">
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="form.imageList"
@@ -184,13 +183,16 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="onAdd">下一步</el-button>
+          <el-button type="primary" @click="onAdd">添加</el-button>
         </el-form-item>
       </el-form>
     </div>
 
 
     <div class="uploadDiv" v-else-if="active===1">
+
+
+
       <el-button @click="onPrevious">上一步</el-button>
       <el-button type="primary" @click="onNext">下一步</el-button>
     </div>
@@ -253,10 +255,7 @@ export default {
         classification: [],
         tab:[],
         keyword: [],
-        imageList: [
-          {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
-          {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
-        ],
+        imageList: [],
         classes: [{
           value: '无框',
           label: '无框'

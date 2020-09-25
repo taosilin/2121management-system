@@ -15,7 +15,7 @@ import order from "../page/order"
 import orderDetail from "../page/orderDetail"
 import coupon from "../page/coupon"
 import productDetail from "../page/productDetail"
-
+import manageFrame from "../page/manageFrame"
 
 Vue.use(Router)
 
@@ -99,6 +99,11 @@ export default new Router({
           path: '/productDetail',
           component: productDetail,
           meta: { title: '商品详情' }
+        },
+        {
+          path: '/manageFrame',
+          component: manageFrame,
+          meta: { title: '管理镜框' }
         }
       ]
     }

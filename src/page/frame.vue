@@ -42,7 +42,10 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            @click="handleEdit(scope.$index, scope.row)">编辑信息</el-button>
+          <el-button
+            size="mini"
+            @click="handleManage(scope.$index, scope.row)">管理</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -91,11 +94,21 @@ export default {
       })
   },
   methods: {
+
+    handleManage(index, row){
+      this.$router.push({
+        path:'/manageFrame',
+        query:{
+          frameID:this.frameList[index].frameID
+        }
+      })
+    },
+
     handleEdit(index, row) {
-      console.log(index, row);
+      console.log(index, row)
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      console.log(index, row)
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
