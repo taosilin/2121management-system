@@ -92,21 +92,21 @@
 import axios from "axios";
 
 export default {
-  name: "product",
-  data() {
+  name: 'product',
+  data () {
     return {
       currentPage: 0,
-      pageSize:20,
+      pageSize: 20,
       resultNum: 0,
       productList: []
     }
   },
-  created() {
+  created () {
     axios.post('http://localhost:8088/product/list',{
-      page:this.currentPage,
-      size:this.pageSize
+      page: this.currentPage,
+      size: this.pageSize
     })
-      .then(response=>{
+      .then(response => {
         this.productList = response.data.data;
         this.resultNum = response.data.data.length;
       })

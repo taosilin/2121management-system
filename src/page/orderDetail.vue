@@ -12,7 +12,14 @@
         <div>下单时间：{{orderDetail.orderTime}}</div>
         <div>付款时间：{{orderDetail.paymentTime}}</div>
         <div>收货时间：{{orderDetail.receiveTime}}</div>
-        <div>订单状态：{{orderDetail.state}}</div>
+        <div>订单状态：
+          <el-tag v-if="orderDetail.state=='0'">待付款</el-tag>
+          <el-tag v-else-if="orderDetail.state=='1'" type="success">待收货</el-tag>
+          <el-tag v-else-if="orderDetail.state=='2'" type="success">待评价</el-tag>
+          <el-tag v-else-if="orderDetail.state=='3'" type="success">已完成</el-tag>
+          <el-tag v-else-if="orderDetail.state=='4'" type="warning">退货中</el-tag>
+          <el-tag v-else type="info">已取消</el-tag>
+        </div>
         <div>订单备注：{{orderDetail.remark}}</div>
         <div>快递单号：{{orderDetail.courierID}}</div>
         <div>配送方式：{{orderDetail.deliveryMethod}}</div>
@@ -57,6 +64,7 @@
       </div>
       <div v-for="f in frames" class="text item">
         镜框ID：{{f.frameID}}
+        镜框名称：{{f.frameName}}
         <div>
           验光单信息：
           <el-row>
@@ -102,8 +110,8 @@
 import axios from 'axios'
 
 export default {
-  name: "orderDetail",
-  data(){
+  name: 'orderDetail',
+  data () {
     return {
       orderDetail: {},
       addressDetail: {},
@@ -112,22 +120,22 @@ export default {
       couponDetail: {}
     }
   },
-  created() {
+  created () {
     // 取到路由带过来的参数
     let orderID = this.$route.query.orderID
     axios.post('http://localhost:8088/order/detail',{
       orderID: orderID
-    }).then(response=>{
-      this.orderDetail = response.data.data.order;
-      this.products = response.data.data.products;
-      this.frames = response.data.data.frames;
+    }).then(response => {
+      this.orderDetail = response.data.data.order
+      this.products = response.data.data.products
+      this.frames = response.data.data.frames
 
       axios.post('http://localhost:8088/address/detail',{
         addressID: this.orderDetail.addressID
-      }).then(response=>{
+      }).then(response => {
         this.addressDetail = response.data.data
-      }).catch(error=>{
-        console.log(error);
+      }).catch(error => {
+        console.log(error)
       })
 
       axios.post('http://localhost:8088/coupon/detail',{

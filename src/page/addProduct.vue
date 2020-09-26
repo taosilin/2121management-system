@@ -189,7 +189,7 @@ export default {
     }
   },
   methods: {
-    onSubmit(){
+    onSubmit () {
       axios.post('http://localhost:8088/product/add',{
         productID: this.form.productID,
         productName: this.form.productName,
@@ -201,8 +201,8 @@ export default {
         tab: this.form.tab.toString(),
         keyword: this.form.keyword.toString(),
         state: this.form.state
-      }).then(response=>{
-        if (response.data.code==200){
+      }).then(response => {
+        if (response.data.code === 200){
           this.$message({
             showClose: true,
             message: '添加成功！',

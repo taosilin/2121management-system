@@ -390,7 +390,7 @@ export default {
       this.inputValue = ''
     },
 
-    handleAddSKU(){
+    handleAddSKU () {
 
       axios.post('http://localhost:8088/spec/add',{
         specID: this.newSKU.specID,
@@ -399,8 +399,8 @@ export default {
         quantity: this.newSKU.quantity,
         price: this.newSKU.price,
         specImage: this.newSKU.specImage
-      }).then(response=>{
-        if (response.data.code==200){
+      }).then(response => {
+        if (response.data.code == 200) {
           this.$message({
             type: 'success',
             message: '添加成功!'
