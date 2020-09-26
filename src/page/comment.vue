@@ -119,6 +119,7 @@ export default {
         replyTime: new Date()
       }).then(response=>{
         if (response.data.code==200){
+          location.reload()
           this.$message({
             type: 'success',
             message: '回复成功!'

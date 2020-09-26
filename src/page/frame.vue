@@ -102,6 +102,7 @@ export default {
           frameID:this.frameList[index].frameID
         }
       })
+      location.reload()
     },
 
     handleEdit(index, row) {

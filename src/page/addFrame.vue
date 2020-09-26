@@ -277,7 +277,8 @@ export default {
             message: '添加镜框成功！',
             type: 'success'
           })
-          this.active++
+          this.$router.push('/frame')
+          location.reload()
         }
         else{
           this.$message({

@@ -29,8 +29,8 @@
       </div>
       <div class="text item">
         <div>状态：
-          <el-tag v-if="frameDetail.state=='0'">待上架</el-tag>
-          <el-tag v-else-if="frameDetail.state='1'" type="success">上架中</el-tag>
+          <el-tag v-if="productDetail.state=='0'">待上架</el-tag>
+          <el-tag v-else-if="productDetail.state='1'" type="success">上架中</el-tag>
           <el-tag v-else type="info">已下架</el-tag>
         </div>
       </div>
@@ -340,6 +340,7 @@ export default {
             type: 'success',
             message: '添加成功!'
           })
+          location.reload()
         }
       }).catch(error=>{
         console.log(error)
@@ -377,6 +378,7 @@ export default {
               type: 'success',
               message: '添加成功!'
             })
+            location.reload()
           }
         }).catch(error=>{
           this.$message({

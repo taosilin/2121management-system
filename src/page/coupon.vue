@@ -41,9 +41,6 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button
-            size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -164,18 +161,16 @@ export default {
       page:this.currentPage,
       size:this.pageSize
     })
-      .then(response=>{
+      .then(response => {
         this.couponList = response.data.data
         this.resultNum = response.data.data.length
       })
-      .catch(function (error) {       //发生错误
+      .catch(error => {       //发生错误
         console.log(error)
       })
   },
   methods: {
-    handleEdit(index, row) {
-      console.log(index, row)
-    },
+
     handleDelete(index, row) {
       console.log(index, row)
       this.$confirm('此操作将永久删除该优惠券, 是否继续?', '提示', {
@@ -190,6 +185,7 @@ export default {
           type: 'success',
           message: '删除成功!'
         })
+        location.reload()
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -219,11 +215,11 @@ export default {
         page:this.currentPage,
         size:this.pageSize
       })
-        .then(response=>{
+        .then(response => {
           this.couponList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(function (error) {       //发生错误
+        .catch(error => {       //发生错误
           console.log(error)
         })
     },
@@ -243,7 +239,7 @@ export default {
         description: this.newCoupon.description,
         productType: this.newCoupon.productType.toString(),
         timeLimit: this.newCoupon.timeLimit
-      }).then(response=>{
+      }).then(response => {
         console.log(response.data)
         if (response.data.code==200) {
           this.$message({
@@ -251,8 +247,9 @@ export default {
             message: '添加优惠券成功！',
             type: 'success'
           })
+          location.reload()
         }
-      }).catch(error=>{
+      }).catch(error => {
         this.$message({
           showClose: true,
           message: '添加失败，请联系管理员',

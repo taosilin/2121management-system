@@ -32,13 +32,18 @@
         <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
       </div>
       <div class="text item">
-        <div>收件人：{{addressDetail.receiver}}</div>
-        <div>电话：{{addressDetail.telephone}}</div>
-        <div>省：{{addressDetail.province}}</div>
-        <div>市：{{addressDetail.city}}</div>
-        <div>区：{{addressDetail.district}}</div>
-        <div>详细地址：{{addressDetail.detail}}</div>
-        <div>邮政编码：{{addressDetail.zipCode}}</div>
+        <el-row>
+          <el-col :span="4">收件人：{{addressDetail.receiver}}</el-col>
+          <el-col :span="4">电话：{{addressDetail.telephone}}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">省：{{addressDetail.province}}</el-col>
+          <el-col :span="4">市：{{addressDetail.city}}</el-col>
+          <el-col :span="4">区：{{addressDetail.district}}</el-col>
+          <el-col :span="4">详细地址：{{addressDetail.detail}}</el-col>
+          <el-col :span="4">邮政编码：{{addressDetail.zipCode}}</el-col>
+        </el-row>
+        
       </div>
     </el-card>
 
@@ -64,7 +69,6 @@
       </div>
       <div v-for="f in frames" class="text item">
         镜框ID：{{f.frameID}}
-        镜框名称：{{f.frameName}}
         <div>
           验光单信息：
           <el-row>
@@ -100,7 +104,6 @@
       </div>
       <div v-for="p in products" class="text item">
         商品ID：{{p.productID}}
-        商品名称：{{p.productName}}
       </div>
     </el-card>
   </div>
@@ -140,13 +143,13 @@ export default {
 
       axios.post('http://localhost:8088/coupon/detail',{
         couponID: this.orderDetail.couponID
-      }).then(response=>{
+      }).then(response => {
         this.couponDetail = response.data.data
-      }).catch(error=>{
+      }).catch(error => {
         console.log(error);
       })
 
-    }).catch(error=>{
+    }).catch(error => {
       console.log(error);
     });
 

@@ -26,7 +26,16 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>SKU管理</span>
-        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+        <el-dropdown @command="handleCommand1">
+          <span class="el-dropdown-link">
+            操作<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-plus" command="add">添加SKU</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-edit" command="edit">编辑</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-delete" command="delete">删除</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
 
       <div>
@@ -74,6 +83,42 @@
 
     </el-card>
 
+    <!--添加SKU对话框-->
+<!--    <el-dialog class="addSKU" title="添加SKU" :visible.sync="addSKUVisible">-->
+<!--      <el-form-->
+<!--        :model="newSKU"-->
+<!--        label-width="100px">-->
+
+<!--        <el-form-item label="规格编码" >-->
+<!--          <el-input v-model="newSKU.specID"></el-input>-->
+<!--        </el-form-item>-->
+
+<!--        <el-form-item label="库存量" >-->
+<!--          <el-input v-model="newSKU.quantity"></el-input>-->
+<!--        </el-form-item>-->
+
+<!--        <el-form-item label="价格" >-->
+<!--          <el-input v-model="newSKU.price">-->
+<!--            <el-button slot="prepend">$</el-button>-->
+<!--          </el-input>-->
+<!--        </el-form-item>-->
+
+<!--        <div v-for="(a,i) in attributes">-->
+<!--          <el-form-item v-bind:label="a.attribute.attributeName">-->
+<!--            <el-radio-group v-model="sku[i]" size="medium">-->
+<!--              <el-radio-button v-for="(v,j) in a.values" v-bind:label="v.valueName"></el-radio-button>-->
+<!--            </el-radio-group>-->
+<!--          </el-form-item>-->
+<!--        </div>-->
+
+
+<!--      </el-form>-->
+<!--      <div slot="footer" class="dialog-footer">-->
+<!--        <el-button @click="addSKUVisible = false">取 消</el-button>-->
+<!--        <el-button type="primary" @click="handleAddSKU">确 定</el-button>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
+
     <el-card class="box-card">
 
       <div slot="header" class="clearfix">
@@ -119,29 +164,15 @@ export default {
 
       lensList: [],
       selectedLens: [],
-      originalSelected: []
+      originalSelected: [],
+
+      addSKUVisible: false,
+      newSKU: {}
     }
   },
   created() {
     // 取到路由带过来的参数
     let frameID = this.$route.query.frameID
-
-    axios.post('http://localhost:8088/lens/list',{
-      page: 0,
-      size: 20
-    }).then(response => {
-      const data = []
-      for (let i = 0;i<response.data.data.length;i++){
-        data.push({
-          key: response.data.data[i].lensID,
-          label: response.data.data[i].lensName,
-          lens: response.data.data[i].lensName
-        })
-      }
-      this.lensList = data
-    }).catch(error => {
-      console.log(error)
-    })
 
     axios.post('http://localhost:8088/frame/detail',{
       frameID: frameID
@@ -149,6 +180,23 @@ export default {
       this.frameDetail = response.data.data.frame
       this.attributes = response.data.data.attributes
       this.specs = response.data.data.specs
+
+      axios.post('http://localhost:8088/lens/list',{
+        page: 0,
+        size: 20
+      }).then(response => {
+        const data = []
+        for (let i = 0;i<response.data.data.length;i++){
+          data.push({
+            key: response.data.data[i].lensID,
+            label: response.data.data[i].lensName,
+            lens: response.data.data[i].lensName
+          })
+        }
+        this.lensList = data
+      }).catch(error => {
+        console.log(error)
+      })
 
       axios.post('http://localhost:8088/framelens/list',{
         frameID: frameID
@@ -168,6 +216,13 @@ export default {
 
   },
   methods: {
+    handleCommand1(command){
+      console.log(command)
+      if (command=='add'){
+        this.addSKUVisible = true
+      }
+    },
+
     onSave() {
       for (let i=0;i<this.selectedLens.length;i++){
         if (this.originalSelected.indexOf(this.selectedLens[i])==-1){
@@ -177,6 +232,33 @@ export default {
           }).then(response => {
             console.log(response.data)
             if (response.data.code==200){
+              this.$message({
+                showClose: true,
+                message: '保存成功！',
+                type: 'success'
+              })
+            }
+            else{
+              this.$message({
+                showClose: true,
+                message: '保存失败，请联系管理员',
+                type: 'error'
+              })
+            }
+          }).catch(error => {
+            console.log(error)
+          })
+        }
+      }
+
+      for (let i=0;i<this.originalSelected.length;i++){
+        if (this.selectedLens.indexOf(this.originalSelected[i])==-1){
+          axios.post('http://localhost:8088/framelens/delete',{
+            frameID: this.frameDetail.frameID,
+            lensID: this.originalSelected[i]
+          }).then(response => {
+            console.log(response.data)
+            if (response.data.code === 200){
               this.$message({
                 showClose: true,
                 message: '保存成功！',

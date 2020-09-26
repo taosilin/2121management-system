@@ -348,11 +348,18 @@ export default {
       }).then(() => {
         axios.post('http://localhost:8088/lens/delete',{
           lensID : this.lensList[index].lensID
+        }).then(response => {
+          if (response.data.code === 200){
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            location.reload()
+          }
+        }).catch(error => {
+
         })
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
+
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -457,7 +464,7 @@ export default {
       })
         .then(response=>{
           console.log(response.data)
-          if (response.data.code==200){
+          if (response.data.code === 200){
             this.$message({
               showClose: true,
               message: '编辑镜片成功！',
