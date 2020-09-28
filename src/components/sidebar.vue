@@ -96,7 +96,13 @@ export default {
             },
             {
               index: 'configuration',
-              title: '配置管理'
+              title: '配置管理',
+              subs: [
+                {
+                  index: 'commonProblem',
+                  title: '常见问题'
+                }
+              ]
             },
             {
               index: 'comment',

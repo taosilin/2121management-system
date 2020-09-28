@@ -45,6 +45,22 @@
         prop="replyTime"
         label="回复时间">
       </el-table-column>
+
+      <el-table-column label="是否显示">
+          <template slot-scope="scope">
+            <el-tooltip placement="top">
+              <el-switch
+                v-model="commentList[scope.$index].state"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-value="0"
+                inactive-value="1"
+                @change="onChangeState(scope.$index)">
+              </el-switch>
+            </el-tooltip>
+          </template>
+      </el-table-column>
+
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
@@ -177,6 +193,24 @@ export default {
         .catch(function (error) {       //发生错误
           console.log(error)
         })
+    },
+
+    // 修改评论状态
+    onChangeState(index) {
+      axios.post('http://localhost:8088/comment/update',{
+        commentID: this.commentList[index].commentID,
+        state: this.commentList[index].state
+      }).then(response => {
+        if (response.data.code === 200){
+          location.reload()
+          this.$message({
+            type: 'success',
+            message: '编辑成功!'
+          })
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     }
 
   }

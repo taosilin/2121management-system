@@ -16,6 +16,7 @@ import orderDetail from "../page/orderDetail"
 import coupon from "../page/coupon"
 import productDetail from "../page/productDetail"
 import manageFrame from "../page/manageFrame"
+import commonProblem from "../page/commonProblem";
 
 Vue.use(Router)
 
@@ -104,6 +105,11 @@ export default new Router({
           path: '/manageFrame',
           component: manageFrame,
           meta: { title: '管理镜框' }
+        },
+        {
+          path: '/commonProblem',
+          component: commonProblem,
+          meta: { title: '常见问题' }
         }
       ]
     }

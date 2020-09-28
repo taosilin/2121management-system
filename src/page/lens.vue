@@ -332,6 +332,7 @@ export default {
   },
   methods: {
 
+    //编辑镜片信息
     handleEdit(index, row) {
       console.log(index, row)
       this.newLens = this.lensList[index]
@@ -422,7 +423,7 @@ export default {
         state: this.newLens.state,
         description: this.newLens.description
       })
-        .then(response=>{
+        .then(response => {
           console.log(response.data)
           if (response.data.code==200){
             this.$message({

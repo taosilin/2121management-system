@@ -43,7 +43,6 @@
           <el-col :span="4">详细地址：{{addressDetail.detail}}</el-col>
           <el-col :span="4">邮政编码：{{addressDetail.zipCode}}</el-col>
         </el-row>
-        
       </div>
     </el-card>
 
@@ -72,28 +71,29 @@
         <div>
           验光单信息：
           <el-row>
-            <el-col :span="6">验光单</el-col>
-            <el-col :span="6">SPH</el-col>
-            <el-col :span="6">CYL</el-col>
-            <el-col :span="6">Axis</el-col>
+            <el-col :span="6" class="optometry-sheet">验光单</el-col>
+            <el-col :span="6" class="optometry-sheet">SPH</el-col>
+            <el-col :span="6" class="optometry-sheet">CYL</el-col>
+            <el-col :span="6" class="optometry-sheet">Axis</el-col>
           </el-row>
           <el-row>
-            <el-col :span="6">Right Eye</el-col>
-            <el-col :span="6">{{f.rightDegree}}</el-col>
-            <el-col :span="6">{{f.rightAstigmatism}}</el-col>
-            <el-col :span="6">{{f.rightAxis}}</el-col>
+            <el-col :span="6" class="optometry-sheet">Right Eye</el-col>
+            <el-col :span="6" class="optometry-sheet">{{f.rightDegree}}</el-col>
+            <el-col :span="6" class="optometry-sheet">{{f.rightAstigmatism}}</el-col>
+            <el-col :span="6" class="optometry-sheet">{{f.rightAxis}}</el-col>
           </el-row>
           <el-row>
-            <el-col :span="6">Left Eye</el-col>
-            <el-col :span="6">{{f.leftDegree}}</el-col>
-            <el-col :span="6">{{f.leftAstigmatism}}</el-col>
-            <el-col :span="6">{{f.leftAxis}}</el-col>
+            <el-col :span="6" class="optometry-sheet">Left Eye</el-col>
+            <el-col :span="6" class="optometry-sheet">{{f.leftDegree}}</el-col>
+            <el-col :span="6" class="optometry-sheet">{{f.leftAstigmatism}}</el-col>
+            <el-col :span="6" class="optometry-sheet">{{f.leftAxis}}</el-col>
           </el-row>
           <el-row>
-            <el-col :span="6">Distance PD</el-col>
-            <el-col :span="18">{{f.interpupillary}}</el-col>
+            <el-col :span="6" class="optometry-sheet">Distance PD</el-col>
+            <el-col :span="18" class="optometry-sheet">{{f.interpupillary}}</el-col>
           </el-row>
         </div>
+
       </div>
     </el-card>
 
@@ -185,6 +185,13 @@ export default {
   width: 100%;
 }
 .el-col{
-  min-height: 1px;
+  height: 20px;
+
+}
+
+.optometry-sheet{
+  border: 1px solid black;
+  box-sizing: border-box;
+  text-align: center;
 }
 </style>
