@@ -86,6 +86,7 @@
       </el-pagination>
     </div>
 
+    <!--添加镜片对话框-->
     <el-dialog class="addLens" title="添加镜片" :visible.sync="addLensVisible">
       <el-form
         :model="newLens"
@@ -185,6 +186,7 @@
       </div>
     </el-dialog>
 
+    <!--编辑镜片对话框-->
     <el-dialog class="updateLens" title="编辑镜片" :visible.sync="updateLensVisible">
       <el-form
         :model="newLens"

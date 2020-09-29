@@ -113,7 +113,13 @@ export default {
         {
           icon: 'el-icon-s-grid',
           index: 'stock',
-          title: '库存管理'
+          title: '库存管理',
+          subs: [
+            {
+              index: 'lensStock',
+              title: '镜片库存'
+            }
+          ]
         },
         {
           icon: 'el-icon-present',

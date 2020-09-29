@@ -16,7 +16,9 @@ import orderDetail from "../page/orderDetail"
 import coupon from "../page/coupon"
 import productDetail from "../page/productDetail"
 import manageFrame from "../page/manageFrame"
-import commonProblem from "../page/commonProblem";
+import commonProblem from "../page/commonProblem"
+import lensStock from "../page/lensStock"
+import stockDetail from "../page/stockDetail"
 
 Vue.use(Router)
 
@@ -110,6 +112,16 @@ export default new Router({
           path: '/commonProblem',
           component: commonProblem,
           meta: { title: '常见问题' }
+        },
+        {
+          path: '/lensStock',
+          component: lensStock,
+          meta: { title: '镜片库存' }
+        },
+        {
+          path: '/stockDetail',
+          component: stockDetail,
+          meta: { title: '库存盘点' }
         }
       ]
     }

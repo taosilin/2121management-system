@@ -186,7 +186,6 @@ export default {
 }
 .el-col{
   height: 20px;
-
 }
 
 .optometry-sheet{
