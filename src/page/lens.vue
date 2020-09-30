@@ -52,14 +52,13 @@
         label="设计">
       </el-table-column>
 
-      <el-table-column
-        prop="stock"
-        label="库存量">
-      </el-table-column>
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+          <el-tag v-if="lensList[scope.$index].state === '0'" effect="dark">待上架</el-tag>
+          <el-tag v-else-if="lensList[scope.$index].state === '1'" effect="dark" type="success">已上架</el-tag>
+          <el-tag v-else effect="dark" type="info">已下架</el-tag>
+        </template>
 
-      <el-table-column
-        prop="state"
-        label="状态">
       </el-table-column>
 
       <el-table-column label="操作">
@@ -163,10 +162,6 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="库存量" >
-          <el-input v-model="newLens.stock"></el-input>
-        </el-form-item>
-
         <el-form-item label="状态">
           <el-radio-group v-model="newLens.state">
             <el-radio label="0">待上架</el-radio>
@@ -264,10 +259,6 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="库存量" >
-          <el-input v-model="newLens.stock"></el-input>
-        </el-form-item>
-
         <el-form-item label="状态">
           <el-radio-group v-model="newLens.state">
             <el-radio label="0">待上架</el-radio>
@@ -291,7 +282,7 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from 'axios'
 
 export default {
   name: 'lens',
@@ -313,7 +304,6 @@ export default {
         variety: '',
         film: '',
         design: '',
-        stock: 0,
         state: '0',
         description: ''
       }
@@ -323,12 +313,10 @@ export default {
     axios.post('http://localhost:8088/lens/list',{
       page:this.currentPage,
       size:this.pageSize
-    })
-      .then(response=>{
+    }).then(response=>{
         this.lensList = response.data.data
         this.resultNum = response.data.data.length
-      })
-      .catch(function (error) {       //发生错误
+      }).catch(function (error) {       //发生错误
         console.log(error)
       })
   },
@@ -421,7 +409,6 @@ export default {
         variety: this.newLens.variety,
         film: this.newLens.film,
         design: this.newLens.design,
-        stock: this.newLens.stock,
         state: this.newLens.state,
         description: this.newLens.description
       })
@@ -433,6 +420,7 @@ export default {
               message: '添加镜片成功！',
               type: 'success'
             })
+            location.reload()
           }
           else{
             this.$message({
@@ -461,7 +449,6 @@ export default {
         variety: this.newLens.variety,
         film: this.newLens.film,
         design: this.newLens.design,
-        stock: this.newLens.stock,
         state: this.newLens.state,
         description: this.newLens.description
       })

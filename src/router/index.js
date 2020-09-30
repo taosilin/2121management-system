@@ -19,6 +19,7 @@ import manageFrame from "../page/manageFrame"
 import commonProblem from "../page/commonProblem"
 import lensStock from "../page/lensStock"
 import stockDetail from "../page/stockDetail"
+import classification from "../page/classification"
 
 Vue.use(Router)
 
@@ -122,6 +123,11 @@ export default new Router({
           path: '/stockDetail',
           component: stockDetail,
           meta: { title: '库存盘点' }
+        },
+        {
+          path: '/classification',
+          component: classification,
+          meta: { title: '分类管理' }
         }
       ]
     }

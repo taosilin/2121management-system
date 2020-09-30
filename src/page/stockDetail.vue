@@ -1,7 +1,12 @@
 <template>
   <div>
-    镜片{{lensDetail.lensID}}光度表
-    {{lensDetail.refractiveIndex}}{{lensDetail.material}}{{lensDetail.radian}}{{lensDetail.variety}}{{lensDetail.film}}{{lensDetail.design}}
+    <div class="header">
+      <el-row class="title">镜片 <span style="color: #72c9fa">{{lensDetail.lensID}}</span> 光度表</el-row>
+      <el-row>{{lensDetail.refractiveIndex}} {{lensDetail.material}} {{lensDetail.radian}} {{lensDetail.variety}} {{lensDetail.film}} {{lensDetail.design}}</el-row>
+    </div>
+    <div>
+
+    </div>
   </div>
 </template>
 
@@ -41,5 +46,12 @@ export default {
 </script>
 
 <style scoped>
-
+.header{
+  width: 100%;
+  text-align: left;
+  font-size: 20px;
+}
+.title{
+  font-weight: bold;
+}
 </style>

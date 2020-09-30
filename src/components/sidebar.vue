@@ -99,6 +99,10 @@ export default {
               title: '配置管理',
               subs: [
                 {
+                  index: 'classification',
+                  title: '分类管理'
+                },
+                {
                   index: 'commonProblem',
                   title: '常见问题'
                 }
