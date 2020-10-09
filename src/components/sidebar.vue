@@ -91,6 +91,10 @@ export default {
                 {
                   index: 'order',
                   title: '订单管理'
+                },
+                {
+                  index: 'refund',
+                  title: '退款管理'
                 }
               ]
             },
@@ -101,6 +105,10 @@ export default {
                 {
                   index: 'classification',
                   title: '分类管理'
+                },
+                {
+                  index: 'color',
+                  title: '镜框颜色'
                 },
                 {
                   index: 'commonProblem',

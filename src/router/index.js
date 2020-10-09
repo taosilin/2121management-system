@@ -20,6 +20,8 @@ import commonProblem from "../page/commonProblem"
 import lensStock from "../page/lensStock"
 import stockDetail from "../page/stockDetail"
 import classification from "../page/classification"
+import refund from "../page/refund"
+import color from "../page/color"
 
 Vue.use(Router)
 
@@ -128,6 +130,16 @@ export default new Router({
           path: '/classification',
           component: classification,
           meta: { title: '分类管理' }
+        },
+        {
+          path: '/refund',
+          component: refund,
+          meta: { title: '退款管理' }
+        },
+        {
+          path: '/color',
+          component: color,
+          meta: { title: '镜框颜色' }
         }
       ]
     }

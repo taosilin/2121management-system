@@ -313,10 +313,10 @@ export default {
     axios.post('http://localhost:8088/lens/list',{
       page:this.currentPage,
       size:this.pageSize
-    }).then(response=>{
+    }).then(response => {
         this.lensList = response.data.data
         this.resultNum = response.data.data.length
-      }).catch(function (error) {       //发生错误
+      }).catch(error => {       //发生错误
         console.log(error)
       })
   },
@@ -331,7 +331,6 @@ export default {
 
     //删除镜片
     handleDelete(index, row) {
-      console.log(index, row)
       this.$confirm('此操作将永久删除该镜片, 是否继续?', '提示', {
         confirmButtonText: '确认删除',
         cancelButtonText: '取消',
@@ -366,11 +365,11 @@ export default {
         page:this.currentPage,
         size:this.pageSize
       })
-        .then(response=>{
+        .then(response => {
           this.lensList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(function (error) {       //发生错误
+        .catch(error => {       //发生错误
           console.log(error)
         });
     },
@@ -382,11 +381,11 @@ export default {
         page:this.currentPage,
         size:this.pageSize
       })
-        .then(response=>{
+        .then(response => {
           this.lensList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(function (error) {       //发生错误
+        .catch(error => {       //发生错误
           console.log(error)
         });
     },
@@ -398,7 +397,6 @@ export default {
 
     //添加镜片
     handleAddLens(){
-      console.log(this.newLens)
       axios.post('http://localhost:8088/lens/add', {
         lensID: this.newLens.lensID,
         lensName: this.newLens.lensName,
@@ -413,7 +411,6 @@ export default {
         description: this.newLens.description
       })
         .then(response => {
-          console.log(response.data)
           if (response.data.code==200){
             this.$message({
               showClose: true,
@@ -438,7 +435,6 @@ export default {
 
     //编辑镜片
     handleUpdateLens(){
-      console.log(this.newLens)
       axios.post('http://localhost:8088/lens/update', {
         lensID: this.newLens.lensID,
         lensName: this.newLens.lensName,
@@ -460,6 +456,7 @@ export default {
               message: '编辑镜片成功！',
               type: 'success'
             })
+            location.reload()
           }
           else{
             this.$message({
