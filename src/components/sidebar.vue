@@ -111,6 +111,14 @@ export default {
                   title: '镜框颜色'
                 },
                 {
+                  index: 'frameAttribute',
+                  title: '镜框参数'
+                },
+                {
+                  index: 'lensAttribute',
+                  title: '镜片属性'
+                },
+                {
                   index: 'commonProblem',
                   title: '常见问题'
                 }

@@ -70,6 +70,15 @@
           <el-input v-model="newClass.className"></el-input>
         </el-form-item>
 
+        <el-form-item label="上级分类" >
+          <el-select v-model="newClass.superior" placeholder="请选择上级分类">
+            <el-option label="1.56" value="1.56"></el-option>
+            <el-option label="1.59" value="1.59"></el-option>
+            <el-option label="1.60" value="1.60"></el-option>
+            <el-option label="1.67" value="1.67"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="说明">
           <el-input type="textarea" v-model="newClass.description"></el-input>
         </el-form-item>

@@ -22,6 +22,8 @@ import stockDetail from "../page/stockDetail"
 import classification from "../page/classification"
 import refund from "../page/refund"
 import color from "../page/color"
+import lensAttribute from "../page/lensAttribute"
+import frameAttribute from "../page/frameAttribute"
 
 Vue.use(Router)
 
@@ -140,6 +142,16 @@ export default new Router({
           path: '/color',
           component: color,
           meta: { title: '镜框颜色' }
+        },
+        {
+          path: '/lensAttribute',
+          component: lensAttribute,
+          meta: { title: '镜片属性' }
+        },
+        {
+          path: '/frameAttribute',
+          component: frameAttribute,
+          meta: { title: '镜框参数' }
         }
       ]
     }

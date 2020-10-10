@@ -1,5 +1,16 @@
 <template>
   <div>
+
+    <el-radio-group v-model="stateFilter" @change="onFilterChange">
+      <el-radio-button label="0">全部</el-radio-button>
+      <el-radio-button label="1">待付款</el-radio-button>
+      <el-radio-button label="2">已付款</el-radio-button>
+      <el-radio-button label="3">已确认</el-radio-button>
+      <el-radio-button label="4">交易成功</el-radio-button>
+      <el-radio-button label="5">已完成</el-radio-button>
+      <el-radio-button label="6">已取消</el-radio-button>
+    </el-radio-group>
+
     <el-table
       :data="orderList"
       border
@@ -145,7 +156,8 @@ export default {
       resultNum: 0,
       orderList: [],
       newOrder: {},
-      updateOrderVisible: false
+      updateOrderVisible: false,
+      stateFilter: '0'
     }
   },
   created() {
@@ -162,6 +174,7 @@ export default {
       })
   },
   methods: {
+
     handleDetail(index, row) {
       console.log(index, row)
       this.$router.push({
@@ -206,6 +219,12 @@ export default {
         console.log(error)
       })
     },
+
+    //根据订单状态筛选
+    onFilterChange(){
+
+    },
+
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
@@ -213,14 +232,15 @@ export default {
         page:this.currentPage,
         size:this.pageSize
       })
-        .then(response=>{
+        .then(response => {
           this.orderList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(function (error) {       //发生错误
+        .catch(error => {       //发生错误
           console.log(error)
         })
     },
+
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
@@ -228,11 +248,11 @@ export default {
         page:this.currentPage,
         size:this.pageSize
       })
-        .then(response=>{
+        .then(response => {
           this.orderList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(function (error) {       //发生错误
+        .catch(error => {       //发生错误
           console.log(error)
         })
     }
