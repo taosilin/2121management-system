@@ -24,6 +24,7 @@ import refund from "../page/refund"
 import color from "../page/color"
 import lensAttribute from "../page/lensAttribute"
 import frameAttribute from "../page/frameAttribute"
+import reviewOrder from "../page/reviewOrder"
 
 Vue.use(Router)
 
@@ -152,6 +153,11 @@ export default new Router({
           path: '/frameAttribute',
           component: frameAttribute,
           meta: { title: '镜框参数' }
+        },
+        {
+          path: '/reviewOrder',
+          component: reviewOrder,
+          meta: { title: '审单管理' }
         }
       ]
     }

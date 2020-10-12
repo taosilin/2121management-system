@@ -5,7 +5,7 @@
       <el-row>{{lensDetail.refractiveIndex}} {{lensDetail.material}} {{lensDetail.radian}} {{lensDetail.variety}} {{lensDetail.film}} {{lensDetail.design}}</el-row>
     </div>
     <div>
-
+      
     </div>
   </div>
 </template>

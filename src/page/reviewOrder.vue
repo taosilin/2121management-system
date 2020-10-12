@@ -1,16 +1,6 @@
 <template>
   <div>
-
-    <el-radio-group v-model="stateFilter" @change="onFilterChange">
-      <el-radio-button label="0">全部</el-radio-button>
-      <el-radio-button label="1">待付款</el-radio-button>
-      <el-radio-button label="2">已付款</el-radio-button>
-      <el-radio-button label="3">已确认</el-radio-button>
-      <el-radio-button label="4">交易成功</el-radio-button>
-      <el-radio-button label="5">已完成</el-radio-button>
-      <el-radio-button label="6">已取消</el-radio-button>
-    </el-radio-group>
-
+    审单管理
     <el-table
       :data="orderList"
       border
@@ -98,63 +88,13 @@
         :total="resultNum">
       </el-pagination>
     </div>
-
-    <el-dialog class="updateOrder" title="编辑订单" :visible.sync="updateOrderVisible">
-      <el-form
-        :model="newOrder"
-        label-width="100px">
-
-        <el-form-item label="订单编号" >
-          <el-input v-model="newOrder.orderID"
-                    :disabled="true"></el-input>
-        </el-form-item>
-
-        <el-form-item label="改价格" >
-          <el-input v-model="newOrder.totalAmount">
-            <el-button slot="prepend">$</el-button>
-          </el-input>
-        </el-form-item>
-
-        <el-form-item label="修改订单状态">
-          <el-radio-group v-model="newOrder.state" size="medium">
-            <el-radio-button label="1">待付款</el-radio-button>
-            <el-radio-button label="2">待收货</el-radio-button>
-            <el-radio-button label="3">待评价</el-radio-button>
-            <el-radio-button label="4">已完成</el-radio-button>
-            <el-radio-button label="5">退货</el-radio-button>
-            <el-radio-button label="6">已取消</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item label="改备注">
-          <el-input type="textarea" v-model="newOrder.remark"></el-input>
-        </el-form-item>
-
-        <el-form-item label="填写快递单号" >
-          <el-input v-model="newOrder.courierID">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="配送方式" >
-          <el-input v-model="newOrder.deliveryMethod">
-          </el-input>
-        </el-form-item>
-
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="updateOrderVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleUpdateOrder">确 定</el-button>
-      </div>
-
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-
 export default {
-  name: 'order',
+  name: 'reviewOrder',
   data() {
     return {
       currentPage: 0,
@@ -162,13 +102,12 @@ export default {
       resultNum: 0,
       orderList: [],
       newOrder: {},
-      updateOrderVisible: false,
-      stateFilter: '0'
+      updateOrderVisible: false
     }
   },
   created() {
     axios.post('http://localhost:8088/order/list',{
-      sortedBy: this.stateFilter,
+      sortedBy: '2',
       page:this.currentPage,
       size:this.pageSize
     })
@@ -182,6 +121,7 @@ export default {
   },
   methods: {
 
+    //订单详情
     handleDetail(index, row) {
       console.log(index, row)
       this.$router.push({
@@ -192,61 +132,13 @@ export default {
       })
       location.reload()
     },
-    handleEdit(index, row) {
-      this.newOrder = this.orderList[index]
-      this.updateOrderVisible = true
-    },
-
-    handleUpdateOrder(){
-      axios.post('http://localhost:8088/order/update',{
-        orderID: this.newOrder.orderID,
-        totalAmount: this.newOrder.totalAmount,
-        state: this.newOrder.state,
-        remark: this.newOrder.remark,
-        courierID: this.newOrder.courierID,
-        deliveryMethod: this.newOrder.deliveryMethod
-      }).then(response => {
-        if (response.data.code === 200){
-          location.reload()
-          this.$message({
-            showClose: true,
-            message: '编辑成功！',
-            type: 'success'
-          })
-        }
-        else{
-          this.$message({
-            showClose: true,
-            message: '编辑失败，请联系管理员',
-            type: 'error'
-          })
-        }
-
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-
-    //根据订单状态筛选
-    onFilterChange(){
-      axios.post('http://localhost:8088/order/list',{
-        sortedBy: this.stateFilter,
-        page:this.currentPage,
-        size:this.pageSize
-      }).then(response => {
-        this.orderList = response.data.data
-        this.resultNum = response.data.data.length
-      }).catch(error => {
-        console.log(error)
-      })
-    },
 
     //更改每页显示数据条数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
       axios.post('http://localhost:8088/order/list',{
-        sortedBy: this.stateFilter,
+        sortedBy: '2',
         page:this.currentPage,
         size:this.pageSize
       })
@@ -264,7 +156,7 @@ export default {
       console.log(`当前页: ${val}`)
       this.currentPage = val
       axios.post('http://localhost:8088/order/list',{
-        sortedBy: this.stateFilter,
+        sortedBy: '2',
         page:this.currentPage,
         size:this.pageSize
       })
@@ -281,7 +173,5 @@ export default {
 </script>
 
 <style scoped>
-.updateOrder{
-  text-align: left;
-}
+
 </style>

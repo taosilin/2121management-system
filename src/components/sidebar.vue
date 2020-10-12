@@ -93,6 +93,10 @@ export default {
                   title: '订单管理'
                 },
                 {
+                  index: 'reviewOrder',
+                  title: '审单管理'
+                },
+                {
                   index: 'refund',
                   title: '退款管理'
                 }

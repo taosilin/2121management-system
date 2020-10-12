@@ -59,13 +59,13 @@
 
         <el-form-item label="预览图片" >
           <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="newColor.colorImage" :src="newColor.colorImage" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            action="http://localhost:8088/uploadimg"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            list-type="picture"
+            :headers="headerObj"
+            :on-success="handleSuccess">
+            <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
 
@@ -120,7 +120,12 @@ export default {
       colorList: [],
       newColor: {},
       addColorVisible: false,
-      editColorVisible: false
+      editColorVisible: false,
+      //图片上传组件的headers请求头对象
+      headerObj: {
+        Authorization: window.sessionStorage.getItem('token')
+      },
+      imgUrl:''
     }
   },
   created() {
@@ -135,6 +140,19 @@ export default {
     })
   },
   methods: {
+
+    //处理图片预览效果
+    handlePreview(file) {
+      console.log(file);
+    },
+    //处理移除图片操作
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    //监听图片上传成功事件
+    handleSuccess(response){
+      console.log(response)
+    },
 
     //打开添加颜色对话框
     openAddColor() {
@@ -231,24 +249,6 @@ export default {
         })
       })
     },
-
-    //上传图片
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
-    },
-
 
     //更改每页显示数据条数
     handleSizeChange(val) {
