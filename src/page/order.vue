@@ -6,9 +6,11 @@
       <el-radio-button label="1">待付款</el-radio-button>
       <el-radio-button label="2">已付款</el-radio-button>
       <el-radio-button label="3">已确认</el-radio-button>
-      <el-radio-button label="4">交易成功</el-radio-button>
-      <el-radio-button label="5">已完成</el-radio-button>
-      <el-radio-button label="6">已取消</el-radio-button>
+      <el-radio-button label="4">待收货</el-radio-button>
+      <el-radio-button label="5">待评价</el-radio-button>
+      <el-radio-button label="6">已完成</el-radio-button>
+      <el-radio-button label="7">退货中</el-radio-button>
+      <el-radio-button label="8">已取消</el-radio-button>
     </el-radio-group>
 
     <el-table
@@ -56,8 +58,10 @@
           <el-tag v-if="orderList[scope.$index].state === '1'" type="warning">待付款</el-tag>
           <el-tag v-else-if="orderList[scope.$index].state === '2'">已付款</el-tag>
           <el-tag v-else-if="orderList[scope.$index].state === '3'">已确认</el-tag>
-          <el-tag v-else-if="orderList[scope.$index].state === '4'"type="success">交易成功</el-tag>
-          <el-tag v-else-if="orderList[scope.$index].state === '5'"type="success">已完成</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '4'" type="success">待收货</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '5'" type="success">待评价</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '6'" type="success">已完成</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '7'" type="warning">退货中</el-tag>
           <el-tag v-else effect="dark" type="danger">已取消</el-tag>
         </template>
       </el-table-column>
@@ -118,11 +122,13 @@
         <el-form-item label="修改订单状态">
           <el-radio-group v-model="newOrder.state" size="medium">
             <el-radio-button label="1">待付款</el-radio-button>
-            <el-radio-button label="2">待收货</el-radio-button>
-            <el-radio-button label="3">待评价</el-radio-button>
-            <el-radio-button label="4">已完成</el-radio-button>
-            <el-radio-button label="5">退货</el-radio-button>
-            <el-radio-button label="6">已取消</el-radio-button>
+            <el-radio-button label="2">已付款</el-radio-button>
+            <el-radio-button label="3">已确认</el-radio-button>
+            <el-radio-button label="4">待收货</el-radio-button>
+            <el-radio-button label="5">待评价</el-radio-button>
+            <el-radio-button label="6">已完成</el-radio-button>
+            <el-radio-button label="7">退货中</el-radio-button>
+            <el-radio-button label="8">已取消</el-radio-button>
           </el-radio-group>
         </el-form-item>
 

@@ -71,12 +71,10 @@
         </el-form-item>
 
         <el-form-item label="上级分类" >
-          <el-select v-model="newClass.superior" placeholder="请选择上级分类">
-            <el-option label="1.56" value="1.56"></el-option>
-            <el-option label="1.59" value="1.59"></el-option>
-            <el-option label="1.60" value="1.60"></el-option>
-            <el-option label="1.67" value="1.67"></el-option>
-          </el-select>
+          <el-cascader
+            :options="superior"
+            :props="prop"
+            @change="handleChange"></el-cascader>
         </el-form-item>
 
         <el-form-item label="说明">
@@ -143,7 +141,17 @@ export default {
       updateClassVisible: false,
       newClass: {
 
+      },
+      superior: [],
+
+      //cascader级联选择器prop属性
+      prop: {
+        value: "classID",
+        label: "className",
+        children: "children",
+        checkStrictly: true
       }
+
     }
   },
   created() {
@@ -158,6 +166,14 @@ export default {
       .catch(error => {       //发生错误
         console.log(error)
       })
+
+    axios.post('http://localhost:8088/class/superior',{
+      superior: 0
+    }).then(response => {
+      this.superior = response.data.data
+    }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
 
@@ -169,13 +185,16 @@ export default {
 
     // 添加分类
     handleAddClass() {
+      if (this.newClass.superior == null)
+        this.newClass.superior = 0
+
       axios.post('http://localhost:8088/class/add',{
         className: this.newClass.className,
         superior: this.newClass.superior,
         description: this.newClass.description,
         state: this.newClass.state
       }).then(response => {
-        if (response.data.code==200){
+        if (response.data.code === 200){
           this.$message({
             showClose: true,
             message: '添加分类成功！',
@@ -272,11 +291,11 @@ export default {
         page:this.currentPage,
         size:this.pageSize
       })
-        .then(response=>{
+        .then(response => {
           this.classList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(function (error) {       //发生错误
+        .catch(error => {       //发生错误
           console.log(error)
         });
     },
@@ -288,14 +307,19 @@ export default {
         page:this.currentPage,
         size:this.pageSize
       })
-        .then(response=>{
+        .then(response => {
           this.classList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(function (error) {       //发生错误
+        .catch(error => {       //发生错误
           console.log(error)
-        });
+        })
     },
+
+    //级联选择器改变
+    handleChange(value) {
+      this.newClass.superior = value[value.length-1]
+    }
   }
 }
 </script>

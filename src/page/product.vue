@@ -107,19 +107,19 @@ export default {
       size: this.pageSize
     })
       .then(response => {
-        this.productList = response.data.data;
-        this.resultNum = response.data.data.length;
+        this.productList = response.data.data
+        this.resultNum = response.data.data.length
       })
       .catch(function (error) {       //发生错误
-        console.log(error);
+        console.log(error)
       });
   },
   methods: {
     handleEdit(index, row) {
-      console.log(index, row);
+      console.log(index, row)
     },
     handleDetail(index, row) {
-      console.log(index, row);
+      console.log(index, row)
       this.$router.push({
         path:'/productDetail',
         query:{
@@ -128,13 +128,13 @@ export default {
       })
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      console.log(index, row)
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      console.log(`每页 ${val} 条`)
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`)
     },
     handleAddProduct(){
       this.$router.push('/addProduct')

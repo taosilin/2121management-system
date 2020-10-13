@@ -4,10 +4,32 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>代办预警</span>
+            <span>待办预警</span>
           </div>
-          <div v-for="o in 4" :key="o" class="text item">
-            {{'列表内容 ' + o }}
+          <div class="text item">
+            <el-row>
+              <el-col :span="8">
+                <el-badge :value="orderPending.toBeReviewed" class="badge">
+                  <el-button>待审核订单</el-button>
+                </el-badge>
+              </el-col>
+              <el-col :span="8">
+                <el-badge :value="12" class="badge">待处理车房</el-badge>
+              </el-col>
+              <el-col :span="8">
+                <el-badge :value="12" class="badge" type="primary">待处理生产</el-badge>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <el-badge :value="orderPending.toBeDelivered" class="badge" type="warning">
+                  <el-button>待发货订单</el-button>
+                </el-badge>
+              </el-col>
+              <el-col :span="8">
+                <el-badge :value="12" class="badge">退款申请</el-badge>
+              </el-col>
+            </el-row>
           </div>
         </el-card>
       </el-col>
@@ -31,8 +53,18 @@
           <div slot="header" class="clearfix">
             <span>库存预警</span>
           </div>
-          <div v-for="o in 4" :key="o" class="text item">
-            {{'列表内容 ' + o }}
+          <div class="text item">
+            <el-row>
+              <el-col :span="8">
+                <el-badge :value="12" class="badge">镜框预警</el-badge>
+              </el-col>
+              <el-col :span="8">
+                <el-badge :value="12" class="badge" type="primary">镜片预警</el-badge>
+              </el-col>
+              <el-col :span="8">
+                <el-badge :value="12" class="badge" type="warning">商品预警</el-badge>
+              </el-col>
+            </el-row>
           </div>
         </el-card>
       </el-col>
@@ -104,6 +136,8 @@ export default {
   name: 'home',
   data(){
     return{
+      orderPending: {},
+
       product_on_shelf: 0,
       product_off_shelf: 0,
       frame_on_shelf: 0,
@@ -111,6 +145,16 @@ export default {
     }
   },
   created() {
+
+    //待办预警
+    axios.post('http://localhost:8088/order/pending')
+      .then(response => {
+        this.orderPending = response.data.data
+      }).catch(error => {
+      console.log(error)
+    })
+
+    //商品概览
     axios.post('http://localhost:8088/product/overview')
       .then(response => {
         this.product_on_shelf = response.data.data.onShelf
@@ -118,7 +162,7 @@ export default {
       }).catch(error => {
       console.log(error)
     })
-
+    //镜框概览
     axios.post('http://localhost:8088/frame/overview')
       .then(response => {
         this.frame_on_shelf = response.data.data.onShelf
@@ -141,7 +185,10 @@ export default {
 .item {
   margin-bottom: 18px;
 }
-
+.badge{
+  margin-top: 10px;
+  margin-right: 40px;
+}
 .clearfix:before,
 .clearfix:after {
   display: table;

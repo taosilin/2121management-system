@@ -173,7 +173,7 @@ export default {
           })
           location.reload()
         }
-        else{
+        else {
           this.$message({
             showClose: true,
             message: '添加失败，请联系管理员',
@@ -207,7 +207,7 @@ export default {
           })
           location.reload()
         }
-        else{
+        else {
           this.$message({
             showClose: true,
             message: '编辑失败，请联系管理员',
