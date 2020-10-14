@@ -25,6 +25,7 @@ import color from "../page/color"
 import lensAttribute from "../page/lensAttribute"
 import frameAttribute from "../page/frameAttribute"
 import reviewOrder from "../page/reviewOrder"
+import system from "../page/system"
 
 Vue.use(Router)
 
@@ -158,6 +159,11 @@ export default new Router({
           path: '/reviewOrder',
           component: reviewOrder,
           meta: { title: '审单管理' }
+        },
+        {
+          path: '/system',
+          component: system,
+          meta: { title: '系统管理' }
         }
       ]
     }

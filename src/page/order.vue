@@ -6,11 +6,16 @@
       <el-radio-button label="1">待付款</el-radio-button>
       <el-radio-button label="2">已付款</el-radio-button>
       <el-radio-button label="3">已确认</el-radio-button>
-      <el-radio-button label="4">待收货</el-radio-button>
-      <el-radio-button label="5">待评价</el-radio-button>
-      <el-radio-button label="6">已完成</el-radio-button>
-      <el-radio-button label="7">退货中</el-radio-button>
+      <el-radio-button label="4">待发货</el-radio-button>
+      <el-radio-button label="5">待收货</el-radio-button>
+      <el-radio-button label="6">待评价</el-radio-button>
+      <el-radio-button label="7">已完成</el-radio-button>
       <el-radio-button label="8">已取消</el-radio-button>
+      <el-radio-button label="9">退款申请</el-radio-button>
+      <el-radio-button label="10">已退款</el-radio-button>
+      <el-radio-button label="11">退货申请</el-radio-button>
+      <el-radio-button label="12">退货中</el-radio-button>
+      <el-radio-button label="13">已退货</el-radio-button>
     </el-radio-group>
 
     <el-table
@@ -55,14 +60,19 @@
       </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">
-          <el-tag v-if="orderList[scope.$index].state === '1'" type="warning">待付款</el-tag>
+          <el-tag v-if="orderList[scope.$index].state === '1'">待付款</el-tag>
           <el-tag v-else-if="orderList[scope.$index].state === '2'">已付款</el-tag>
           <el-tag v-else-if="orderList[scope.$index].state === '3'">已确认</el-tag>
-          <el-tag v-else-if="orderList[scope.$index].state === '4'" type="success">待收货</el-tag>
-          <el-tag v-else-if="orderList[scope.$index].state === '5'" type="success">待评价</el-tag>
-          <el-tag v-else-if="orderList[scope.$index].state === '6'" type="success">已完成</el-tag>
-          <el-tag v-else-if="orderList[scope.$index].state === '7'" type="warning">退货中</el-tag>
-          <el-tag v-else effect="dark" type="danger">已取消</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '4'">待发货</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '5'">待收货</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '6'">待评价</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '7'" type="success">已完成</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '8'" type="danger">已取消</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '9'" type="warning">退款申请</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '10'" type="warning">已退款</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '11'" type="warning">退货申请</el-tag>
+          <el-tag v-else-if="orderList[scope.$index].state === '12'" type="warning">退货中</el-tag>
+          <el-tag v-else effect="dark" type="warning">已退货</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -124,11 +134,16 @@
             <el-radio-button label="1">待付款</el-radio-button>
             <el-radio-button label="2">已付款</el-radio-button>
             <el-radio-button label="3">已确认</el-radio-button>
-            <el-radio-button label="4">待收货</el-radio-button>
-            <el-radio-button label="5">待评价</el-radio-button>
-            <el-radio-button label="6">已完成</el-radio-button>
-            <el-radio-button label="7">退货中</el-radio-button>
+            <el-radio-button label="4">待发货</el-radio-button>
+            <el-radio-button label="5">待收货</el-radio-button>
+            <el-radio-button label="6">待评价</el-radio-button>
+            <el-radio-button label="7">已完成</el-radio-button>
             <el-radio-button label="8">已取消</el-radio-button>
+            <el-radio-button label="9">退款申请</el-radio-button>
+            <el-radio-button label="10">已退款</el-radio-button>
+            <el-radio-button label="11">退货申请</el-radio-button>
+            <el-radio-button label="12">退货中</el-radio-button>
+            <el-radio-button label="13">已退货</el-radio-button>
           </el-radio-group>
         </el-form-item>
 

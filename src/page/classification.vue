@@ -105,6 +105,13 @@
           <el-input v-model="newClass.className"></el-input>
         </el-form-item>
 
+        <el-form-item label="上级分类" >
+          <el-cascader
+            :options="superior"
+            :props="prop"
+            @change="handleChange"></el-cascader>
+        </el-form-item>
+
         <el-form-item label="说明">
           <el-input type="textarea" v-model="newClass.description"></el-input>
         </el-form-item>
@@ -232,7 +239,7 @@ export default {
         description: this.newClass.description,
         state: this.newClass.state
       }).then(response => {
-        if (response.data.code==200){
+        if (response.data.code === 200){
           this.$message({
             showClose: true,
             message: '编辑分类成功！',
@@ -257,7 +264,7 @@ export default {
     //删除分类
     handleDelete(index, row) {
       console.log(index, row)
-      this.$confirm('此操作将永久删除该分类, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该分类及其全部子类, 是否继续?', '提示', {
         confirmButtonText: '确认删除',
         cancelButtonText: '取消',
         type: 'warning'

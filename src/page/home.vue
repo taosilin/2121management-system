@@ -9,25 +9,33 @@
           <div class="text item">
             <el-row>
               <el-col :span="8">
-                <el-badge :value="orderPending.toBeReviewed" class="badge">
+                <el-badge :value="orderPending.toBeReviewed" class="badge" type="warning">
                   <el-button>待审核订单</el-button>
                 </el-badge>
               </el-col>
               <el-col :span="8">
-                <el-badge :value="12" class="badge">待处理车房</el-badge>
+                <el-badge :value="orderPending.toBeProduced" class="badge" type="primary">
+                  <el-button>待处理生产</el-button>
+                </el-badge>
               </el-col>
               <el-col :span="8">
-                <el-badge :value="12" class="badge" type="primary">待处理生产</el-badge>
+                <el-badge :value="orderPending.toBeDelivered" class="badge" type="primary">
+                  <el-button>待发货订单</el-button>
+                </el-badge>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-badge :value="orderPending.toBeDelivered" class="badge" type="warning">
-                  <el-button>待发货订单</el-button>
+                <el-badge :value="orderPending.refundApplication" class="badge">
+                  <el-button>
+                    退款申请
+                  </el-button>
                 </el-badge>
               </el-col>
               <el-col :span="8">
-                <el-badge :value="12" class="badge">退款申请</el-badge>
+                <el-badge :value="orderPending.returnApplication" class="badge">
+                  <el-button>退货申请</el-button>
+                </el-badge>
               </el-col>
             </el-row>
           </div>
