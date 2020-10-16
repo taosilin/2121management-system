@@ -122,7 +122,7 @@ export default {
         this.commentList = response.data.data
         this.resultNum = response.data.data.length
       })
-      .catch(function (error) {       //发生错误
+      .catch(function (error) {
         console.log(error)
       })
   },
@@ -174,7 +174,7 @@ export default {
           this.commentList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(function (error) {       //发生错误
+        .catch(function (error) {
           console.log(error)
         })
     },
@@ -190,7 +190,7 @@ export default {
           this.commentList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(function (error) {       //发生错误
+        .catch(function (error) {
           console.log(error)
         })
     },

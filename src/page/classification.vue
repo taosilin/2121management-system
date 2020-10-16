@@ -170,7 +170,7 @@ export default {
         this.classList = response.data.data
         this.resultNum = response.data.data.length
       })
-      .catch(error => {       //发生错误
+      .catch(error => {
         console.log(error)
       })
 
@@ -302,7 +302,7 @@ export default {
           this.classList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(error => {       //发生错误
+        .catch(error => {
           console.log(error)
         });
     },
@@ -318,7 +318,7 @@ export default {
           this.classList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(error => {       //发生错误
+        .catch(error => {
           console.log(error)
         })
     },

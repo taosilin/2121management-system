@@ -18,27 +18,25 @@
 
         <el-form-item label="材质">
           <el-radio-group v-model="form.material" size="medium">
-            <el-radio-button label="Acetate" ></el-radio-button>
-            <el-radio-button label="Metal"></el-radio-button>
-            <el-radio-button label="Mixed material"></el-radio-button>
-            <el-radio-button label="Eco acetate"></el-radio-button>
-            <el-radio-button label="Plastic"></el-radio-button>
+            <template v-for="item in form.materials">
+              <el-radio-button :label="item.valueName" ></el-radio-button>
+            </template>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="外观形状">
           <el-radio-group v-model="form.shape" size="medium">
-            <el-radio-button label="Square" ></el-radio-button>
-            <el-radio-button label="Retangle"></el-radio-button>
-            <el-radio-button label="Round"></el-radio-button>
-            <el-radio-button label="Cat-eye"></el-radio-button>
+            <template v-for="item in form.shapes">
+              <el-radio-button :label="item.valueName" ></el-radio-button>
+            </template>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="鼻托类型">
           <el-radio-group v-model="form.nosePad" size="medium">
-            <el-radio-button label="Standard" ></el-radio-button>
-            <el-radio-button label="Low bridge fit"></el-radio-button>
+            <template v-for="item in form.nosePads">
+              <el-radio-button :label="item.valueName" ></el-radio-button>
+            </template>
           </el-radio-group>
         </el-form-item>
 
@@ -209,6 +207,11 @@ export default {
         tab: [],
         keyword: [],
         imageList: [],
+
+        materials: [],
+        shapes: [],
+        nosePads: [],
+
         classes: [{
           value: '无框',
           label: '无框'
@@ -248,7 +251,29 @@ export default {
     }
   },
   created () {
+    axios.post('http://localhost:8088/value/attribute',{
+      attributeID: "材料"
+    }).then(response => {
+      this.form.materials = response.data.data
+    }).catch(error => {
+      console.log(error)
+    })
 
+    axios.post('http://localhost:8088/value/attribute',{
+      attributeID: "形状"
+    }).then(response => {
+      this.form.shapes = response.data.data
+    }).catch(error => {
+      console.log(error)
+    })
+
+    axios.post('http://localhost:8088/value/attribute',{
+      attributeID: "鼻托"
+    }).then(response => {
+      this.form.nosePads = response.data.data
+    }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
 

@@ -135,7 +135,7 @@ export default {
     }).then(response => {
       this.colorList = response.data.data
       this.resultNum = response.data.data.length
-    }).catch(error => {       //发生错误
+    }).catch(error => {
       console.log(error)
     })
   },
@@ -161,30 +161,32 @@ export default {
     },
     //添加颜色
     handleAddColor(){
-      axios.post('http://localhost:8088/color/add',{
-        colorName: this.newColor.colorName,
-        colorImage: this.newColor.colorImage
-      }).then(response => {
-        if (response.data.code==200){
-          this.$message({
-            showClose: true,
-            message: '添加成功！',
-            type: 'success'
-          })
-          location.reload()
-        }
-        else {
-          this.$message({
-            showClose: true,
-            message: '添加失败，请联系管理员',
-            type: 'error'
-          })
-        }
-      }).catch(error => {
-        console.log(error)
-      })
-      this.addColorVisible = false
-      this.newColor = {}
+
+      console.log(this.newColor.colorImage)
+      // axios.post('http://localhost:8088/color/add',{
+      //   colorName: this.newColor.colorName,
+      //   colorImage: this.newColor.colorImage
+      // }).then(response => {
+      //   if (response.data.code==200){
+      //     this.$message({
+      //       showClose: true,
+      //       message: '添加成功！',
+      //       type: 'success'
+      //     })
+      //     location.reload()
+      //   }
+      //   else {
+      //     this.$message({
+      //       showClose: true,
+      //       message: '添加失败，请联系管理员',
+      //       type: 'error'
+      //     })
+      //   }
+      // }).catch(error => {
+      //   console.log(error)
+      // })
+      // this.addColorVisible = false
+      // this.newColor = {}
     },
 
     //打开编辑颜色对话框
@@ -262,7 +264,7 @@ export default {
           this.colorList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(error => {       //发生错误
+        .catch(error => {
           console.log(error)
         });
     },
@@ -279,7 +281,7 @@ export default {
           this.colorList = response.data.data
           this.resultNum = response.data.data.length
         })
-        .catch(error => {       //发生错误
+        .catch(error => {
           console.log(error)
         });
     }

@@ -128,7 +128,6 @@
         </el-upload>
       </el-form-item>
 
-
       <el-form-item>
         <el-button type="primary" @click="onSubmit">添加商品</el-button>
       </el-form-item>
@@ -188,9 +187,12 @@ export default {
       }
     }
   },
+  created() {
+
+  },
   methods: {
     onSubmit () {
-      axios.post('http://localhost:8088/product/add',{
+      axios.post('http://localhost:8088/product/add', {
         productID: this.form.productID,
         productName: this.form.productName,
         sketch: this.form.sketch,
@@ -202,32 +204,31 @@ export default {
         keyword: this.form.keyword.toString(),
         state: this.form.state
       }).then(response => {
-        if (response.data.code === 200){
+        if (response.data.code === 200) {
           this.$message({
             showClose: true,
             message: '添加成功！',
             type: 'success'
           })
           this.$router.push('/product')
-        }
-        else{
+        } else {
           this.$message({
             showClose: true,
             message: '添加失败，请联系管理员',
             type: 'error'
           })
         }
-      }).catch(error=>{
+      }).catch(error => {
         console.log(error)
       })
     },
 
-    //文件列表移除文件时的钩子
+    // 文件列表移除文件时的钩子
     handleRemove (file, fileList) {
       console.log(file, fileList)
     },
 
-    //点击已上传的文件链接时的钩子,获取服务器返回的数据
+    // 点击已上传的文件链接时的钩子,获取服务器返回的数据
     handlePreview (file) {
       console.log(file)
     },
@@ -236,35 +237,34 @@ export default {
       this.dialogVisible = true
     },
 
-
-    //文件上传成功时的钩子
+    // 文件上传成功时的钩子
     onSuccess (response, file, fileList) {
-      console.log(response.data)    //服务器返回的图片信息，可以提交到表格
+      console.log(response.data) // 服务器返回的图片信息，可以提交到表格
       this.$message({
         message: '图片上传成功',
         type: 'success'
       })
-      this.$refs.upload.clearFiles()//上传成功清除列表，否则每次上传都要删掉上次上传的列表
+      this.$refs.upload.clearFiles() // 上传成功清除列表，否则每次上传都要删掉上次上传的列表
     },
     onError(err, file, fileList) {
       // console.log(err.msg)
       this.$message.error(err.msg)
     },
-    //upload 改变时  触发的函数   主要目的为保存 filelist 和 大小限制
+    // upload 改变时  触发的函数   主要目的为保存 filelist 和 大小限制
     addFile(file, fileList) {
-      this.files = fileList;//主要用于接收存放所有的图片信息
-      //限制上传文件为2M
+      this.files = fileList // 主要用于接收存放所有的图片信息
+      // 限制上传文件为2M
       console.log(this.files)
       console.log(fileList)
-      let sizeIsSatisfy = file.size < 2 * 1024 * 1024 ? true : false;
+      let sizeIsSatisfy = file.size < 2 * 1024 * 1024 ? true : false
       if (sizeIsSatisfy) {
-        return true;
+        return true
       } else {
-        this.fileSizeIsSatisfy = true;
-        return false;
+        this.fileSizeIsSatisfy = true
+        return false
       }
     },
-    submitForm(formName) {//提交form表单
+    submitForm(formName) { // 提交form表单
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.files.length <= 0) {
@@ -275,42 +275,42 @@ export default {
             this.$message.error("上传失败！存在文件大小超过2M！");
             return;
           }
-          this.processFile();//处理files的数据变成键值对的形式   返回newFiles这个数组
-          var param = new FormData(); // FormData 对象
+          this.processFile() // 处理files的数据变成键值对的形式   返回newFiles这个数组
+          var param = new FormData() // FormData 对象
           newFiles.forEach(fileItem => {
-            var list = fileItem;
-            var file = list.imgFile;
-            param.append("files", file); // 文件对象
+            var list = fileItem
+            var file = list.imgFile
+            param.append("files", file) // 文件对象
           });
           getImgUrl(param).then(
             msg => {
-              console.log(msg);//拿到想要的图片地址
+              console.log(msg)// 拿到想要的图片地址
             },
             error => {
-              console.log(error);
+              console.log(error)
             }
-          );
+          )
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log("error submit!!")
+          return false
         }
-      });
+      })
     },
-    //全部的图片添加到 newFiles中
+    // 全部的图片添加到 newFiles中
     processFile() {
       this.files.forEach(item => {
-        let objFile = {};
-        objFile.title = "files";
-        objFile.imgFile = item.raw;
-        this.newFiles.push(objFile);
-      });
+        let objFile = {}
+        objFile.title = "files"
+        objFile.imgFile = item.raw
+        this.newFiles.push(objFile)
+      })
     },
     openModal(val, data) {
-      let fileArr = [];
-      let fileObj = {};
-      fileObj.name="file";
-      fileObj.url = data.file;
-      fileArr.push(fileObj);
+      let fileArr = []
+      let fileObj = {}
+      fileObj.name="file"
+      fileObj.url = data.file
+      fileArr.push(fileObj)
       this.showFiles = fileArr
     }
   }

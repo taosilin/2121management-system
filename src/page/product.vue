@@ -102,7 +102,7 @@ export default {
     }
   },
   created () {
-    axios.post('http://localhost:8088/product/list',{
+    axios.post('http://localhost:8088/product/list', {
       page: this.currentPage,
       size: this.pageSize
     })
@@ -110,9 +110,9 @@ export default {
         this.productList = response.data.data
         this.resultNum = response.data.data.length
       })
-      .catch(function (error) {       //发生错误
+      .catch(function (error) {
         console.log(error)
-      });
+      })
   },
   methods: {
     handleEdit(index, row) {
