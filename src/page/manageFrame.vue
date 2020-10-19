@@ -26,14 +26,12 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>SKU管理</span>
-        <el-dropdown @command="handleCommand1">
+        <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
             操作<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-plus" command="add">添加SKU</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-edit" command="edit">编辑</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-delete" command="delete">删除</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -49,15 +47,19 @@
           </el-table-column>
           <el-table-column
             prop="productID"
-            label="商品ID">
+            label="镜框ID">
           </el-table-column>
           <el-table-column
             prop="productSpec"
-            label="商品规格">
+            label="镜框颜色">
           </el-table-column>
           <el-table-column
             prop="quantity"
             label="库存">
+          </el-table-column>
+          <el-table-column
+            prop="warning"
+            label="预警数量">
           </el-table-column>
           <el-table-column
             prop="price"
@@ -84,40 +86,81 @@
     </el-card>
 
     <!--添加SKU对话框-->
-<!--    <el-dialog class="addSKU" title="添加SKU" :visible.sync="addSKUVisible">-->
-<!--      <el-form-->
-<!--        :model="newSKU"-->
-<!--        label-width="100px">-->
+    <el-dialog class="addSKU" title="添加SKU" :visible.sync="addSKUVisible">
+      <el-form
+        :model="newSKU"
+        label-width="100px">
 
-<!--        <el-form-item label="规格编码" >-->
-<!--          <el-input v-model="newSKU.specID"></el-input>-->
-<!--        </el-form-item>-->
+        <el-form-item label="规格编码" >
+          <el-input v-model="newSKU.specID"></el-input>
+        </el-form-item>
 
-<!--        <el-form-item label="库存量" >-->
-<!--          <el-input v-model="newSKU.quantity"></el-input>-->
-<!--        </el-form-item>-->
+        <el-form-item label="库存量" >
+          <el-input v-model="newSKU.quantity"></el-input>
+        </el-form-item>
 
-<!--        <el-form-item label="价格" >-->
-<!--          <el-input v-model="newSKU.price">-->
-<!--            <el-button slot="prepend">$</el-button>-->
-<!--          </el-input>-->
-<!--        </el-form-item>-->
+        <el-form-item label="预警数量" >
+          <el-input v-model="newSKU.warning"></el-input>
+        </el-form-item>
 
-<!--        <div v-for="(a,i) in attributes">-->
-<!--          <el-form-item v-bind:label="a.attribute.attributeName">-->
-<!--            <el-radio-group v-model="sku[i]" size="medium">-->
-<!--              <el-radio-button v-for="(v,j) in a.values" v-bind:label="v.valueName"></el-radio-button>-->
-<!--            </el-radio-group>-->
-<!--          </el-form-item>-->
-<!--        </div>-->
+        <el-form-item label="价格" >
+          <el-input v-model="newSKU.price">
+            <el-button slot="prepend">$</el-button>
+          </el-input>
+        </el-form-item>
 
+        <el-form-item label="镜框颜色" >
+          <template>
+            <el-radio v-for="(c,i) in colorList" v-model="newSKU.productSpec" :label="c.colorID">
+              <el-image
+                style="width: 20px; height: 20px"
+                :src="colorList[i].colorImage"
+                fit="contain"></el-image>
+            </el-radio>
+          </template>
+        </el-form-item>
 
-<!--      </el-form>-->
-<!--      <div slot="footer" class="dialog-footer">-->
-<!--        <el-button @click="addSKUVisible = false">取 消</el-button>-->
-<!--        <el-button type="primary" @click="handleAddSKU">确 定</el-button>-->
-<!--      </div>-->
-<!--    </el-dialog>-->
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addSKUVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddSKU">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--编辑SKU对话框-->
+    <el-dialog class="updateSKU" title="编辑SKU" :visible.sync="updateSKUVisible">
+      <el-form
+        :model="newSKU"
+        label-width="100px">
+
+        <el-form-item label="规格编码" >
+          <el-input v-model="newSKU.specID" disabled></el-input>
+        </el-form-item>
+
+        <el-form-item label="镜框颜色ID" >
+          <el-input v-model="newSKU.productSpec" disabled></el-input>
+        </el-form-item>
+
+        <el-form-item label="库存量" >
+          <el-input v-model="newSKU.quantity"></el-input>
+        </el-form-item>
+
+        <el-form-item label="预警数量" >
+          <el-input v-model="newSKU.warning"></el-input>
+        </el-form-item>
+
+        <el-form-item label="价格" >
+          <el-input v-model="newSKU.price">
+            <el-button slot="prepend">$</el-button>
+          </el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="updateSKUVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleUpdateSKU">确 定</el-button>
+      </div>
+    </el-dialog>
 
     <el-card class="box-card">
 
@@ -162,11 +205,13 @@ export default {
       attributes: [],
       specs: [],
 
+      colorList: [],
       lensList: [],
       selectedLens: [],
       originalSelected: [],
 
       addSKUVisible: false,
+      updateSKUVisible: false,
       newSKU: {}
     }
   },
@@ -174,6 +219,7 @@ export default {
     // 取到路由带过来的参数
     let frameID = this.$route.query.frameID
 
+    // 镜框详情
     axios.post('http://localhost:8088/frame/detail',{
       frameID: frameID
     }).then(response => {
@@ -181,6 +227,7 @@ export default {
       this.attributes = response.data.data.attributes
       this.specs = response.data.data.specs
 
+      // 查询全部镜片列表
       axios.post('http://localhost:8088/lens/list',{
         page: 0,
         size: 20
@@ -198,6 +245,7 @@ export default {
         console.log(error)
       })
 
+      // 查询当前镜框所有可选镜片
       axios.post('http://localhost:8088/framelens/list',{
         frameID: frameID
       }).then(response => {
@@ -209,6 +257,17 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+
+      // 查询全部镜框颜色列表
+      axios.post('http://localhost:8088/color/list',{
+        page: 0,
+        size: 20
+      }).then(response => {
+        this.colorList = response.data.data
+      }).catch(error => {
+        console.log(error)
+      })
+
     }).catch(error => {
       console.log(error)
     })
@@ -216,13 +275,112 @@ export default {
 
   },
   methods: {
-    handleCommand1(command){
+
+    //打开添加SKU对话框
+    handleCommand(command) {
       console.log(command)
       if (command=='add'){
+        this.newSKU = {}
         this.addSKUVisible = true
       }
     },
 
+    // 添加SKU
+    handleAddSKU() {
+      axios.post('http://localhost:8088/spec/add',{
+        specID: this.newSKU.specID,
+        productID: this.frameDetail.frameID,
+        productSpec: this.newSKU.productSpec,
+        quantity: this.newSKU.quantity,
+        warning: this.newSKU.warning,
+        price: this.newSKU.price,
+        specImage: this.newSKU.specImage
+      }).then(response => {
+        if (response.data.code === 200) {
+          location.reload()
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
+        }
+      }).catch(error => {
+        this.$message({
+          showClose: true,
+          message: '添加失败，请联系管理员',
+          type: 'error'
+        })
+      })
+      this.addSKUVisible = false
+      this.newSKU = {}
+    },
+
+    // 打开编辑SKU对话框
+    openUpdateSKU(index,row) {
+      this.newSKU = this.specs[index]
+      this.updateSKUVisible = true
+    },
+
+    // 提交编辑SKU
+    handleUpdateSKU() {
+      axios.post('http://localhost:8088/spec/update',{
+        specID: this.newSKU.specID,
+        quantity: this.newSKU.quantity,
+        warning: this.newSKU.warning,
+        price: this.newSKU.price,
+        specImage: this.newSKU.specImage
+      }).then(response => {
+        if (response.data.code === 200){
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$message({
+          showClose: true,
+          message: '修改失败，请联系管理员',
+          type: 'error'
+        })
+      })
+      this.updateSKUVisible = false
+      this.newSKU = {}
+    },
+
+    // 删除SKU
+    handleDelete(index, row) {
+      console.log(index, row)
+      this.$confirm('此操作将永久删除该规格, 是否继续?', '提示', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        axios.post('http://localhost:8088/spec/delete',{
+          specID : this.specs[index].specID
+        }).then(response => {
+          if (response.data.code === 200){
+            location.reload()
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          }
+        }).catch(error => {
+          this.$message({
+            showClose: true,
+            message: '删除失败，请联系管理员',
+            type: 'error'
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+
+    // 保存镜框可选镜片
     onSave() {
       for (let i=0;i<this.selectedLens.length;i++){
         if (this.originalSelected.indexOf(this.selectedLens[i])==-1){
@@ -278,7 +436,8 @@ export default {
         }
       }
     },
-    //右侧列表元素变化时触发
+
+    // 右侧列表元素变化时触发
     getObject() {
       console.log("选中的数据有" + this.selectedLens)
     },
@@ -287,6 +446,12 @@ export default {
 </script>
 
 <style scoped>
+.addSKU{
+  text-align: left;
+}
+.updateSKU{
+  text-align: left;
+}
 .text {
   font-size: 14px;
   text-align: left;

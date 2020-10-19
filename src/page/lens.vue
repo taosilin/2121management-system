@@ -58,7 +58,6 @@
           <el-tag v-else-if="lensList[scope.$index].state === '1'" effect="dark" type="success">已上架</el-tag>
           <el-tag v-else effect="dark" type="info">已下架</el-tag>
         </template>
-
       </el-table-column>
 
       <el-table-column label="操作">

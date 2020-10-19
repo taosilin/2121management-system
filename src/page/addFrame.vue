@@ -18,9 +18,7 @@
 
         <el-form-item label="材质">
           <el-radio-group v-model="form.material" size="medium">
-            <template v-for="item in form.materials">
-              <el-radio-button :label="item.valueName" ></el-radio-button>
-            </template>
+             <el-radio-button v-for="item in form.materials" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 

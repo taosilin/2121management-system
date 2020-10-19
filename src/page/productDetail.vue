@@ -2,36 +2,54 @@
   <div>
 
     <el-card class="box-card">
+
       <div slot="header" class="clearfix">
         <span>商品信息</span>
         <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
       </div>
+
       <div class="text item">
         <div>商品ID：{{productDetail.productID}}</div>
       </div>
+
       <div class="text item">
         <div>商品名称：{{productDetail.productName}}</div>
       </div>
+
       <div class="text item">
         <div>商品简述：{{productDetail.sketch}}</div>
       </div>
+
       <div class="text item">
         <div>商品描述：{{productDetail.description}}</div>
       </div>
+
       <div class="text item">
         <div>商品分类：{{productDetail.classification}}</div>
       </div>
+
       <div class="text item">
         <div>商品标签：{{productDetail.tab}}</div>
       </div>
+
       <div class="text item">
         <div>关键词：{{productDetail.keyword}}</div>
       </div>
+
       <div class="text item">
         <div>状态：
           <el-tag v-if="productDetail.state=='0'">待上架</el-tag>
           <el-tag v-else-if="productDetail.state='1'" type="success">上架中</el-tag>
           <el-tag v-else type="info">已下架</el-tag>
+        </div>
+      </div>
+
+      <div class="text item">
+        <div>
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="productDetail.coverImage"
+            fit="contain"></el-image>
         </div>
       </div>
     </el-card>
@@ -53,8 +71,8 @@
       </div>
 
       <div v-for="(a,i) in attributes" class="text item">
-        <div>属性名：{{a.attribute.attributeName}}</div>
-        <div>可选值：
+        <div class="attributeName">{{a.attribute.attributeName}}<el-button type="danger" icon="el-icon-delete" circle></el-button></div>
+        <div>
           <el-tag
             v-for="v in a.values"
             closable
@@ -99,8 +117,6 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-plus" command="add">添加SKU</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-edit" command="edit">编辑</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-delete" command="delete">删除</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -125,6 +141,10 @@
           <el-table-column
             prop="quantity"
             label="库存">
+          </el-table-column>
+          <el-table-column
+            prop="warning"
+            label="预警数量">
           </el-table-column>
           <el-table-column
             prop="price"
@@ -162,6 +182,10 @@
 
         <el-form-item label="库存量" >
           <el-input v-model="newSKU.quantity"></el-input>
+        </el-form-item>
+
+        <el-form-item label="预警数量" >
+          <el-input v-model="newSKU.warning"></el-input>
         </el-form-item>
 
         <el-form-item label="价格" >
@@ -202,6 +226,10 @@
 
         <el-form-item label="库存量" >
           <el-input v-model="newSKU.quantity"></el-input>
+        </el-form-item>
+
+        <el-form-item label="预警数量" >
+          <el-input v-model="newSKU.warning"></el-input>
         </el-form-item>
 
         <el-form-item label="价格" >
@@ -245,11 +273,11 @@ export default {
     let productID = this.$route.query.productID
     axios.post('http://localhost:8088/product/detail',{
       productID: productID
-    }).then(response=>{
+    }).then(response => {
       this.productDetail = response.data.data.product
       this.attributes = response.data.data.attributes
       this.specs = response.data.data.specs
-    }).catch(error=>{
+    }).catch(error => {
       console.log(error)
     })
   },
@@ -266,16 +294,17 @@ export default {
       axios.post('http://localhost:8088/spec/update',{
         specID: this.newSKU.specID,
         quantity: this.newSKU.quantity,
+        warning: this.newSKU.warning,
         price: this.newSKU.price,
         specImage: this.newSKU.specImage
-      }).then(response=>{
-        if (response.data.code==200){
+      }).then(response => {
+        if (response.data.code === 200){
           this.$message({
             type: 'success',
             message: '修改成功!'
           })
         }
-      }).catch(error=>{
+      }).catch(error => {
         console.log(error)
         this.$message({
           showClose: true,
@@ -297,10 +326,20 @@ export default {
       }).then(() => {
         axios.post('http://localhost:8088/spec/delete',{
           specID : this.specs[index].specID
-        })
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
+        }).then(response => {
+          if (response.data.code === 200){
+            location.reload()
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          }
+        }).catch(error => {
+          this.$message({
+            showClose: true,
+            message: '删除失败，请联系管理员',
+            type: 'error'
+          })
         })
       }).catch(() => {
         this.$message({
@@ -315,34 +354,44 @@ export default {
       if (command=='add'){
         this.addVisible = true
       }
+      else if (command=='delete'){
+
+      }
     },
 
     handleCommand1(command){
       console.log(command)
       if (command=='add'){
+        this.newSKU = {}
         this.addSKUVisible = true
       }
     },
 
+    // 显示添加属性输入框
+    showInput() {
+      this.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+
+    // 添加属性
     onAddAttribute(){
-
-      let date = (new Date()).toLocaleString()
-      let attributeID = this.productDetail.productID + "_" + date
-
+      let attributeID = new Date().getTime()
       axios.post('http://localhost:8088/attribute/add',{
         attributeID: attributeID,
         productID: this.productDetail.productID,
         attributeName: this.inputAttribute
-      }).then(response=>{
+      }).then(response => {
         console.log(response)
-        if (response.data.code==200){
+        if (response.data.code === 200){
           this.$message({
             type: 'success',
             message: '添加成功!'
           })
           location.reload()
         }
-      }).catch(error=>{
+      }).catch(error => {
         console.log(error)
         this.$message({
           showClose: true,
@@ -354,33 +403,24 @@ export default {
       this.inputAttribute = ''
     },
 
-    showInput() {
-      this.inputVisible = true
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus()
-      })
-    },
-
+    // 属性添加值
     handleInputConfirm(i) {
       let inputValue = this.inputValue
-      let date = (new Date()).toLocaleString()
-      let valueID = this.productDetail.productID + "_" + this.attributes[i].attribute.attributeID + "_" + date
-
+      let valueID = new Date().getTime()
       if (inputValue) {
-        // 属性添加值
         axios.post('http://localhost:8088/value/add',{
           "valueID": valueID,
           "attributeID": this.attributes[i].attribute.attributeID,
           "valueName": inputValue
-        }).then(response=>{
-          if (response.data.code==200){
+        }).then(response => {
+          if (response.data.code === 200){
             this.$message({
               type: 'success',
               message: '添加成功!'
             })
             location.reload()
           }
-        }).catch(error=>{
+        }).catch(error => {
           this.$message({
             showClose: true,
             message: '添加失败，请联系管理员',
@@ -392,23 +432,25 @@ export default {
       this.inputValue = ''
     },
 
+    // 添加SKU
     handleAddSKU () {
-
       axios.post('http://localhost:8088/spec/add',{
         specID: this.newSKU.specID,
         productID: this.productDetail.productID,
         productSpec: this.sku.join(";"),
         quantity: this.newSKU.quantity,
+        warning: this.newSKU.warning,
         price: this.newSKU.price,
         specImage: this.newSKU.specImage
       }).then(response => {
-        if (response.data.code == 200) {
+        if (response.data.code === 200) {
+          location.reload()
           this.$message({
             type: 'success',
             message: '添加成功!'
           })
         }
-      }).catch(error=>{
+      }).catch(error => {
         this.$message({
           showClose: true,
           message: '添加失败，请联系管理员',
@@ -438,6 +480,11 @@ export default {
 .item {
   margin-bottom: 18px;
 }
+.attributeName{
+  font-size: 20px;
+  font-weight: bold;
+}
+
 
 .clearfix:before,
 .clearfix:after {

@@ -26,6 +26,8 @@ import lensAttribute from "../page/lensAttribute"
 import frameAttribute from "../page/frameAttribute"
 import reviewOrder from "../page/reviewOrder"
 import system from "../page/system"
+import editFrame from "../page/editFrame"
+import editProduct from "../page/editProduct"
 
 Vue.use(Router)
 
@@ -164,6 +166,16 @@ export default new Router({
           path: '/system',
           component: system,
           meta: { title: '系统管理' }
+        },
+        {
+          path: '/editFrame',
+          component: editFrame,
+          meta: { title: '编辑镜框' }
+        },
+        {
+          path: '/editProduct',
+          component: editProduct,
+          meta: { title: '编辑商品' }
         }
       ]
     }

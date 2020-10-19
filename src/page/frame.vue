@@ -34,10 +34,15 @@
         prop="dimension"
         label="镜架维度">
       </el-table-column>
-      <el-table-column
-        prop="state"
-        label="状态">
+
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+          <el-tag v-if="frameList[scope.$index].state === '0'" effect="dark">待上架</el-tag>
+          <el-tag v-else-if="frameList[scope.$index].state === '1'" effect="dark" type="success">已上架</el-tag>
+          <el-tag v-else effect="dark" type="info">已下架</el-tag>
+        </template>
       </el-table-column>
+
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button

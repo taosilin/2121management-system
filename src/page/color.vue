@@ -17,9 +17,13 @@
         label="颜色名称">
       </el-table-column>
 
-      <el-table-column
-        prop="colorImage"
-        label="预览">
+      <el-table-column label="预览">
+        <template slot-scope="scope">
+          <el-image
+            style="width: 50px; height: 50px"
+            :src="colorList[scope.$index].colorImage"
+            fit="contain"></el-image>
+        </template>
       </el-table-column>
 
       <el-table-column label="操作">

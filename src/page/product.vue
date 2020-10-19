@@ -22,9 +22,13 @@
         label="简述">
       </el-table-column>
 
-      <el-table-column
-        prop="coverImage"
-        label="封面图片">
+      <el-table-column label="封面图片">
+        <template slot-scope="scope">
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="productList[scope.$index].coverImage"
+            fit="contain"></el-image>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -52,9 +56,12 @@
         label="关键词">
       </el-table-column>
 
-      <el-table-column
-        prop="state"
-        label="状态">
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+          <el-tag v-if="productList[scope.$index].state === '0'" effect="dark">待上架</el-tag>
+          <el-tag v-else-if="productList[scope.$index].state === '1'" effect="dark" type="success">已上架</el-tag>
+          <el-tag v-else effect="dark" type="info">已下架</el-tag>
+        </template>
       </el-table-column>
 
       <el-table-column label="操作">
