@@ -72,13 +72,13 @@
           <div class="text">
             <el-row>
               <el-col :span="8">
-                <el-badge :value="12" class="badge">镜框预警</el-badge>
+                <el-badge :value="stockWarning.frameWarning" class="badge">镜框预警</el-badge>
               </el-col>
               <el-col :span="8">
-                <el-badge :value="12" class="badge" type="primary">镜片预警</el-badge>
+                <el-badge :value="stockWarning.lensWarning" class="badge" type="primary">镜片预警</el-badge>
               </el-col>
               <el-col :span="8">
-                <el-badge :value="12" class="badge" type="warning">商品预警</el-badge>
+                <el-badge :value="stockWarning.productWarning" class="badge" type="warning">商品预警</el-badge>
               </el-col>
             </el-row>
           </div>
@@ -125,10 +125,10 @@
             访问量
           </el-col>
           <el-col :span="8">
-            <div :style="{width: '400px', height: '400px'}" id="order"></div>
+            <div :style="{width: '500px', height: '400px'}" id="order"></div>
           </el-col>
           <el-col :span="8">
-            <div :style="{width: '400px', height: '400px'}" id="product"></div>
+            <div :style="{width: '500px', height: '400px'}" id="product"></div>
           </el-col>
         </div>
       </el-card>
@@ -148,6 +148,7 @@ export default {
     return{
       orderPending: {},
       transactionBoard: {},
+      stockWarning:{},
       product_on_shelf: 0,
       product_off_shelf: 0,
       frame_on_shelf: 0,
@@ -177,6 +178,14 @@ export default {
       this.transactionBoard.paymentOrderAmount = this.transactionBoard.paymentOrderAmount.toFixed(2)
       this.transactionBoard.yesterdayOrderAmount = this.transactionBoard.yesterdayOrderAmount.toFixed(2)
     }).catch(error => {
+      console.log(error)
+    })
+
+    // 库存预警
+    axios.post('http://localhost:8088/spec/warning')
+      .then(response => {
+        this.stockWarning = response.data.data
+      }).catch(error => {
       console.log(error)
     })
 
@@ -224,45 +233,83 @@ export default {
       let orderChart = echarts.init(document.getElementById('order'))
       let productChart = echarts.init(document.getElementById('product'))
 
-      // 绘制图表
+      // 订单图表
       orderChart.setOption({
         title: { text: '订单统计' },
+
+        // 提示框
         tooltip: {},
+
+        // 图例
+        legend: {
+          data: ['订单量','付款订单量','付款率'],
+          // icon: "circle",   //  设置形状  类型包括 circle，rect ，roundRect，triangle，diamond，pin，arrow，none
+          // itemWidth: 10,  // 设置宽度
+          // itemHeight: 10, // 设置高度
+          // itemGap: 20 // 设置间距
+        },
         xAxis: {
+          name: '日期',
           data: this.statisticsDate
         },
-        yAxis: {
-          name: '订单量'
-        },
-        series: [
-          {
-            name: '订单量',
-            type: 'line',
-            data: this.orderNum
-          },
-          {
-            name: '付款订单量',
-            type: 'line',
-            data: this.paymentNum
-          }
-        ]
+        yAxis: [{
+          name: '订单量',
+          type: 'value'
+        }, {
+          name: '付款率',
+          type: 'value'
+        }],
+        series: [{
+          name: '订单量',
+          type: 'line',
+          data: this.orderNum,
+          yAxisIndex: 0 // 对准的坐标轴（y[0]）
+        }, {
+          name: '付款订单量',
+          type: 'line',
+          data: this.paymentNum,
+          yAxisIndex: 0 // 对准的坐标轴（y[0]）
+        }, {
+          name: '付款率(%)',
+          type: 'bar',
+          data: this.paymentRate,
+          yAxisIndex: 1 // 对准的坐标轴（y[1]）
+        }]
       })
 
-      // 绘制图表
+      // 销售图表
       productChart.setOption({
         title: { text: '商品统计' },
+
+        // 提示框
         tooltip: {},
+
+        // 图例
+        legend: {
+          data: ['销售额','销售量']
+        },
         xAxis: {
+          name: '日期',
           data: this.statisticsDate
         },
-        yAxis: {
-          name: '销售额'
-        },
+        yAxis: [{
+          name: '销售额',
+          type: 'value'
+        }, {
+          name: '销售量',
+          type: 'value'
+        }],
         series: [{
           name: '销售额',
           type: 'line',
           data: this.paymentAmount
+        }, {
+          name: '销售量',
+          type: 'bar',
+          data: this.paymentNum,
+          yAxisIndex: 1 // 对准的坐标轴（y[1]）
         }]
+
       })
 
     }

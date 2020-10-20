@@ -100,6 +100,18 @@ export default {
   },
   methods: {
 
+    // 跳转到编辑镜框页面
+    handleEdit(index, row) {
+      this.$router.push({
+        path:'/editFrame',
+        query:{
+          frameID:this.frameList[index].frameID
+        }
+      })
+      location.reload()
+    },
+
+    // 跳转到管理镜框页面
     handleManage(index, row){
       this.$router.push({
         path:'/manageFrame',
@@ -110,9 +122,6 @@ export default {
       location.reload()
     },
 
-    handleEdit(index, row) {
-      console.log(index, row)
-    },
     handleDelete(index, row) {
       console.log(index, row)
     },

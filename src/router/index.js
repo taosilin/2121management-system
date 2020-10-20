@@ -28,6 +28,8 @@ import reviewOrder from "../page/reviewOrder"
 import system from "../page/system"
 import editFrame from "../page/editFrame"
 import editProduct from "../page/editProduct"
+import administrator from "../page/administrator"
+
 
 Vue.use(Router)
 
@@ -176,6 +178,11 @@ export default new Router({
           path: '/editProduct',
           component: editProduct,
           meta: { title: '编辑商品' }
+        },
+        {
+          path: '/administrator',
+          component: administrator,
+          meta: { title: '管理员' }
         }
       ]
     }

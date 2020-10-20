@@ -159,7 +159,13 @@ export default {
         {
           icon: 'el-icon-setting',
           index: 'system',
-          title: '系统管理'
+          title: '系统管理',
+          subs: [
+            {
+              index: 'administrator',
+              title: '管理员'
+            }
+          ]
         }
       ]
     }

@@ -310,25 +310,25 @@ export default {
   },
   created() {
     axios.post('http://localhost:8088/lens/list',{
-      page:this.currentPage,
-      size:this.pageSize
+      page: this.currentPage,
+      size: this.pageSize
     }).then(response => {
         this.lensList = response.data.data
         this.resultNum = response.data.data.length
-      }).catch(error => {       //发生错误
+      }).catch(error => {       // 发生错误
         console.log(error)
       })
   },
   methods: {
 
-    //编辑镜片信息
+    // 编辑镜片信息
     handleEdit(index, row) {
       console.log(index, row)
       this.newLens = this.lensList[index]
       this.updateLensVisible = true
     },
 
-    //删除镜片
+    // 删除镜片
     handleDelete(index, row) {
       this.$confirm('此操作将永久删除该镜片, 是否继续?', '提示', {
         confirmButtonText: '确认删除',
@@ -394,7 +394,7 @@ export default {
       this.addLensVisible = true
     },
 
-    //添加镜片
+    // 添加镜片
     handleAddLens(){
       axios.post('http://localhost:8088/lens/add', {
         lensID: this.newLens.lensID,
@@ -410,7 +410,7 @@ export default {
         description: this.newLens.description
       })
         .then(response => {
-          if (response.data.code==200){
+          if (response.data.code === 200){
             this.$message({
               showClose: true,
               message: '添加镜片成功！',
@@ -432,7 +432,7 @@ export default {
       this.addLensVisible = false
     },
 
-    //编辑镜片
+    // 编辑镜片
     handleUpdateLens(){
       axios.post('http://localhost:8088/lens/update', {
         lensID: this.newLens.lensID,
