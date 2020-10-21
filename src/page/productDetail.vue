@@ -71,7 +71,7 @@
       </div>
 
       <div v-for="(a,i) in attributes" class="text item">
-        <div class="attributeName">{{a.attribute.attributeName}}<el-button type="danger" icon="el-icon-delete" circle></el-button></div>
+        <div class="attributeName">{{a.attribute.attributeName}}</div>
         <div>
           <el-tag
             v-for="v in a.values"

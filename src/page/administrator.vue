@@ -51,25 +51,28 @@
     <!--添加管理员对话框-->
     <el-dialog class="addAdmin" title="添加管理员" :visible.sync="addAdminVisible">
       <el-form
+        :rules="rules"
         :model="newAdmin"
+        ref="addAdmin"
+        label-position="left"
         label-width="100px">
 
-        <el-form-item label="管理员ID" >
+        <el-form-item label="管理员ID" prop="adminID">
           <el-input v-model="newAdmin.adminID"></el-input>
         </el-form-item>
 
-        <el-form-item label="密码" >
+        <el-form-item label="密码" prop="password">
           <el-input v-model="newAdmin.password"></el-input>
         </el-form-item>
 
-        <el-form-item label="管理员名称" >
+        <el-form-item label="管理员名称" prop="adminName">
           <el-input v-model="newAdmin.adminName"></el-input>
         </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addAdminVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleAddAdmin">确 定</el-button>
+        <el-button type="primary" @click="handleAddAdmin('addAdmin')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -88,7 +91,23 @@ export default {
       adminList: [],
 
       newAdmin: {},
-      addAdminVisible: false
+      addAdminVisible: false,
+
+      // 添加管理员表单填写规则
+      rules:{
+        adminID: [
+          { required: true, message: '请输入管理员ID', trigger: 'blur' },
+          { min: 3, max: 25, message: '长度在 3 到 25 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入管理密码', trigger: 'blur' },
+          { min: 3, max: 25, message: '长度在 3 到 25 个字符', trigger: 'blur' }
+        ],
+        adminName: [
+          { required: true, message: '请输入管理员姓名', trigger: 'blur' }
+        ]
+      }
+
     }
   },
   created() {
@@ -111,36 +130,57 @@ export default {
     },
 
     // 添加管理员
-    handleAddAdmin() {
-      axios.post('http://localhost:8088/admin/add',{
-        adminID: this.newAdmin.adminID,
-        password: this.newAdmin.password,
-        adminName: this.newAdmin.adminName
-      }).then(response => {
-        if (response.data.code === 200){
-          this.$message({
-            showClose: true,
-            message: '添加管理员成功！',
-            type: 'success'
-          })
-          location.reload()
-        }
-        else{
-          this.$message({
-            showClose: true,
-            message: '添加失败，请联系管理员',
-            type: 'error'
-          })
-        }
+    handleAddAdmin(formName) {
 
-        this.addAdminVisible = false
-        this.newAdmin = {}
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          axios.post('http://localhost:8088/admin/add',{
+            adminID: this.newAdmin.adminID,
+            password: this.newAdmin.password,
+            adminName: this.newAdmin.adminName
+          }).then(response => {
+            if (response.data.code === 200){
+              this.$message({
+                showClose: true,
+                message: '添加管理员成功！',
+                type: 'success'
+              })
+              location.reload()
+            }
+            else if (response.data.code === 400){
+              this.$message({
+                showClose: true,
+                message: response.data.message,
+                type: 'error'
+              })
+            }
+            else{
+              this.$message({
+                showClose: true,
+                message: '添加失败，请联系系统管理员',
+                type: 'error'
+              })
+            }
 
-      }).catch(error => {
-        console.log(error)
-        this.addAdminVisible = false
-        this.newAdmin = {}
+            this.addAdminVisible = false
+            this.newAdmin = {}
+
+          }).catch(error => {
+            console.log(error)
+            this.$message({
+              showClose: true,
+              message: '添加失败，请联系系统管理员',
+              type: 'error'
+            })
+            this.addAdminVisible = false
+            this.newAdmin = {}
+          })
+        } else {
+          this.$message('请按提示填写表单')
+        }
       })
+
+
     },
 
     // 删除管理员

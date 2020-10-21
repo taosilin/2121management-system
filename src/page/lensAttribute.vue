@@ -16,14 +16,24 @@
         </el-dropdown>
       </div>
 
+      <el-row v-if="addVisible" class="item">
+        属性名：
+          <el-input placeholder="请输入新属性名" v-model="inputAttribute" style="width: 200px"></el-input>
+          <el-button v-if="inputAttribute==''" type="danger" disabled>确认添加</el-button>
+          <el-button v-else type="success" @click="onAddAttribute">确认添加</el-button>
+      </el-row>
+
       <div v-for="(a,i) in attributes" class="item">
-        <div class="attributeName">{{a.attribute.attributeName}}</div>
+        <div class="attributeName">
+          {{a.attribute.attributeName}}
+          <el-button v-if="deleteVisible" type="danger" icon="el-icon-delete" size="small" plain @click="handleDeleteAttribute(i)"></el-button>
+        </div>
         <div class="valueList">
-          <el-tag
-            v-for="v in a.values"
-            :disable-transitions="false">
-            {{v.valueName}}
-          </el-tag>
+          <el-popconfirm v-for="(v,j) in a.values" title="删除该属性值？" @onConfirm="handleDeleteValue(i,j)">
+            <el-tag slot="reference" :disable-transitions="false" style="margin-right: 10px">
+              {{v.valueName}}
+            </el-tag>
+          </el-popconfirm>
           <el-input
             class="input-new-tag"
             v-if="inputVisible"
@@ -36,19 +46,6 @@
           </el-input>
           <el-button v-else class="button-new-tag" size="small" @click="showInput()">+ New Value</el-button>
         </div>
-      </div>
-
-      <div v-if="addVisible" class="text item">
-        <el-col :span="6">属性名：</el-col>
-        <el-col :span="6">
-          <el-input
-            placeholder="请输入新属性名"
-            v-model="inputAttribute"></el-input>
-        </el-col>
-        <el-col :span="6">
-          <el-button v-if="inputAttribute==''" type="success" disabled>确认添加</el-button>
-          <el-button v-else type="success" @click="onAddAttribute">确认添加</el-button>
-        </el-col>
       </div>
 
     </el-card>
@@ -64,13 +61,14 @@ export default {
       attributes: [],
       addVisible: false,
       inputVisible: false,
+      deleteVisible: false,
       inputValue: [],
       inputAttribute: ''
     }
   },
   created() {
     axios.post('http://localhost:8088/attribute/detail',{
-      productID: "lens"
+      productID: 'lens'
     }).then(response => {
       this.attributes = response.data.data
     }).catch(error => {
@@ -80,15 +78,18 @@ export default {
   },
   methods: {
 
-    //选择操作
+    // 选择操作
     handleCommand(command){
       console.log(command)
       if (command=='add'){
-        this.addVisible = true
+        this.addVisible = !this.addVisible
+      }
+      else if (command=='delete'){
+        this.deleteVisible = !this.deleteVisible
       }
     },
 
-    //显示属性值输入框
+    // 显示属性值输入框
     showInput() {
       this.inputVisible = true
       this.$nextTick(_ => {
@@ -96,12 +97,13 @@ export default {
       })
     },
 
-    //添加属性值
+    // 添加属性值value
     handleInputConfirm(i) {
       if (this.inputValue[i]) {
+        let valueID = this.inputValue[i] + new Date().getTime().toString()
         // 属性添加值
         axios.post('http://localhost:8088/value/add',{
-          "valueID": this.inputValue[i],
+          "valueID": valueID,
           "attributeID": this.attributes[i].attribute.attributeID,
           "valueName": this.inputValue[i]
         }).then(response => {
@@ -124,10 +126,11 @@ export default {
       this.inputValue = []
     },
 
-    //添加属性
+    // 添加属性attribute
     onAddAttribute(){
+      let attributeID = this.inputAttribute + new Date().getTime().toString()
       axios.post('http://localhost:8088/attribute/add',{
-        attributeID: this.inputAttribute,
+        attributeID: attributeID,
         productID: "lens",
         attributeName: this.inputAttribute
       }).then(response => {
@@ -149,6 +152,54 @@ export default {
       })
       this.addVisible = false
       this.inputAttribute = ''
+    },
+
+    // 删除属性attribute及其全部value
+    handleDeleteAttribute(i) {
+
+      this.$confirm('此操作将删除该属性及其全部属性值, 是否继续?', '提示', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        axios.post('http://localhost:8088/attribute/delete',{
+          attributeID: this.attributes[i].attribute.attributeID
+        }).then(response => {
+          if (response.data.code === 200){
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            location.reload()
+          }
+        }).catch(error => {
+
+        })
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+
+    // 删除属性值value
+    handleDeleteValue(i,j) {
+      console.log(i,j)
+      axios.post('http://localhost:8088/value/delete',{
+        valueID: this.attributes[i].values[j].valueID
+      }).then(response => {
+        if (response.data.code === 200){
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          location.reload()
+        }
+      }).catch(error => {
+
+      })
     }
 
   }

@@ -72,13 +72,19 @@
           <div class="text">
             <el-row>
               <el-col :span="8">
-                <el-badge :value="stockWarning.frameWarning" class="badge">镜框预警</el-badge>
+                <el-badge :value="stockWarning.frameWarning" class="badge">
+                  <el-button>镜框预警</el-button>
+                </el-badge>
               </el-col>
               <el-col :span="8">
-                <el-badge :value="stockWarning.lensWarning" class="badge" type="primary">镜片预警</el-badge>
+                <el-badge :value="stockWarning.lensWarning" class="badge" type="primary">
+                  <el-button>镜片预警</el-button>
+                </el-badge>
               </el-col>
               <el-col :span="8">
-                <el-badge :value="stockWarning.productWarning" class="badge" type="warning">商品预警</el-badge>
+                <el-badge :value="stockWarning.productWarning" class="badge" type="warning">
+                  <el-button>商品预警</el-button>
+                </el-badge>
               </el-col>
             </el-row>
           </div>

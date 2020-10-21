@@ -207,10 +207,11 @@ export default {
         if (response.data.code === 200) {
           this.$message({
             showClose: true,
-            message: '添加成功！',
+            message: '添加商品成功！',
             type: 'success'
           })
           this.$router.push('/product')
+          location.reload()
         } else {
           this.$message({
             showClose: true,
