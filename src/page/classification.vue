@@ -63,22 +63,25 @@
     <!--添加分类对话框-->
     <el-dialog class="addClass" title="添加分类" :visible.sync="addClassVisible">
       <el-form
+        :rules="rules"
         :model="newClass"
+        ref="addClass"
+        label-position="left"
         label-width="100px">
 
-        <el-form-item label="分类名称" >
+        <el-form-item label="分类名称" prop="className">
           <el-input v-model="newClass.className"></el-input>
         </el-form-item>
 
-        <el-form-item label="上级分类" >
+        <el-form-item label="上级分类">
           <el-cascader
             :options="superior"
             :props="prop"
             @change="handleChange"></el-cascader>
         </el-form-item>
 
-        <el-form-item label="说明">
-          <el-input type="textarea" v-model="newClass.description"></el-input>
+        <el-form-item label="说明" prop="description">
+          <el-input type="textarea" v-model="newClass.description" maxlength="500" show-word-limit></el-input>
         </el-form-item>
 
         <el-form-item label="状态">
@@ -91,7 +94,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addClassVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleAddClass">确 定</el-button>
+        <el-button type="primary" @click="handleAddClass('addClass')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -100,36 +103,30 @@
       <el-form
         :model="newClass"
         label-width="100px">
-
-        <el-form-item label="分类名称" >
+        <el-form-item label="分类名称">
           <el-input v-model="newClass.className"></el-input>
         </el-form-item>
-
-        <el-form-item label="上级分类" >
+        <el-form-item label="上级分类">
           <el-cascader
             :options="superior"
             :props="prop"
             @change="handleChange"></el-cascader>
         </el-form-item>
-
         <el-form-item label="说明">
           <el-input type="textarea" v-model="newClass.description"></el-input>
         </el-form-item>
-
         <el-form-item label="状态">
           <el-radio-group v-model="newClass.state">
             <el-radio label="0">已启用</el-radio>
             <el-radio label="1">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="updateClassVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleUpdateClass">确 定</el-button>
       </div>
     </el-dialog>
-
 
   </div>
 </template>
@@ -150,6 +147,17 @@ export default {
 
       },
       superior: [],
+
+      rules: {
+        className: [
+          { required: true, message: '请输入分类名称', trigger: 'blur' },
+          { min: 1, max: 45, message: '长度不超过 45 个字符', trigger: 'blur' }
+        ],
+        description:[
+          { required: true, message: '请输入分类描述', trigger: 'blur' },
+          { min: 1, max: 100, message: '长度不超过 100 个字符', trigger: 'blur' }
+        ]
+      },
 
       //cascader级联选择器prop属性
       prop: {
@@ -186,42 +194,47 @@ export default {
 
     // 打开添加分类对话框
     openAddClass() {
-      this.newClass = {}
+      this.newClass = { state: '0' }
       this.addClassVisible = true
     },
 
     // 添加分类
-    handleAddClass() {
-      if (this.newClass.superior == null)
-        this.newClass.superior = 0
-
-      axios.post('http://localhost:8088/class/add',{
-        className: this.newClass.className,
-        superior: this.newClass.superior,
-        description: this.newClass.description,
-        state: this.newClass.state
-      }).then(response => {
-        if (response.data.code === 200){
-          this.$message({
-            showClose: true,
-            message: '添加分类成功！',
-            type: 'success'
+    handleAddClass(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (this.newClass.superior == null)
+            this.newClass.superior = 0
+          axios.post('http://localhost:8088/class/add',{
+            className: this.newClass.className,
+            superior: this.newClass.superior,
+            description: this.newClass.description,
+            state: this.newClass.state
+          }).then(response => {
+            if (response.data.code === 200){
+              this.$message({
+                showClose: true,
+                message: '添加分类成功！',
+                type: 'success'
+              })
+              location.reload()
+            }
+            else{
+              this.$message({
+                showClose: true,
+                message: '添加失败，请联系管理员',
+                type: 'error'
+              })
+            }
+          }).catch(error => {
+            console.log(error)
           })
-          location.reload()
+          this.addClassVisible = false
+          this.newClass = {}
         }
         else{
-          this.$message({
-            showClose: true,
-            message: '添加失败，请联系管理员',
-            type: 'error'
-          })
+          this.$message('请按提示填写表单')
         }
-      }).catch(error => {
-        console.log(error)
       })
-
-      this.addClassVisible = false
-      this.newClass = {}
     },
 
     //  打开编辑分类对话框

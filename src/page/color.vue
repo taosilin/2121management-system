@@ -54,14 +54,17 @@
     <!--添加颜色对话框-->
     <el-dialog class="addColor" title="添加颜色" :visible.sync="addColorVisible">
       <el-form
+        :rules="rules"
         :model="newColor"
+        ref="addColor"
+        label-position="left"
         label-width="100px">
 
-        <el-form-item label="颜色名称" >
+        <el-form-item label="颜色名称" prop="colorName">
           <el-input v-model="newColor.colorName"></el-input>
         </el-form-item>
 
-        <el-form-item label="预览图片" >
+        <el-form-item label="预览图片">
           <el-upload
             action="http://localhost:8088/uploadimg"
             :on-preview="handlePreview"
@@ -76,7 +79,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addColorVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleAddColor">确 定</el-button>
+        <el-button type="primary" @click="handleAddColor('addColor')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -125,6 +128,15 @@ export default {
       newColor: {},
       addColorVisible: false,
       editColorVisible: false,
+
+      // 表单填写规则
+      rules: {
+        colorName: [
+          { required: true, message: '请输入颜色名称', trigger: 'blur' },
+          { min: 1, max: 45, message: '长度不超过 45 个字符', trigger: 'blur' }
+        ]
+      },
+
       //图片上传组件的headers请求头对象
       headerObj: {
         Authorization: window.sessionStorage.getItem('token')
@@ -164,33 +176,42 @@ export default {
       this.addColorVisible = true
     },
     //添加颜色
-    handleAddColor(){
-
+    handleAddColor(formName){
+      console.log("???")
       console.log(this.newColor.colorImage)
-      // axios.post('http://localhost:8088/color/add',{
-      //   colorName: this.newColor.colorName,
-      //   colorImage: this.newColor.colorImage
-      // }).then(response => {
-      //   if (response.data.code==200){
-      //     this.$message({
-      //       showClose: true,
-      //       message: '添加成功！',
-      //       type: 'success'
-      //     })
-      //     location.reload()
-      //   }
-      //   else {
-      //     this.$message({
-      //       showClose: true,
-      //       message: '添加失败，请联系管理员',
-      //       type: 'error'
-      //     })
-      //   }
-      // }).catch(error => {
-      //   console.log(error)
-      // })
-      // this.addColorVisible = false
-      // this.newColor = {}
+
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          axios.post('http://localhost:8088/color/add',{
+            colorName: this.newColor.colorName,
+            colorImage: this.newColor.colorImage
+          }).then(response => {
+            if (response.data.code==200){
+              this.$message({
+                showClose: true,
+                message: '添加成功！',
+                type: 'success'
+              })
+              // location.reload()
+            }
+            else {
+              this.$message({
+                showClose: true,
+                message: '添加失败，请联系管理员',
+                type: 'error'
+              })
+            }
+          }).catch(error => {
+            console.log(error)
+          })
+          this.addColorVisible = false
+          this.newColor = {}
+        }
+        else{
+          this.$message('请按提示填写表单')
+        }
+      })
+
     },
 
     //打开编辑颜色对话框
@@ -198,6 +219,7 @@ export default {
       this.newColor = this.colorList[index]
       this.editColorVisible = true
     },
+
     //编辑颜色
     handleEditColor(){
       axios.post('http://localhost:8088/color/update',{
@@ -256,7 +278,7 @@ export default {
       })
     },
 
-    //更改每页显示数据条数
+    // 更改每页显示数据条数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
@@ -273,7 +295,7 @@ export default {
         });
     },
 
-    //更改当前页
+    // 更改当前页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val

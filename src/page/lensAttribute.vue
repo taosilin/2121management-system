@@ -18,7 +18,7 @@
 
       <el-row v-if="addVisible" class="item">
         属性名：
-          <el-input placeholder="请输入新属性名" v-model="inputAttribute" style="width: 200px"></el-input>
+          <el-input placeholder="请输入新属性名" v-model="inputAttribute" style="width: 300px" maxlength="12" show-word-limit></el-input>
           <el-button v-if="inputAttribute==''" type="danger" disabled>确认添加</el-button>
           <el-button v-else type="success" @click="onAddAttribute">确认添加</el-button>
       </el-row>

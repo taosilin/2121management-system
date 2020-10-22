@@ -104,7 +104,8 @@ export default {
           { min: 3, max: 25, message: '长度在 3 到 25 个字符', trigger: 'blur' }
         ],
         adminName: [
-          { required: true, message: '请输入管理员姓名', trigger: 'blur' }
+          { required: true, message: '请输入管理员姓名', trigger: 'blur' },
+          { min: 1, max: 25, message: '长度不超过 25 个字符', trigger: 'blur' }
         ]
       }
 

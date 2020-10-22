@@ -61,14 +61,17 @@
     <!--添加问题对话框-->
     <el-dialog class="addProblem" title="添加问题" :visible.sync="addProblemVisible">
       <el-form
+        :rules="rules"
         :model="newProblem"
+        ref="addProblem"
+        label-position="left"
         label-width="100px">
 
-        <el-form-item label="问题描述" >
+        <el-form-item label="问题描述" prop="problemContent">
           <el-input v-model="newProblem.problemContent"></el-input>
         </el-form-item>
 
-        <el-form-item label="回答">
+        <el-form-item label="回答" prop="answer">
           <el-input type="textarea" v-model="newProblem.answer"></el-input>
         </el-form-item>
 
@@ -109,7 +112,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addProblemVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleAddProblem">确 定</el-button>
+        <el-button type="primary" @click="handleAddProblem('addProblem')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -186,6 +189,17 @@ export default {
       newProblem: {},
       updateProblemVisible: false,
 
+      rules: {
+        problemContent: [
+          { required: true, message: '请输入问题描述', trigger: 'blur' },
+          { min: 1, max: 100, message: '长度不超过 100 个字符', trigger: 'blur' }
+        ],
+        answer:[
+          { required: true, message: '请输入回答', trigger: 'blur' },
+          { min: 1, max: 500, message: '长度不超过 500 个字符', trigger: 'blur' }
+        ]
+      },
+
       classes: [{
         value: '镜框',
         label: '镜框'
@@ -234,7 +248,50 @@ export default {
   },
   methods: {
 
-    //编辑问题
+    // 打开添加问题对话框
+    openAddProblem(){
+      this.newProblem = {}
+      this.addProblemVisible = true
+    },
+
+    // 添加常见问题
+    handleAddProblem(formName){
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          axios.post('http://localhost:8088/problem/add',{
+            problemContent: this.newProblem.problemContent,
+            answer: this.newProblem.answer,
+            classification: this.newProblem.classification.toString(),
+            keyword: this.newProblem.keyword.toString()
+          }).then(response => {
+            console.log(response.data)
+            if (response.data.code==200){
+              location.reload()
+              this.$message({
+                showClose: true,
+                message: '添加成功！',
+                type: 'success'
+              })
+            }
+            else{
+              this.$message({
+                showClose: true,
+                message: '添加失败，请联系管理员',
+                type: 'error'
+              })
+            }
+          }).catch(error => {
+            console.log(error)
+          })
+          this.addProblemVisible = false
+        }
+        else {
+          this.$message('请按提示填写表单')
+        }
+      })
+    },
+
+    // 打开编辑问题对话框
     handleEdit(index, row) {
       console.log(index, row)
       this.newProblem = this.problemList[index]
@@ -242,6 +299,8 @@ export default {
       this.newProblem.keyword = this.newProblem.keyword.split(',')
       this.updateProblemVisible = true
     },
+
+    // 提交编辑问题
     handleUpdateProblem() {
       axios.post('http://localhost:8088/problem/update',{
         problemID: this.newProblem.problemID,
@@ -265,7 +324,6 @@ export default {
 
     //删除问题
     handleDelete(index, row) {
-      console.log(index, row)
       this.$confirm('此操作将永久删除该问题, 是否继续?', '提示', {
         confirmButtonText: '确认删除',
         cancelButtonText: '取消',
@@ -297,6 +355,7 @@ export default {
       })
     },
 
+    // 更改每页显示数据条数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
@@ -313,6 +372,7 @@ export default {
         });
     },
 
+    // 更改当前页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
@@ -327,41 +387,8 @@ export default {
         .catch(error => {       //发生错误
           console.log(error)
         });
-    },
-
-    // 添加常见问题
-    openAddProblem(){
-      this.newProblem = {}
-      this.addProblemVisible = true
-    },
-    handleAddProblem(){
-      axios.post('http://localhost:8088/problem/add',{
-        problemContent: this.newProblem.problemContent,
-        answer: this.newProblem.answer,
-        classification: this.newProblem.classification.toString(),
-        keyword: this.newProblem.keyword.toString()
-      }).then(response => {
-        console.log(response.data)
-        if (response.data.code==200){
-          location.reload()
-          this.$message({
-            showClose: true,
-            message: '添加成功！',
-            type: 'success'
-          })
-        }
-        else{
-          this.$message({
-            showClose: true,
-            message: '添加失败，请联系管理员',
-            type: 'error'
-          })
-        }
-      }).catch(error => {
-        console.log(error)
-      })
-      this.addProblemVisible = false
     }
+
   }
 }
 </script>
