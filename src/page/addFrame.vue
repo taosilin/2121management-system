@@ -293,7 +293,6 @@ export default {
         sketch: this.form.sketch,
         keyword: this.form.keyword.toString()
       }).then(response => {
-        console.log(response.data)
         if (response.data.code === 200){
           this.$message({
             showClose: true,
@@ -302,6 +301,13 @@ export default {
           })
           this.$router.push('/frame')
           location.reload()
+        }
+        else if (response.data.code === 400){
+          this.$message({
+            showClose: true,
+            message: response.data.message,
+            type: 'error'
+          })
         }
         else{
           this.$message({
@@ -350,7 +356,7 @@ export default {
       //限制上传文件为2M
       console.log(this.files)
       console.log(fileList)
-      let sizeIsSatisfy = file.size < 2 * 1024 * 1024 ? true : false;
+      let sizeIsSatisfy = file.size < 2 * 1024 * 1024 ? true : false
       if (sizeIsSatisfy) {
         return true;
       } else {

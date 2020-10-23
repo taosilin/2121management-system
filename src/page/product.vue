@@ -122,11 +122,17 @@ export default {
       })
   },
   methods: {
+
+    // 跳转到编辑商品页面
     handleEdit(index, row) {
-      console.log(index, row)
+      this.$router.push({
+        path:'/editProduct',
+        query:{
+          productID:this.productList[index].productID
+        }
+      })
     },
     handleDetail(index, row) {
-      console.log(index, row)
       this.$router.push({
         path:'/productDetail',
         query:{

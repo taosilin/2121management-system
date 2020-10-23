@@ -1,9 +1,9 @@
 <template>
   <div class="addProductDiv">
-    添加商品
     <el-form ref="form"
              :model="form"
-             label-width="80px">
+             label-position="left"
+             label-width="120px">
 
       <el-form-item label="商品ID">
         <el-input v-model="form.productID" placeholder="商品ID"></el-input>
@@ -212,7 +212,15 @@ export default {
           })
           this.$router.push('/product')
           location.reload()
-        } else {
+        }
+        else if (response.data.code === 400){
+          this.$message({
+            showClose: true,
+            message: response.data.message,
+            type: 'error'
+          })
+        }
+        else {
           this.$message({
             showClose: true,
             message: '添加失败，请联系管理员',
