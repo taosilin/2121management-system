@@ -66,9 +66,10 @@
 
         <el-form-item label="预览图片">
           <el-upload
-            action="http://localhost:8088/uploadimg"
+            ref="upload"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
+            :http-request="handleUploadImage"
             list-type="picture"
             :headers="headerObj"
             :on-success="handleSuccess">
@@ -157,17 +158,35 @@ export default {
   },
   methods: {
 
-    //处理图片预览效果
+    // 处理图片预览效果
     handlePreview(file) {
       console.log(file);
     },
-    //处理移除图片操作
+    // 处理移除图片操作
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
-    //监听图片上传成功事件
+    // 监听图片上传成功事件
     handleSuccess(response){
       console.log(response)
+    },
+
+    // 上传图片
+    handleUploadImage(param) {
+      const formData = new FormData()
+      formData.append('imageFile', param.file)
+
+      axios.post('http://localhost:8088/color/uploadImage',formData)
+      .then(response => {
+        console.log('上传图片成功')
+        console.log(response)
+        param.onSuccess()  // 上传成功的图片会显示绿色的对勾
+        this.newColor.colorImage = response.data
+        // 但是我们上传成功了图片， fileList 里面的值却没有改变，还好有on-change指令可以使用
+      }).catch(error => {
+        console.log('图片上传失败')
+        param.onError()
+      })
     },
 
     //打开添加颜色对话框
@@ -186,13 +205,13 @@ export default {
             colorName: this.newColor.colorName,
             colorImage: this.newColor.colorImage
           }).then(response => {
-            if (response.data.code==200){
+            if (response.data.code === 200){
               this.$message({
                 showClose: true,
                 message: '添加成功！',
                 type: 'success'
               })
-              // location.reload()
+              location.reload()
             }
             else {
               this.$message({

@@ -132,6 +132,7 @@ export default {
         }
       })
     },
+    // 跳转到商品详情页面
     handleDetail(index, row) {
       this.$router.push({
         path:'/productDetail',
@@ -140,15 +141,67 @@ export default {
         }
       })
     },
+    // 删除商品
     handleDelete(index, row) {
       console.log(index, row)
+      this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        axios.post('http://localhost:8088/product/delete',{
+          productID: this.productList[index].productID
+        }).then(response => {
+          if (response.data.code === 200){
+            location.reload()
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          }
+        }).catch(error => {
+
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
+
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      axios.post('http://localhost:8088/product/list',{
+        page:this.currentPage,
+        size:this.pageSize
+      })
+        .then(response => {
+          this.productList = response.data.data
+          this.resultNum = response.data.data.length
+        })
+        .catch(error => {       //发生错误
+          console.log(error)
+        })
     },
+
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+      this.currentPage = val
+      axios.post('http://localhost:8088/product/list',{
+        page:this.currentPage,
+        size:this.pageSize
+      })
+        .then(response => {
+          this.productList = response.data.data
+          this.resultNum = response.data.data.length
+        })
+        .catch(error => {       //发生错误
+          console.log(error)
+        })
     },
+
     handleAddProduct(){
       this.$router.push('/addProduct')
     }
