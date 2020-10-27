@@ -321,42 +321,6 @@ export default {
   },
   methods: {
 
-    // 编辑镜片信息
-    handleEdit(index, row) {
-      console.log(index, row)
-      this.newLens = this.lensList[index]
-      this.updateLensVisible = true
-    },
-
-    // 删除镜片
-    handleDelete(index, row) {
-      this.$confirm('此操作将永久删除该镜片, 是否继续?', '提示', {
-        confirmButtonText: '确认删除',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        axios.post('http://localhost:8088/lens/delete',{
-          lensID : this.lensList[index].lensID
-        }).then(response => {
-          if (response.data.code === 200){
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-            location.reload()
-          }
-        }).catch(error => {
-
-        })
-
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
@@ -389,6 +353,7 @@ export default {
         });
     },
 
+    // 打开添加镜片对话框
     openAddLens(){
       this.newLens = {}
       this.addLensVisible = true
@@ -426,10 +391,17 @@ export default {
             })
           }
 
-        }).catch(function(error){
+        }).catch(error => {
           console.log(error)
       })
       this.addLensVisible = false
+    },
+
+    // 打开编辑镜片信息对话框
+    handleEdit(index, row) {
+      console.log(index, row)
+      this.newLens = this.lensList[index]
+      this.updateLensVisible = true
     },
 
     // 编辑镜片
@@ -447,7 +419,7 @@ export default {
         state: this.newLens.state,
         description: this.newLens.description
       })
-        .then(response=>{
+        .then(response => {
           console.log(response.data)
           if (response.data.code === 200){
             this.$message({
@@ -465,11 +437,40 @@ export default {
             })
           }
 
-        }).catch(function(error){
+        }).catch(error => {
         console.log(error)
       })
       this.updateLensVisible = false
       this.newLens = {}
+    },
+
+    // 删除镜片
+    handleDelete(index, row) {
+      this.$confirm('此操作将永久删除该镜片, 是否继续?', '提示', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        axios.post('http://localhost:8088/lens/delete',{
+          lensID : this.lensList[index].lensID
+        }).then(response => {
+          if (response.data.code === 200){
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            location.reload()
+          }
+        }).catch(error => {
+
+        })
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
 
     open1() {

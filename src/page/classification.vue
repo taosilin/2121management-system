@@ -176,11 +176,17 @@ export default {
     })
       .then(response => {
         this.classList = response.data.data
-        this.resultNum = response.data.data.length
       })
       .catch(error => {
         console.log(error)
       })
+
+    axios.post('http://localhost:8088/class/total')
+    .then(response => {
+      this.resultNum = response.data
+    }).catch(error => {
+      console.log(error)
+    })
 
     axios.post('http://localhost:8088/class/superior',{
       superior: 0
@@ -313,7 +319,6 @@ export default {
       })
         .then(response => {
           this.classList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {
           console.log(error)
@@ -329,7 +334,6 @@ export default {
       })
         .then(response => {
           this.classList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {
           console.log(error)

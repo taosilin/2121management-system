@@ -118,13 +118,18 @@ export default {
       page:this.currentPage,
       size:this.pageSize
     })
-      .then(response=>{
+      .then(response => {
         this.commentList = response.data.data
-        this.resultNum = response.data.data.length
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log(error)
       })
+    axios.post('http://localhost:8088/comment/total')
+    .then(response => {
+      this.resultNum = response.data
+    }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
 
@@ -133,15 +138,15 @@ export default {
         commentID: this.replyID,
         reply: this.replyInput,
         replyTime: new Date()
-      }).then(response=>{
-        if (response.data.code==200){
+      }).then(response => {
+        if (response.data.code === 200){
           location.reload()
           this.$message({
             type: 'success',
             message: '回复成功!'
           })
         }
-      }).catch(error=>{
+      }).catch(error => {
         console.log(error)
         this.$message({
           showClose: true,
@@ -170,11 +175,10 @@ export default {
         page:this.currentPage,
         size:this.pageSize
       })
-        .then(response=>{
+        .then(response => {
           this.commentList = response.data.data
-          this.resultNum = response.data.data.length
         })
-        .catch(function (error) {
+        .catch(error => {
           console.log(error)
         })
     },
@@ -186,11 +190,10 @@ export default {
         page:this.currentPage,
         size:this.pageSize
       })
-        .then(response=>{
+        .then(response => {
           this.commentList = response.data.data
-          this.resultNum = response.data.data.length
         })
-        .catch(function (error) {
+        .catch(error => {
           console.log(error)
         })
     },

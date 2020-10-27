@@ -241,7 +241,12 @@ export default {
       size:this.pageSize
     }).then(response => {
       this.problemList = response.data.data
-      this.resultNum = response.data.data.length
+    }).catch(error => {
+      console.log(error)
+    })
+    axios.post('http://localhost:8088/problem/total')
+    .then(response => {
+      this.resultNum = response.data
     }).catch(error => {
       console.log(error)
     })
@@ -264,8 +269,7 @@ export default {
             classification: this.newProblem.classification.toString(),
             keyword: this.newProblem.keyword.toString()
           }).then(response => {
-            console.log(response.data)
-            if (response.data.code==200){
+            if (response.data.code === 200){
               location.reload()
               this.$message({
                 showClose: true,
@@ -365,7 +369,6 @@ export default {
       })
         .then(response=>{
           this.problemList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)
@@ -382,7 +385,6 @@ export default {
       })
         .then(response=>{
           this.problemList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)

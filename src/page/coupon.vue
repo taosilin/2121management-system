@@ -124,10 +124,10 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from 'axios'
 
 export default {
-  name: "coupon",
+  name: 'coupon',
   data() {
     return {
       currentPage: 0,
@@ -163,14 +163,21 @@ export default {
     })
       .then(response => {
         this.couponList = response.data.data
-        this.resultNum = response.data.data.length
       })
       .catch(error => {       //发生错误
         console.log(error)
       })
+
+    axios.post('http://localhost:8088/coupon/total')
+    .then(response => {
+      this.resultNum = response.data
+    }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
 
+    // 删除优惠券
     handleDelete(index, row) {
       console.log(index, row)
       this.$confirm('此操作将永久删除该优惠券, 是否继续?', '提示', {
@@ -202,7 +209,6 @@ export default {
       })
         .then(response=>{
           this.couponList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(function (error) {       //发生错误
           console.log(error)
@@ -217,7 +223,6 @@ export default {
       })
         .then(response => {
           this.couponList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)
@@ -241,7 +246,7 @@ export default {
         timeLimit: this.newCoupon.timeLimit
       }).then(response => {
         console.log(response.data)
-        if (response.data.code==200) {
+        if (response.data.code === 200) {
           this.$message({
             showClose: true,
             message: '添加优惠券成功！',

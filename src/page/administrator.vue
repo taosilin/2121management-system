@@ -117,7 +117,13 @@ export default {
       size: this.pageSize
     }).then(response => {
       this.adminList = response.data.data
-      this.resultNum = response.data.data.length
+    }).catch(error => {
+      console.log(error)
+    })
+    // 管理员信息总数
+    axios.post('http://localhost:8088/admin/total')
+      .then(response => {
+      this.resultNum = response.data
     }).catch(error => {
       console.log(error)
     })
@@ -223,7 +229,6 @@ export default {
       })
         .then(response => {
           this.adminList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)
@@ -240,7 +245,6 @@ export default {
       })
         .then(response => {
           this.adminList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)

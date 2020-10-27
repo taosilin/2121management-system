@@ -106,8 +106,13 @@ export default {
       size:this.pageSize
     }).then(response => {
       this.refundList = response.data.data
-      this.resultNum = response.data.data.length
     }).catch(error => {       //发生错误
+      console.log(error)
+    })
+    axios.post('http://localhost:8088/refund/total')
+    .then(response => {
+      this.resultNum = response.data
+    }).catch(error => {
       console.log(error)
     })
   },
@@ -128,7 +133,6 @@ export default {
       })
         .then(response => {
           this.refundList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)
@@ -145,7 +149,6 @@ export default {
       })
         .then(response => {
           this.refundList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)

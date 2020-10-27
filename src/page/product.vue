@@ -32,16 +32,6 @@
       </el-table-column>
 
       <el-table-column
-        prop="imageList"
-        label="商品图片">
-      </el-table-column>
-
-      <el-table-column
-        prop="description"
-        label="商品详情">
-      </el-table-column>
-
-      <el-table-column
         prop="classification"
         label="分类">
       </el-table-column>

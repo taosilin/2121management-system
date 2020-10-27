@@ -52,137 +52,218 @@ export default new Router({
         {
           path: '/home',
           component: home,
-          meta: { title: '控制台' }
+          meta: {
+            title: '控制台',
+            requireAuth: true // 判断是否需要登录
+          }
         },
         {
           path: '/product',
           component: product,
-          meta: { title: '商品管理' }
+          meta: {
+            title: '商品管理',
+            requireAuth: true
+          }
         },
         {
           path: '/transaction',
           component: transaction,
-          meta: { title: '交易管理' }
+          meta: {
+            title: '交易管理',
+            requireAuth: true
+          }
         },
         {
           path: '/configuration',
           component: configuration,
-          meta: { title: '配置管理' }
+          meta: {
+            title: '配置管理',
+            requireAuth: true
+          }
         },
         {
           path: '/comment',
           component: comment,
-          meta: { title: '评论管理' }
+          meta: {
+            title: '评论管理',
+            requireAuth: true
+          }
         },
         {
           path: '/frame',
           component: frame,
-          meta: { title: '镜框管理' }
+          meta: {
+            title: '镜框管理',
+            requireAuth: true
+          }
         },
         {
           path: '/lens',
           component: lens,
-          meta: { title: '镜片管理' }
+          meta: {
+            title: '镜片管理',
+            requireAuth: true
+          }
         },
         {
           path: '/addFrame',
           component: addFrame,
-          meta: { title: '添加镜框' }
+          meta: {
+            title: '添加镜框',
+            requireAuth: true
+          }
         },
         {
           path: '/addProduct',
           component: addProduct,
-          meta: { title: '添加商品' }
+          meta: {
+            title: '添加商品',
+            requireAuth: true
+          }
         },
         {
           path: '/order',
           component: order,
-          meta: { title: '订单管理' }
+          meta: {
+            title: '订单管理',
+            requireAuth: true
+          }
         },
         {
           path: '/orderDetail',
           component: orderDetail,
-          meta: { title: '订单详情' }
+          meta: {
+            title: '订单详情',
+            requireAuth: true
+          }
         },
         {
           path: '/coupon',
           component: coupon,
-          meta: { title: '优惠券管理' }
+          meta: {
+            title: '优惠券管理',
+            requireAuth: true
+          }
         },
         {
           path: '/productDetail',
           component: productDetail,
-          meta: { title: '商品详情' }
+          meta: {
+            title: '商品详情',
+            requireAuth: true
+          }
         },
         {
           path: '/manageFrame',
           component: manageFrame,
-          meta: { title: '管理镜框' }
+          meta: {
+            title: '管理镜框',
+            requireAuth: true
+          }
         },
         {
           path: '/commonProblem',
           component: commonProblem,
-          meta: { title: '常见问题' }
+          meta: {
+            title: '常见问题',
+            requireAuth: true
+          }
         },
         {
           path: '/lensStock',
           component: lensStock,
-          meta: { title: '镜片库存' }
+          meta: {
+            title: '镜片库存',
+            requireAuth: true
+          }
         },
         {
           path: '/stockDetail',
           component: stockDetail,
-          meta: { title: '库存盘点' }
+          meta: {
+            title: '库存盘点',
+            requireAuth: true
+          }
         },
         {
           path: '/classification',
           component: classification,
-          meta: { title: '分类管理' }
+          meta: {
+            title: '分类管理',
+            requireAuth: true
+          }
         },
         {
           path: '/refund',
           component: refund,
-          meta: { title: '退款管理' }
+          meta: {
+            title: '退款管理',
+            requireAuth: true
+          }
         },
         {
           path: '/color',
           component: color,
-          meta: { title: '镜框颜色' }
+          meta: {
+            title: '镜框颜色',
+            requireAuth: true
+          }
         },
         {
           path: '/lensAttribute',
           component: lensAttribute,
-          meta: { title: '镜片属性' }
+          meta: {
+            title: '镜片属性',
+            requireAuth: true
+          }
         },
         {
           path: '/frameAttribute',
           component: frameAttribute,
-          meta: { title: '镜框参数' }
+          meta: {
+            title: '镜框参数',
+            requireAuth: true
+          }
         },
         {
           path: '/reviewOrder',
           component: reviewOrder,
-          meta: { title: '审单管理' }
+          meta: {
+            title: '审单管理',
+            requireAuth: true
+          }
         },
         {
           path: '/system',
           component: system,
-          meta: { title: '系统管理' }
+          meta: {
+            title: '系统管理',
+            requireAuth: true
+          }
         },
         {
           path: '/editFrame',
           component: editFrame,
-          meta: { title: '编辑镜框' }
+          meta: {
+            title: '编辑镜框',
+            requireAuth: true
+          }
         },
         {
           path: '/editProduct',
           component: editProduct,
-          meta: { title: '编辑商品' }
+          meta: {
+            title: '编辑商品',
+            requireAuth: true
+          }
         },
         {
           path: '/administrator',
           component: administrator,
-          meta: { title: '管理员' }
+          meta: {
+            title: '管理员',
+            requireAuth: true
+          }
         }
       ]
     }
