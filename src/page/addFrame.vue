@@ -70,9 +70,9 @@
           <el-input v-model="form.sketch" placeholder="商品简述"></el-input>
         </el-form-item>
 
-        <el-form-item label="商品详情">
-          <el-input type="textarea" placeholder="请输入商品详细描述" v-model="form.description"></el-input>
-        </el-form-item>
+<!--        <el-form-item label="商品详情">-->
+<!--          <el-input type="textarea" placeholder="请输入商品详细描述" v-model="form.description"></el-input>-->
+<!--        </el-form-item>-->
 
         <el-form-item label="所属分类">
           <el-select
@@ -126,50 +126,34 @@
         </el-form-item>
 
         <el-form-item label="商品封面图片">
-
           <el-upload
-            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"
+            ref="upload"
             list-type="picture-card"
             :limit=limitNum
-            :headers="token"
-            :on-preview="handlePictureCardPreview"
+            :headers="headerObj"
             :on-remove="handleRemove"
-
-            :on-change="addFile"
-            :file-list="showFiles"
-            name="imgUrl"
-            ref="upload">
+            :http-request="handleUploadCoverImage">
             <i class="el-icon-plus"></i>
           </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
-
         </el-form-item>
 
         <el-form-item label="商品展示列表图片">
           <el-upload
-            class="upload-demo"
-            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
-            :file-list="form.imageList"
+            :http-request="handleUploadImageList"
             list-type="picture">
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
 
         <el-form-item label="商品详情图片">
           <el-upload
-            class="upload-demo"
-            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
-            :file-list="form.imageList"
+            :http-request="handleUploadDescription"
             list-type="picture">
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
 
@@ -189,7 +173,6 @@ export default {
   name: 'addFrame',
   data () {
     return {
-      showFiles: [],
       form: {
         frameID: '',
         frameName: '',
@@ -199,11 +182,12 @@ export default {
         dimensions: [0, 0, 0],
         nosePad: '',
         state: '0',
-        description: '',
+        description: [],
         sketch: '',
         classification: [],
         tab: [],
         keyword: [],
+        coverImage: '',
         imageList: [],
 
         materials: [],
@@ -241,11 +225,12 @@ export default {
           label: '防蓝光'
         }]
       },
-      dialogImageUrl: '',
-      dialogVisible: false,
-      imgUrl: '',
       // 上传数量限制
-      limitNum: 1
+      limitNum: 1,
+      //图片上传组件的headers请求头对象
+      headerObj: {
+        Authorization: window.sessionStorage.getItem('token')
+      }
     }
   },
   created () {
@@ -275,6 +260,60 @@ export default {
   },
   methods: {
 
+    // 上传商品封面图片
+    handleUploadCoverImage(param){
+      const formData = new FormData()
+      formData.append('imageFile', param.file)
+      axios.post('http://localhost:8088/frame/uploadImage',formData)
+        .then(response => {
+          console.log('上传图片成功')
+          // console.log(response)
+          param.onSuccess()  // 上传成功的图片会显示绿色的对勾
+          this.form.coverImage = response.data
+          // 但是我们上传成功了图片， fileList 里面的值却没有改变，还好有on-change指令可以使用
+        }).catch(error => {
+          console.log('图片上传失败')
+          param.onError()
+      })
+    },
+
+    // 上传商品展示图片
+    handleUploadImageList(param) {
+      const formData = new FormData()
+      formData.append('imageFile', param.file)
+      axios.post('http://localhost:8088/frame/uploadImage',formData)
+        .then(response => {
+          console.log('上传图片成功')
+          // console.log(response)
+          param.onSuccess()  // 上传成功的图片会显示绿色的对勾
+          this.form.imageList.push(response.data)
+          // console.log(this.form.imageList)
+          // 但是我们上传成功了图片， fileList 里面的值却没有改变，还好有on-change指令可以使用
+        }).catch(error => {
+        console.log('图片上传失败')
+        param.onError()
+      })
+    },
+
+    // 上传商品详情图片
+    handleUploadDescription(param) {
+      const formData = new FormData()
+      formData.append('imageFile', param.file)
+      axios.post('http://localhost:8088/frame/uploadImage',formData)
+        .then(response => {
+          console.log('上传图片成功')
+          // console.log(response)
+          param.onSuccess()  // 上传成功的图片会显示绿色的对勾
+          this.form.description.push(response.data)
+          // console.log(this.form.description)
+          // 但是我们上传成功了图片， fileList 里面的值却没有改变，还好有on-change指令可以使用
+        }).catch(error => {
+        console.log('图片上传失败')
+        param.onError()
+      })
+    },
+
+    // 提交添加镜框
     onAdd () {
       axios.post('http://localhost:8088/frame/add', {
         frameID: this.form.frameID,
@@ -286,7 +325,7 @@ export default {
         dimension: this.form.dimensions.join('-'),
         state: this.form.state,
         imageList: this.form.imageList.toString(),
-        description: this.form.description,
+        description: this.form.description.toString(),
         classification: this.form.classification.toString(),
         tab: this.form.tab.toString(),
         coverImage: this.form.coverImage,
@@ -316,7 +355,6 @@ export default {
             type: 'error'
           })
         }
-
       }).catch(error => {
         console.log(error)
       })
@@ -331,88 +369,88 @@ export default {
     handlePreview (file) {
       console.log(file)
     },
-    handlePictureCardPreview (file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
 
+    // 监听图片上传成功事件
+    handleSuccess(response){
+      console.log(response,"success")
+    },
 
     //文件上传成功时的钩子
-    onSuccess (response, file, fileList) {
-      console.log(response.data)    //服务器返回的图片信息，可以提交到表格
-      this.$message({
-        message: '图片上传成功',
-        type: 'success'
-      })
-      this.$refs.upload.clearFiles()//上传成功清除列表，否则每次上传都要删掉上次上传的列表
-    },
-    onError(err, file, fileList) {
-      // console.log(err.msg)
-      this.$message.error(err.msg)
-    },
+    // onSuccess (response, file, fileList) {
+    //   console.log(response.data)    //服务器返回的图片信息，可以提交到表格
+    //   this.$message({
+    //     message: '图片上传成功',
+    //     type: 'success'
+    //   })
+    //   this.$refs.upload.clearFiles()//上传成功清除列表，否则每次上传都要删掉上次上传的列表
+    // },
+    // onError(err, file, fileList) {
+    //   // console.log(err.msg)
+    //   this.$message.error(err.msg)
+    // },
     //upload 改变时  触发的函数   主要目的为保存 filelist 和 大小限制
-    addFile(file, fileList) {
-      this.files = fileList;//主要用于接收存放所有的图片信息
-      //限制上传文件为2M
-      console.log(this.files)
-      console.log(fileList)
-      let sizeIsSatisfy = file.size < 2 * 1024 * 1024 ? true : false
-      if (sizeIsSatisfy) {
-        return true;
-      } else {
-        this.fileSizeIsSatisfy = true;
-        return false;
-      }
-    },
-    submitForm(formName) {//提交form表单
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          if (this.files.length <= 0) {
-            this.$message.error("请至少上传一个文件！");
-            return;
-          }
-          if (this.fileSizeIsSatisfy) {
-            this.$message.error("上传失败！存在文件大小超过2M！");
-            return;
-          }
-          this.processFile();//处理files的数据变成键值对的形式   返回newFiles这个数组
-          var param = new FormData(); // FormData 对象
-          newFiles.forEach(fileItem => {
-            var list = fileItem;
-            var file = list.imgFile;
-            param.append("files", file); // 文件对象
-          });
-          getImgUrl(param).then(
-            msg => {
-              console.log(msg);//拿到想要的图片地址
-            },
-            error => {
-              console.log(error);
-            }
-          );
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    //全部的图片添加到 newFiles中
-    processFile() {
-      this.files.forEach(item => {
-        let objFile = {};
-        objFile.title = "files";
-        objFile.imgFile = item.raw;
-        this.newFiles.push(objFile);
-      });
-    },
-    openModal(val, data) {
-      let fileArr = [];
-      let fileObj = {};
-      fileObj.name="file";
-      fileObj.url = data.file;
-      fileArr.push(fileObj);
-      this.showFiles = fileArr
-    }
+    // addFile(file, fileList) {
+    //   this.files = fileList;//主要用于接收存放所有的图片信息
+    //   //限制上传文件为2M
+    //   console.log(this.files)
+    //   console.log(fileList)
+    //   let sizeIsSatisfy = file.size < 2 * 1024 * 1024 ? true : false
+    //   if (sizeIsSatisfy) {
+    //     return true;
+    //   } else {
+    //     this.fileSizeIsSatisfy = true;
+    //     return false;
+    //   }
+    // },
+    // submitForm(formName) {//提交form表单
+    //   this.$refs[formName].validate(valid => {
+    //     if (valid) {
+    //       if (this.files.length <= 0) {
+    //         this.$message.error("请至少上传一个文件！");
+    //         return;
+    //       }
+    //       if (this.fileSizeIsSatisfy) {
+    //         this.$message.error("上传失败！存在文件大小超过2M！");
+    //         return;
+    //       }
+    //       this.processFile();//处理files的数据变成键值对的形式   返回newFiles这个数组
+    //       var param = new FormData(); // FormData 对象
+    //       newFiles.forEach(fileItem => {
+    //         var list = fileItem;
+    //         var file = list.imgFile;
+    //         param.append("files", file); // 文件对象
+    //       });
+    //       getImgUrl(param).then(
+    //         msg => {
+    //           console.log(msg);//拿到想要的图片地址
+    //         },
+    //         error => {
+    //           console.log(error);
+    //         }
+    //       );
+    //     } else {
+    //       console.log("error submit!!");
+    //       return false;
+    //     }
+    //   });
+    // },
+    // //全部的图片添加到 newFiles中
+    // processFile() {
+    //   this.files.forEach(item => {
+    //     let objFile = {};
+    //     objFile.title = "files";
+    //     objFile.imgFile = item.raw;
+    //     this.newFiles.push(objFile);
+    //   });
+    // },
+    // openModal(val, data) {
+    //   let fileArr = [];
+    //   let fileObj = {};
+    //   fileObj.name="file";
+    //   fileObj.url = data.file;
+    //   fileArr.push(fileObj);
+    //   this.showFiles = fileArr
+    // }
 
   }
 }

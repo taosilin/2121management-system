@@ -4,7 +4,6 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>镜框详情</span>
-        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
       </div>
       <div class="text item">
         <div>镜框ID：{{frameDetail.frameID}}</div>
@@ -20,6 +19,26 @@
           <el-tag v-else type="info">已下架</el-tag>
         </div>
         <div>简述：{{frameDetail.sketch}}</div>
+        <div>封面图片：
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="frameDetail.coverImage"
+            fit="contain"></el-image>
+        </div>
+        <div>
+          Carousel图片:
+          <el-image v-for="item in frameDetail.imageList"
+            style="width: 100px; height: 100px"
+            :src="item"
+            fit="contain"></el-image>
+        </div>
+        <div>
+          详情图片:
+          <el-image v-for="item in frameDetail.description"
+                    style="width: 100px; height: 100px"
+                    :src="item"
+                    fit="contain"></el-image>
+        </div>
       </div>
     </el-card>
 
@@ -65,9 +84,13 @@
             prop="price"
             label="价格">
           </el-table-column>
-          <el-table-column
-            prop="specImage"
-            label="规格图片">
+          <el-table-column label="规格图片">
+            <template slot-scope="scope">
+              <el-image
+                style="width: 100px; height: 100px"
+                :src="specs[scope.$index].specImage"
+                fit="contain"></el-image>
+            </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -118,6 +141,19 @@
                 fit="contain"></el-image>
             </el-radio>
           </template>
+        </el-form-item>
+
+        <el-form-item label="预览图片">
+          <el-upload
+            ref="upload"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :http-request="handleUploadImage"
+            list-type="picture"
+            :headers="headerObj"
+            :on-success="handleSuccess">
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
         </el-form-item>
 
       </el-form>
@@ -212,7 +248,11 @@ export default {
 
       addSKUVisible: false,
       updateSKUVisible: false,
-      newSKU: {}
+      newSKU: {},
+      //图片上传组件的headers请求头对象
+      headerObj: {
+        Authorization: window.sessionStorage.getItem('token')
+      }
     }
   },
   created() {
@@ -224,6 +264,8 @@ export default {
       frameID: frameID
     }).then(response => {
       this.frameDetail = response.data.data.frame
+      this.frameDetail.imageList = this.frameDetail.imageList.split(',')
+      this.frameDetail.description = this.frameDetail.description.split(',')
       this.attributes = response.data.data.attributes
       this.specs = response.data.data.specs
 
@@ -275,6 +317,37 @@ export default {
 
   },
   methods: {
+
+
+    // 处理图片预览效果
+    handlePreview(file) {
+      console.log(file,"preview");
+    },
+    // 处理移除图片操作
+    handleRemove(file, fileList) {
+      console.log(file, fileList,"remove");
+    },
+    // 监听图片上传成功事件
+    handleSuccess(response){
+      console.log(response,"success")
+    },
+
+    // 上传图片
+    handleUploadImage(param) {
+      const formData = new FormData()
+      formData.append('imageFile', param.file)
+      axios.post('http://localhost:8088/spec/uploadImage',formData)
+        .then(response => {
+          console.log('上传图片成功')
+          console.log(response)
+          param.onSuccess()  // 上传成功的图片会显示绿色的对勾
+          this.newSKU.specImage = response.data
+          // 但是我们上传成功了图片， fileList 里面的值却没有改变，还好有on-change指令可以使用
+        }).catch(error => {
+        console.log('图片上传失败')
+        param.onError()
+      })
+    },
 
     //打开添加SKU对话框
     handleCommand(command) {

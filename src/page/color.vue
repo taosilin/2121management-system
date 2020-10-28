@@ -165,15 +165,15 @@ export default {
 
     // 处理图片预览效果
     handlePreview(file) {
-      console.log(file);
+      console.log(file,"preview");
     },
     // 处理移除图片操作
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      console.log(file, fileList,"remove");
     },
     // 监听图片上传成功事件
     handleSuccess(response){
-      console.log(response)
+      console.log(response,"success")
     },
 
     // 上传图片
@@ -194,12 +194,12 @@ export default {
       })
     },
 
-    //打开添加颜色对话框
+    // 打开添加颜色对话框
     openAddColor() {
       this.newColor = {}
       this.addColorVisible = true
     },
-    //添加颜色
+    // 添加颜色
     handleAddColor(formName){
       console.log("???")
       console.log(this.newColor.colorImage)
@@ -238,13 +238,13 @@ export default {
 
     },
 
-    //打开编辑颜色对话框
+    // 打开编辑颜色对话框
     openEditColor(index, row) {
       this.newColor = this.colorList[index]
       this.editColorVisible = true
     },
 
-    //编辑颜色
+    // 编辑颜色
     handleEditColor(){
       axios.post('http://localhost:8088/color/update',{
         colorID: this.newColor.colorID,
@@ -273,7 +273,7 @@ export default {
       this.newColor = {}
     },
 
-    //删除颜色
+    // 删除颜色
     handleDelete(index, row){
       this.$confirm('此操作将永久删除该颜色, 是否继续?', '提示', {
         confirmButtonText: '确认删除',

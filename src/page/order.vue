@@ -195,11 +195,28 @@ export default {
     })
       .then(response => {
         this.orderList = response.data.data
-        this.resultNum = response.data.data.length
       })
       .catch(error => {       //发生错误
         console.log(error)
       })
+
+    if (this.stateFilter === '0'){
+      axios.post('http://localhost:8088/order/total')
+      .then(response => {
+        this.resultNum = response.data
+      }).catch(error => {
+        console.log(error)
+      })
+    }else {
+      axios.post('http://localhost:8088/order/state',{
+        state: this.stateFilter
+      })
+      .then(response => {
+        this.resultNum = response.data
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   },
   methods: {
 
@@ -213,6 +230,7 @@ export default {
       })
       location.reload()
     },
+
     handleEdit(index, row) {
       this.newOrder = this.orderList[index]
       this.updateOrderVisible = true
@@ -256,10 +274,28 @@ export default {
         size:this.pageSize
       }).then(response => {
         this.orderList = response.data.data
-        this.resultNum = response.data.data.length
       }).catch(error => {
         console.log(error)
       })
+
+      if (this.stateFilter === '0'){
+        axios.post('http://localhost:8088/order/total')
+          .then(response => {
+            this.resultNum = response.data
+          }).catch(error => {
+          console.log(error)
+        })
+      }else {
+        axios.post('http://localhost:8088/order/state',{
+          state: this.stateFilter
+        })
+          .then(response => {
+            this.resultNum = response.data
+          }).catch(error => {
+          console.log(error)
+        })
+      }
+
     },
 
     //更改每页显示数据条数
@@ -273,7 +309,6 @@ export default {
       })
         .then(response => {
           this.orderList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)
@@ -291,7 +326,6 @@ export default {
       })
         .then(response => {
           this.orderList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)

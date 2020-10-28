@@ -105,11 +105,17 @@ export default {
     })
       .then(response => {
         this.productList = response.data.data
-        this.resultNum = response.data.data.length
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log(error)
       })
+    axios.post('http://localhost:8088/product/total')
+    .then(response => {
+      this.resultNum = response.data
+    }).catch(error => {
+      console.log(error)
+    })
+
   },
   methods: {
 
@@ -169,7 +175,6 @@ export default {
       })
         .then(response => {
           this.productList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)
@@ -185,7 +190,6 @@ export default {
       })
         .then(response => {
           this.productList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)

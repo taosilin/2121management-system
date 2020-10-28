@@ -76,7 +76,7 @@
 import axios from 'axios'
 
 export default {
-  name: "frame",
+  name: 'frame',
   data() {
     return {
       currentPage: 0,
@@ -90,13 +90,18 @@ export default {
       page:this.currentPage,
       size:this.pageSize
     })
-      .then(response=>{
+      .then(response => {
         this.frameList = response.data.data
-        this.resultNum = response.data.data.length
       })
-      .catch(function (error) {       //发生错误
+      .catch(error => {       //发生错误
       console.log(error)
       })
+    axios.post('http://localhost:8088/frame/total')
+    .then(response => {
+      this.resultNum = response.data
+    }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
 
@@ -160,7 +165,6 @@ export default {
       })
         .then(response => {
           this.frameList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)
@@ -175,7 +179,6 @@ export default {
       })
         .then(response => {
           this.frameList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)

@@ -113,15 +113,22 @@ export default {
     })
       .then(response => {
         this.orderList = response.data.data
-        this.resultNum = response.data.data.length
       })
-      .catch(error => {       //发生错误
+      .catch(error => {       // 发生错误
         console.log(error)
       })
+    axios.post('http://localhost:8088/order/state',{
+      state: '2'
+    }).then(response => {
+      this.resultNum = response.data
+    }).catch(error => {
+      console.log(error)
+    })
+
   },
   methods: {
 
-    //订单详情
+    // 订单详情
     handleDetail(index, row) {
       console.log(index, row)
       this.$router.push({
@@ -133,7 +140,7 @@ export default {
       location.reload()
     },
 
-    //更改每页显示数据条数
+    // 更改每页显示数据条数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
@@ -144,14 +151,13 @@ export default {
       })
         .then(response => {
           this.orderList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)
         })
     },
 
-    //更改当前页
+    // 更改当前页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
@@ -162,7 +168,6 @@ export default {
       })
         .then(response => {
           this.orderList = response.data.data
-          this.resultNum = response.data.data.length
         })
         .catch(error => {       //发生错误
           console.log(error)
