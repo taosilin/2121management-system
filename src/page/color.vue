@@ -96,13 +96,14 @@
 
         <el-form-item label="预览图片" >
           <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="newColor.colorImage" :src="newColor.colorImage" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            ref="upload"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :http-request="handleUploadImage"
+            list-type="picture"
+            :headers="headerObj"
+            :on-success="handleSuccess">
+            <el-button size="small" type="primary">重新上传</el-button>
           </el-upload>
         </el-form-item>
 

@@ -70,10 +70,6 @@
           <el-input v-model="form.sketch" placeholder="商品简述"></el-input>
         </el-form-item>
 
-<!--        <el-form-item label="商品详情">-->
-<!--          <el-input type="textarea" placeholder="请输入商品详细描述" v-model="form.description"></el-input>-->
-<!--        </el-form-item>-->
-
         <el-form-item label="所属分类">
           <el-select
             v-model="form.classification"

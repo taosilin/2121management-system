@@ -31,14 +31,6 @@
         label="用户ID">
       </el-table-column>
       <el-table-column
-        prop="addressID"
-        label="地址">
-      </el-table-column>
-      <el-table-column
-        prop="couponID"
-        label="优惠券">
-      </el-table-column>
-      <el-table-column
         prop="totalAmount"
         label="总金额">
       </el-table-column>
@@ -179,7 +171,7 @@ export default {
   data() {
     return {
       currentPage: 0,
-      pageSize:20,
+      pageSize: 20,
       resultNum: 0,
       orderList: [],
       newOrder: {},

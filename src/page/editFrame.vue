@@ -69,10 +69,6 @@
           <el-input v-model="frameDetail.sketch" placeholder="商品简述"></el-input>
         </el-form-item>
 
-        <el-form-item label="商品详情">
-          <el-input type="textarea" placeholder="请输入商品详细描述" v-model="frameDetail.description"></el-input>
-        </el-form-item>
-
         <el-form-item label="所属分类">
           <el-select
             v-model="frameDetail.classification"
@@ -124,53 +120,37 @@
           </el-select>
         </el-form-item>
 
-<!--        <el-form-item label="商品封面图片">-->
+        <el-form-item label="商品封面图片">
+          <el-upload
+            ref="upload"
+            list-type="picture-card"
+            :limit=limitNum
+            :headers="headerObj"
+            :on-remove="handleRemove"
+            :http-request="handleUploadCoverImage">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+        </el-form-item>
 
-<!--          <el-upload-->
-<!--            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"-->
-<!--            list-type="picture-card"-->
-<!--            :limit=limitNum-->
-<!--            :headers="token"-->
-<!--            :on-preview="handlePictureCardPreview"-->
-<!--            :on-remove="handleRemove"-->
+        <el-form-item label="商品展示列表图片">
+          <el-upload
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :http-request="handleUploadImageList"
+            list-type="picture">
+            <el-button size="small" type="primary">重新上传</el-button>
+          </el-upload>
+        </el-form-item>
 
-<!--            :on-change="addFile"-->
-<!--            :file-list="showFiles"-->
-<!--            name="imgUrl"-->
-<!--            ref="upload">-->
-<!--            <i class="el-icon-plus"></i>-->
-<!--          </el-upload>-->
-<!--          <el-dialog :visible.sync="dialogVisible">-->
-<!--            <img width="100%" :src="dialogImageUrl" alt="">-->
-<!--          </el-dialog>-->
-
-<!--        </el-form-item>-->
-
-<!--        <el-form-item label="商品展示列表图片">-->
-<!--          <el-upload-->
-<!--            class="upload-demo"-->
-<!--            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"-->
-<!--            :on-preview="handlePreview"-->
-<!--            :on-remove="handleRemove"-->
-<!--            :file-list="frameDetail.imageList"-->
-<!--            list-type="picture">-->
-<!--            <el-button size="small" type="primary">点击上传</el-button>-->
-<!--            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-<!--          </el-upload>-->
-<!--        </el-form-item>-->
-
-<!--        <el-form-item label="商品详情图片">-->
-<!--          <el-upload-->
-<!--            class="upload-demo"-->
-<!--            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"-->
-<!--            :on-preview="handlePreview"-->
-<!--            :on-remove="handleRemove"-->
-<!--            :file-list="frameDetail.imageList"-->
-<!--            list-type="picture">-->
-<!--            <el-button size="small" type="primary">点击上传</el-button>-->
-<!--            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-<!--          </el-upload>-->
-<!--        </el-form-item>-->
+        <el-form-item label="商品详情图片">
+          <el-upload
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :http-request="handleUploadDescription"
+            list-type="picture">
+            <el-button size="small" type="primary">重新上传</el-button>
+          </el-upload>
+        </el-form-item>
 
         <el-form-item>
           <el-button type="primary" @click="handleUpdateFrame">保存编辑</el-button>
@@ -189,7 +169,6 @@ export default {
       frameDetail: {},
       attributes: [],
       specs: [],
-
       materials: [],
       shapes: [],
       nosePads: [],
@@ -222,7 +201,18 @@ export default {
       }, {
         value: '防蓝光',
         label: '防蓝光'
-      }]
+      }],
+
+      newImageList: [],
+
+      newDescription: [],
+
+      // 上传数量限制
+      limitNum: 1,
+      //图片上传组件的headers请求头对象
+      headerObj: {
+        Authorization: window.sessionStorage.getItem('token')
+      }
     }
   },
   created() {
@@ -238,6 +228,8 @@ export default {
       this.frameDetail.classification = this.frameDetail.classification.split(',')
       this.frameDetail.tab = this.frameDetail.tab.split(',')
       this.frameDetail.keyword = this.frameDetail.keyword.split(',')
+      this.frameDetail.imageList = this.frameDetail.imageList.split(',')
+      this.frameDetail.description = this.frameDetail.description.split(',')
       this.attributes = response.data.data.attributes
       this.specs = response.data.data.specs
     }).catch(error => {
@@ -271,8 +263,83 @@ export default {
   },
   methods: {
 
+    // 上传商品封面图片
+    handleUploadCoverImage(param){
+      const formData = new FormData()
+      formData.append('imageFile', param.file)
+      axios.post('http://localhost:8088/frame/uploadImage',formData)
+        .then(response => {
+          console.log('上传图片成功')
+          // console.log(response)
+          param.onSuccess()  // 上传成功的图片会显示绿色的对勾
+          this.frameDetail.coverImage = response.data
+          // 但是我们上传成功了图片， fileList 里面的值却没有改变，还好有on-change指令可以使用
+        }).catch(error => {
+        console.log('图片上传失败')
+        param.onError()
+      })
+    },
+
+    // 上传商品展示图片
+    handleUploadImageList(param) {
+      const formData = new FormData()
+      formData.append('imageFile', param.file)
+      axios.post('http://localhost:8088/frame/uploadImage',formData)
+        .then(response => {
+          console.log('上传图片成功')
+          // console.log(response)
+          param.onSuccess()  // 上传成功的图片会显示绿色的对勾
+          this.newImageList.push(response.data)
+          // 但是我们上传成功了图片， fileList 里面的值却没有改变，还好有on-change指令可以使用
+        }).catch(error => {
+        console.log('图片上传失败')
+        param.onError()
+      })
+    },
+
+    // 上传商品详情图片
+    handleUploadDescription(param) {
+      const formData = new FormData()
+      formData.append('imageFile', param.file)
+      axios.post('http://localhost:8088/frame/uploadImage',formData)
+        .then(response => {
+          console.log('上传图片成功')
+          // console.log(response)
+          param.onSuccess()  // 上传成功的图片会显示绿色的对勾
+          this.newDescription.push(response.data)
+          // 但是我们上传成功了图片， fileList 里面的值却没有改变，还好有on-change指令可以使用
+        }).catch(error => {
+        console.log('图片上传失败')
+        param.onError()
+      })
+    },
+
+    //文件列表移除文件时的钩子
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+    },
+
+    //点击已上传的文件链接时的钩子,获取服务器返回的数据
+    handlePreview (file) {
+      console.log(file)
+    },
+
+    // 监听图片上传成功事件
+    handleSuccess(response){
+      console.log(response,"success")
+    },
+
     // 提交编辑镜框
     handleUpdateFrame() {
+
+      if (this.newImageList.length>0){
+        this.frameDetail.imageList = this.newImageList
+      }
+
+      if (this.newDescription.length>0){
+        this.frameDetail.description = this.newDescription
+      }
+
       axios.post('http://localhost:8088/frame/update',{
         frameID: this.frameDetail.frameID,
         frameName: this.frameDetail.frameName,
@@ -283,7 +350,7 @@ export default {
         dimension: this.frameDetail.dimensions.join('-'),
         state: this.frameDetail.state,
         imageList: this.frameDetail.imageList.toString(),
-        description: this.frameDetail.description,
+        description: this.frameDetail.description.toString(),
         classification: this.frameDetail.classification.toString(),
         tab: this.frameDetail.tab.toString(),
         coverImage: this.frameDetail.coverImage,

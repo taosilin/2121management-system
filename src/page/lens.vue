@@ -104,61 +104,40 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item label="折射率" >
-          <el-select v-model="newLens.refractiveIndex" placeholder="请选择折射率">
-            <el-option label="1.56" value="1.56"></el-option>
-            <el-option label="1.59" value="1.59"></el-option>
-            <el-option label="1.60" value="1.60"></el-option>
-            <el-option label="1.67" value="1.67"></el-option>
-          </el-select>
+        <el-form-item label="折射率">
+          <el-radio-group v-model="newLens.refractiveIndex" size="medium">
+            <el-radio-button v-for="item in refractiveIndexs" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="材质" >
-          <el-select v-model="newLens.material" placeholder="请选择材质">
-            <el-option label="UNO-400" value="UNO-400"></el-option>
-            <el-option label="PC" value="PC"></el-option>
-            <el-option label="PC 抗蓝光" value="PC 抗蓝光"></el-option>
-            <el-option label="树脂MR-7" value="树脂MR-7"></el-option>
-            <el-option label="树脂MR-7 灰" value="树脂MR-7 灰"></el-option>
-            <el-option label="树脂MR-8" value="树脂MR-8"></el-option>
-            <el-option label="树脂MR-8 灰" value="树脂MR-8 灰"></el-option>
-            <el-option label="亚克力变灰" value="亚克力变灰"></el-option>
-            <el-option label="亚克力变茶" value="亚克力变茶"></el-option>
-          </el-select>
+        <el-form-item label="材质">
+          <el-radio-group v-model="newLens.material" size="medium">
+            <el-radio-button v-for="item in materials" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="弧度" >
-          <el-select v-model="newLens.radian" placeholder="请选择弧度">
-            <el-option label="球面" value="球面"></el-option>
-            <el-option label="非球面" value="非球面"></el-option>
-          </el-select>
+        <el-form-item label="弧度">
+          <el-radio-group v-model="newLens.radian" size="medium">
+            <el-radio-button v-for="item in radians" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="品种" >
-          <el-select v-model="newLens.variety" placeholder="请选择品种">
-            <el-option label="光学" value="光学"></el-option>
-            <el-option label="基片变色" value="基片变色"></el-option>
-            <el-option label="膜层变色" value="膜层变色"></el-option>
-            <el-option label="光学墨镜" value="光学墨镜"></el-option>
-          </el-select>
+        <el-form-item label="品种">
+          <el-radio-group v-model="newLens.variety" size="medium">
+            <el-radio-button v-for="item in varietys" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="膜层" >
-          <el-select v-model="newLens.film" placeholder="请选择膜层">
-            <el-option label="绿膜" value="绿膜"></el-option>
-            <el-option label="前蓝后紫膜+ESPF" value="前蓝后紫膜+ESPF"></el-option>
-            <el-option label="前紫后紫膜+ESPF" value="前紫后紫膜+ESPF"></el-option>
-            <el-option label="染灰片" value="染灰片"></el-option>
-            <el-option label="染茶片" value="染茶片"></el-option>
-            <el-option label="染绿片" value="染绿片"></el-option>
-          </el-select>
+        <el-form-item label="膜层">
+          <el-radio-group v-model="newLens.film" size="medium">
+            <el-radio-button v-for="item in films" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="设计" >
-          <el-select v-model="newLens.design" placeholder="请选择设计">
-            <el-option label="单光" value="单光"></el-option>
-            <el-option label="渐进" value="渐进"></el-option>
-          </el-select>
+        <el-form-item label="设计">
+          <el-radio-group v-model="newLens.design" size="medium">
+            <el-radio-button v-for="item in designs" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="状态">
@@ -201,61 +180,40 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item label="折射率" >
-          <el-select v-model="newLens.refractiveIndex" placeholder="请选择折射率">
-            <el-option label="1.56" value="1.56"></el-option>
-            <el-option label="1.59" value="1.59"></el-option>
-            <el-option label="1.60" value="1.60"></el-option>
-            <el-option label="1.67" value="1.67"></el-option>
-          </el-select>
+        <el-form-item label="折射率">
+          <el-radio-group v-model="newLens.refractiveIndex" size="medium">
+            <el-radio-button v-for="item in refractiveIndexs" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="材质" >
-          <el-select v-model="newLens.material" placeholder="请选择材质">
-            <el-option label="UNO-400" value="UNO-400"></el-option>
-            <el-option label="PC" value="PC"></el-option>
-            <el-option label="PC 抗蓝光" value="PC 抗蓝光"></el-option>
-            <el-option label="树脂MR-7" value="树脂MR-7"></el-option>
-            <el-option label="树脂MR-7 灰" value="树脂MR-7 灰"></el-option>
-            <el-option label="树脂MR-8" value="树脂MR-8"></el-option>
-            <el-option label="树脂MR-8 灰" value="树脂MR-8 灰"></el-option>
-            <el-option label="亚克力变灰" value="亚克力变灰"></el-option>
-            <el-option label="亚克力变茶" value="亚克力变茶"></el-option>
-          </el-select>
+        <el-form-item label="材质">
+          <el-radio-group v-model="newLens.material" size="medium">
+            <el-radio-button v-for="item in materials" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="弧度" >
-          <el-select v-model="newLens.radian" placeholder="请选择弧度">
-            <el-option label="球面" value="球面"></el-option>
-            <el-option label="非球面" value="非球面"></el-option>
-          </el-select>
+        <el-form-item label="弧度">
+          <el-radio-group v-model="newLens.radian" size="medium">
+            <el-radio-button v-for="item in radians" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="品种" >
-          <el-select v-model="newLens.variety" placeholder="请选择品种">
-            <el-option label="光学" value="光学"></el-option>
-            <el-option label="基片变色" value="基片变色"></el-option>
-            <el-option label="膜层变色" value="膜层变色"></el-option>
-            <el-option label="光学墨镜" value="光学墨镜"></el-option>
-          </el-select>
+        <el-form-item label="品种">
+          <el-radio-group v-model="newLens.variety" size="medium">
+            <el-radio-button v-for="item in varietys" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="膜层" >
-          <el-select v-model="newLens.film" placeholder="请选择膜层">
-            <el-option label="绿膜" value="绿膜"></el-option>
-            <el-option label="前蓝后紫膜+ESPF" value="前蓝后紫膜+ESPF"></el-option>
-            <el-option label="前紫后紫膜+ESPF" value="前紫后紫膜+ESPF"></el-option>
-            <el-option label="染灰片" value="染灰片"></el-option>
-            <el-option label="染茶片" value="染茶片"></el-option>
-            <el-option label="染绿片" value="染绿片"></el-option>
-          </el-select>
+        <el-form-item label="膜层">
+          <el-radio-group v-model="newLens.film" size="medium">
+            <el-radio-button v-for="item in films" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="设计" >
-          <el-select v-model="newLens.design" placeholder="请选择设计">
-            <el-option label="单光" value="单光"></el-option>
-            <el-option label="渐进" value="渐进"></el-option>
-          </el-select>
+        <el-form-item label="设计">
+          <el-radio-group v-model="newLens.design" size="medium">
+            <el-radio-button v-for="item in designs" :label="item.valueName" ></el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="状态">
@@ -305,7 +263,14 @@ export default {
         design: '',
         state: '0',
         description: ''
-      }
+      },
+
+      refractiveIndexs: [],
+      materials: [],
+      radians: [],
+      varietys: [],
+      films: [],
+      designs: []
     }
   },
   created() {
@@ -320,6 +285,54 @@ export default {
     axios.post('http://localhost:8088/lens/total')
     .then(response => {
       this.resultNum = response.data
+    }).catch(error => {
+      console.log(error)
+    })
+
+    axios.post('http://localhost:8088/value/attribute',{
+      attributeID: "refractiveIndex"
+    }).then(response => {
+      this.refractiveIndexs = response.data.data
+    }).catch(error => {
+      console.log(error)
+    })
+
+    axios.post('http://localhost:8088/value/attribute',{
+      attributeID: "material"
+    }).then(response => {
+      this.materials = response.data.data
+    }).catch(error => {
+      console.log(error)
+    })
+
+    axios.post('http://localhost:8088/value/attribute',{
+      attributeID: "radian"
+    }).then(response => {
+      this.radians = response.data.data
+    }).catch(error => {
+      console.log(error)
+    })
+
+    axios.post('http://localhost:8088/value/attribute',{
+      attributeID: "variety"
+    }).then(response => {
+      this.varietys = response.data.data
+    }).catch(error => {
+      console.log(error)
+    })
+
+    axios.post('http://localhost:8088/value/attribute',{
+      attributeID: "film"
+    }).then(response => {
+      this.films = response.data.data
+    }).catch(error => {
+      console.log(error)
+    })
+
+    axios.post('http://localhost:8088/value/attribute',{
+      attributeID: "design"
+    }).then(response => {
+      this.designs = response.data.data
     }).catch(error => {
       console.log(error)
     })

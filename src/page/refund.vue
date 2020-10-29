@@ -28,6 +28,11 @@
       </el-table-column>
 
       <el-table-column
+        prop="specID"
+        label="规格ID">
+      </el-table-column>
+
+      <el-table-column
         prop="applicant"
         label="申请人员">
       </el-table-column>
@@ -118,12 +123,19 @@ export default {
   },
   methods: {
 
-    //查看退款详情
+    // 查看退款详情
     handleDetail(index, row){
-
+      console.log(index, row)
+      this.$router.push({
+        path:'/orderDetail',
+        query:{
+          orderID: this.refundList[index].orderID
+        }
+      })
+      location.reload()
     },
 
-    //更改每页显示数据条数
+    // 更改每页显示数据条数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
@@ -139,7 +151,7 @@ export default {
         });
     },
 
-    //更改当前页
+    // 更改当前页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
