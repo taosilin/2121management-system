@@ -33,9 +33,13 @@
         prop="evaluation"
         label="评分">
       </el-table-column>
-      <el-table-column
-        prop="commentPhoto"
-        label="图片">
+      <el-table-column label="图片">
+        <template slot-scope="scope">
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="commentList[scope.$index].commentPhoto"
+            fit="contain"></el-image>
+        </template>
       </el-table-column>
       <el-table-column
         prop="reply"
@@ -67,10 +71,6 @@
             v-if="commentList[scope.$index].reply==null"
             size="mini"
             @click="openReply(scope.$index, scope.row)">回复</el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -114,7 +114,7 @@ export default {
     }
   },
   created() {
-    axios.post('http://localhost:8088/comment/all',{
+    axios.post('http://129.211.168.202:8088/comment/all',{
       page:this.currentPage,
       size:this.pageSize
     })
@@ -124,7 +124,7 @@ export default {
       .catch(error => {
         console.log(error)
       })
-    axios.post('http://localhost:8088/comment/total')
+    axios.post('http://129.211.168.202:8088/comment/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
@@ -134,7 +134,7 @@ export default {
   methods: {
 
     handleReply() {
-      axios.post('http://localhost:8088/comment/reply',{
+      axios.post('http://129.211.168.202:8088/comment/reply',{
         commentID: this.replyID,
         reply: this.replyInput,
         replyTime: new Date()
@@ -164,14 +164,10 @@ export default {
       this.replyID = this.commentList[index].commentID
     },
 
-    handleDelete(index, row) {
-      console.log(index, row)
-    },
-
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('http://localhost:8088/comment/all',{
+      axios.post('http://129.211.168.202:8088/comment/all',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -186,7 +182,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('http://localhost:8088/comment/all',{
+      axios.post('http://129.211.168.202:8088/comment/all',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -200,7 +196,7 @@ export default {
 
     // 修改评论状态
     onChangeState(index) {
-      axios.post('http://localhost:8088/comment/update',{
+      axios.post('http://129.211.168.202:8088/comment/update',{
         commentID: this.commentList[index].commentID,
         state: this.commentList[index].state
       }).then(response => {

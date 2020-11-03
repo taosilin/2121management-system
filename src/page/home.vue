@@ -170,7 +170,7 @@ export default {
   created() {
 
     // 待办预警
-    axios.post('http://localhost:8088/order/pending')
+    axios.post('http://129.211.168.202:8088/order/pending')
       .then(response => {
         this.orderPending = response.data.data
       }).catch(error => {
@@ -178,7 +178,7 @@ export default {
     })
 
     // 今日交易看板
-    axios.post('http://localhost:8088/order/transaction')
+    axios.post('http://129.211.168.202:8088/order/transaction')
     .then(response => {
       this.transactionBoard = response.data.data
       this.transactionBoard.paymentOrderAmount = this.transactionBoard.paymentOrderAmount.toFixed(2)
@@ -188,7 +188,7 @@ export default {
     })
 
     // 库存预警
-    axios.post('http://localhost:8088/spec/warning')
+    axios.post('http://129.211.168.202:8088/spec/warning')
       .then(response => {
         this.stockWarning = response.data.data
       }).catch(error => {
@@ -196,7 +196,7 @@ export default {
     })
 
     // 商品概览
-    axios.post('http://localhost:8088/product/overview')
+    axios.post('http://129.211.168.202:8088/product/overview')
       .then(response => {
         this.product_on_shelf = response.data.data.onShelf
         this.product_off_shelf = response.data.data.offShelf
@@ -205,7 +205,7 @@ export default {
     })
 
     // 镜框概览
-    axios.post('http://localhost:8088/frame/overview')
+    axios.post('http://129.211.168.202:8088/frame/overview')
       .then(response => {
         this.frame_on_shelf = response.data.data.onShelf
         this.frame_off_shelf = response.data.data.offShelf
@@ -217,7 +217,7 @@ export default {
   mounted() {
 
     // 订单统计
-    axios.post('http://localhost:8088/order/statistics')
+    axios.post('http://129.211.168.202:8088/order/statistics')
       .then(response => {
         for (let i=response.data.data.length-1;i>=0;i--){
           this.statisticsDate.push(response.data.data[i].orderDate)

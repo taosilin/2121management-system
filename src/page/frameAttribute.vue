@@ -66,7 +66,7 @@ export default {
     }
   },
   created() {
-    axios.post('http://localhost:8088/attribute/detail',{
+    axios.post('http://129.211.168.202:8088/attribute/detail',{
       productID: "frame"
     }).then(response => {
       this.attributes = response.data.data
@@ -99,7 +99,7 @@ export default {
       if (this.inputValue[i]) {
         let valueID = this.inputValue[i] + new Date().getTime().toString()
         // 属性添加值
-        axios.post('http://localhost:8088/value/add',{
+        axios.post('http://129.211.168.202:8088/value/add',{
           "valueID": valueID,
           "attributeID": this.attributes[i].attribute.attributeID,
           "valueName": this.inputValue[i]
@@ -126,7 +126,7 @@ export default {
     // 添加属性attribute
     onAddAttribute(){
       let attributeID = this.inputAttribute + new Date().getTime().toString()
-      axios.post('http://localhost:8088/attribute/add',{
+      axios.post('http://129.211.168.202:8088/attribute/add',{
         attributeID: attributeID,
         productID: "frame",
         attributeName: this.inputAttribute
@@ -158,7 +158,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://localhost:8088/attribute/delete',{
+        axios.post('http://129.211.168.202:8088/attribute/delete',{
           attributeID: this.attributes[i].attribute.attributeID
         }).then(response => {
           if (response.data.code === 200){
@@ -183,7 +183,7 @@ export default {
     // 删除属性值value
     handleDeleteValue(i,j) {
       console.log(i,j)
-      axios.post('http://localhost:8088/value/delete',{
+      axios.post('http://129.211.168.202:8088/value/delete',{
         valueID: this.attributes[i].values[j].valueID
       }).then(response => {
         if (response.data.code === 200){

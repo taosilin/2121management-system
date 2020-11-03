@@ -274,7 +274,7 @@ export default {
     }
   },
   created() {
-    axios.post('http://localhost:8088/lens/list',{
+    axios.post('http://129.211.168.202:8088/lens/list',{
       page: this.currentPage,
       size: this.pageSize
     }).then(response => {
@@ -282,14 +282,14 @@ export default {
       }).catch(error => {       // 发生错误
         console.log(error)
       })
-    axios.post('http://localhost:8088/lens/total')
+    axios.post('http://129.211.168.202:8088/lens/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
       console.log(error)
     })
 
-    axios.post('http://localhost:8088/value/attribute',{
+    axios.post('http://129.211.168.202:8088/value/attribute',{
       attributeID: "refractiveIndex"
     }).then(response => {
       this.refractiveIndexs = response.data.data
@@ -297,7 +297,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('http://localhost:8088/value/attribute',{
+    axios.post('http://129.211.168.202:8088/value/attribute',{
       attributeID: "material"
     }).then(response => {
       this.materials = response.data.data
@@ -305,7 +305,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('http://localhost:8088/value/attribute',{
+    axios.post('http://129.211.168.202:8088/value/attribute',{
       attributeID: "radian"
     }).then(response => {
       this.radians = response.data.data
@@ -313,7 +313,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('http://localhost:8088/value/attribute',{
+    axios.post('http://129.211.168.202:8088/value/attribute',{
       attributeID: "variety"
     }).then(response => {
       this.varietys = response.data.data
@@ -321,7 +321,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('http://localhost:8088/value/attribute',{
+    axios.post('http://129.211.168.202:8088/value/attribute',{
       attributeID: "film"
     }).then(response => {
       this.films = response.data.data
@@ -329,7 +329,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('http://localhost:8088/value/attribute',{
+    axios.post('http://129.211.168.202:8088/value/attribute',{
       attributeID: "design"
     }).then(response => {
       this.designs = response.data.data
@@ -342,7 +342,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('http://localhost:8088/lens/list',{
+      axios.post('http://129.211.168.202:8088/lens/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -357,7 +357,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('http://localhost:8088/lens/list',{
+      axios.post('http://129.211.168.202:8088/lens/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -377,7 +377,7 @@ export default {
 
     // 添加镜片
     handleAddLens(){
-      axios.post('http://localhost:8088/lens/add', {
+      axios.post('http://129.211.168.202:8088/lens/add', {
         lensID: this.newLens.lensID,
         lensName: this.newLens.lensName,
         price: this.newLens.price,
@@ -422,7 +422,7 @@ export default {
 
     // 编辑镜片
     handleUpdateLens(){
-      axios.post('http://localhost:8088/lens/update', {
+      axios.post('http://129.211.168.202:8088/lens/update', {
         lensID: this.newLens.lensID,
         lensName: this.newLens.lensName,
         price: this.newLens.price,
@@ -467,7 +467,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://localhost:8088/lens/delete',{
+        axios.post('http://129.211.168.202:8088/lens/delete',{
           lensID : this.lensList[index].lensID
         }).then(response => {
           if (response.data.code === 200){

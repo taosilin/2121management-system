@@ -236,7 +236,7 @@ export default {
     }
   },
   created() {
-    axios.post('http://localhost:8088/problem/list',{
+    axios.post('http://129.211.168.202:8088/problem/list',{
       page:this.currentPage,
       size:this.pageSize
     }).then(response => {
@@ -244,7 +244,7 @@ export default {
     }).catch(error => {
       console.log(error)
     })
-    axios.post('http://localhost:8088/problem/total')
+    axios.post('http://129.211.168.202:8088/problem/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
@@ -263,7 +263,7 @@ export default {
     handleAddProblem(formName){
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('http://localhost:8088/problem/add',{
+          axios.post('http://129.211.168.202:8088/problem/add',{
             problemContent: this.newProblem.problemContent,
             answer: this.newProblem.answer,
             classification: this.newProblem.classification.toString(),
@@ -306,7 +306,7 @@ export default {
 
     // 提交编辑问题
     handleUpdateProblem() {
-      axios.post('http://localhost:8088/problem/update',{
+      axios.post('http://129.211.168.202:8088/problem/update',{
         problemID: this.newProblem.problemID,
         problemContent: this.newProblem.problemContent,
         answer: this.newProblem.answer,
@@ -333,7 +333,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://localhost:8088/problem/delete',{
+        axios.post('http://129.211.168.202:8088/problem/delete',{
           problemID : this.problemList[index].problemID
         }).then(response => {
           if (response.data.code === 200){
@@ -363,7 +363,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('http://localhost:8088/problem/list',{
+      axios.post('http://129.211.168.202:8088/problem/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -379,7 +379,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('http://localhost:8088/problem/list',{
+      axios.post('http://129.211.168.202:8088/problem/list',{
         page:this.currentPage,
         size:this.pageSize
       })

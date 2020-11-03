@@ -273,7 +273,7 @@ export default {
     let frameID = this.$route.query.frameID
 
     // 镜框详情
-    axios.post('http://localhost:8088/frame/detail',{
+    axios.post('http://129.211.168.202:8088/frame/detail',{
       frameID: frameID
     }).then(response => {
       this.frameDetail = response.data.data.frame
@@ -283,7 +283,7 @@ export default {
       this.specs = response.data.data.specs
 
       // 查询全部镜片列表
-      axios.post('http://localhost:8088/lens/list',{
+      axios.post('http://129.211.168.202:8088/lens/list',{
         page: 0,
         size: 20
       }).then(response => {
@@ -301,7 +301,7 @@ export default {
       })
 
       // 查询当前镜框所有可选镜片
-      axios.post('http://localhost:8088/framelens/list',{
+      axios.post('http://129.211.168.202:8088/framelens/list',{
         frameID: frameID
       }).then(response => {
         for (let i=0;i<response.data.data.length;i++){
@@ -314,7 +314,7 @@ export default {
       })
 
       // 查询全部镜框颜色列表
-      axios.post('http://localhost:8088/color/list',{
+      axios.post('http://129.211.168.202:8088/color/list',{
         page: 0,
         size: 20
       }).then(response => {
@@ -349,7 +349,7 @@ export default {
     handleUploadImage(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('http://localhost:8088/spec/uploadImage',formData)
+      axios.post('http://129.211.168.202:8088/spec/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           console.log(response)
@@ -373,7 +373,7 @@ export default {
 
     // 添加SKU
     handleAddSKU() {
-      axios.post('http://localhost:8088/spec/add',{
+      axios.post('http://129.211.168.202:8088/spec/add',{
         specID: this.newSKU.specID,
         productID: this.frameDetail.frameID,
         productSpec: this.newSKU.productSpec,
@@ -408,7 +408,7 @@ export default {
 
     // 提交编辑SKU
     handleUpdateSKU() {
-      axios.post('http://localhost:8088/spec/update',{
+      axios.post('http://129.211.168.202:8088/spec/update',{
         specID: this.newSKU.specID,
         quantity: this.newSKU.quantity,
         warning: this.newSKU.warning,
@@ -441,7 +441,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://localhost:8088/spec/delete',{
+        axios.post('http://129.211.168.202:8088/spec/delete',{
           specID : this.specs[index].specID
         }).then(response => {
           if (response.data.code === 200){
@@ -470,7 +470,7 @@ export default {
     onSave() {
       for (let i=0;i<this.selectedLens.length;i++){
         if (this.originalSelected.indexOf(this.selectedLens[i])==-1){
-          axios.post('http://localhost:8088/framelens/add',{
+          axios.post('http://129.211.168.202:8088/framelens/add',{
             frameID: this.frameDetail.frameID,
             lensID: this.selectedLens[i]
           }).then(response => {
@@ -497,7 +497,7 @@ export default {
 
       for (let i=0;i<this.originalSelected.length;i++){
         if (this.selectedLens.indexOf(this.originalSelected[i])==-1){
-          axios.post('http://localhost:8088/framelens/delete',{
+          axios.post('http://129.211.168.202:8088/framelens/delete',{
             frameID: this.frameDetail.frameID,
             lensID: this.originalSelected[i]
           }).then(response => {

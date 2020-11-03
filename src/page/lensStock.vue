@@ -50,9 +50,11 @@
         label="设计">
       </el-table-column>
 
-      <el-table-column
-        prop="state"
-        label="状态">
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+          <el-tag v-if="lensList[scope.$index].state === '0'" effect="dark">上架中</el-tag>
+          <el-tag v-else effect="dark" type="info">已下架</el-tag>
+        </template>
       </el-table-column>
 
       <el-table-column label="操作">
@@ -92,7 +94,7 @@ export default {
   },
 
   created() {
-    axios.post('http://localhost:8088/lens/list',{
+    axios.post('http://129.211.168.202:8088/lens/list',{
       page:this.currentPage,
       size:this.pageSize
     })
@@ -122,7 +124,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('http://localhost:8088/lens/list',{
+      axios.post('http://129.211.168.202:8088/lens/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -138,7 +140,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('http://localhost:8088/lens/list',{
+      axios.post('http://129.211.168.202:8088/lens/list',{
         page:this.currentPage,
         size:this.pageSize
       })
