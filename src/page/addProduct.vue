@@ -182,7 +182,7 @@ export default {
     handleUploadCoverImage(param){
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('http://129.211.168.202:8088/product/uploadImage',formData)
+      axios.post('https://from2121:8443/product/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -199,7 +199,7 @@ export default {
     handleUploadImageList(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('http://129.211.168.202:8088/product/uploadImage',formData)
+      axios.post('https://from2121:8443/product/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -217,7 +217,7 @@ export default {
     handleUploadDescription(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('http://129.211.168.202:8088/product/uploadImage',formData)
+      axios.post('https://from2121:8443/product/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -233,7 +233,7 @@ export default {
 
 
     onSubmit () {
-      axios.post('http://129.211.168.202:8088/product/add', {
+      axios.post('https://from2121:8443/product/add', {
         productID: this.form.productID,
         productName: this.form.productName,
         sketch: this.form.sketch,

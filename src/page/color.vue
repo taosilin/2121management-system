@@ -147,7 +147,7 @@ export default {
     }
   },
   created() {
-    axios.post('http://129.211.168.202:8088/color/list',{
+    axios.post('https://from2121:8443/color/list',{
       page:this.currentPage,
       size:this.pageSize
     }).then(response => {
@@ -155,7 +155,7 @@ export default {
     }).catch(error => {
       console.log(error)
     })
-    axios.post('http://129.211.168.202:8088/color/total')
+    axios.post('https://from2121:8443/color/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
@@ -182,7 +182,7 @@ export default {
       const formData = new FormData()
       formData.append('imageFile', param.file)
 
-      axios.post('http://129.211.168.202:8088/color/uploadImage',formData)
+      axios.post('https://from2121:8443/color/uploadImage',formData)
       .then(response => {
         console.log('上传图片成功')
         console.log(response)
@@ -207,7 +207,7 @@ export default {
 
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('http://129.211.168.202:8088/color/add',{
+          axios.post('https://from2121:8443/color/add',{
             colorName: this.newColor.colorName,
             colorImage: this.newColor.colorImage
           }).then(response => {
@@ -247,7 +247,7 @@ export default {
 
     // 编辑颜色
     handleEditColor(){
-      axios.post('http://129.211.168.202:8088/color/update',{
+      axios.post('https://from2121:8443/color/update',{
         colorID: this.newColor.colorID,
         colorName: this.newColor.colorName,
         colorImage: this.newColor.colorImage
@@ -281,7 +281,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://129.211.168.202:8088/color/delete',{
+        axios.post('https://from2121:8443/color/delete',{
           colorID : this.colorList[index].colorID
         }).then(response => {
           if (response.data.code === 200){
@@ -307,7 +307,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('http://129.211.168.202:8088/color/list',{
+      axios.post('https://from2121:8443/color/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -323,7 +323,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('http://129.211.168.202:8088/color/list',{
+      axios.post('https://from2121:8443/color/list',{
         page:this.currentPage,
         size:this.pageSize
       })

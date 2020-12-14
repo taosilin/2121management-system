@@ -233,14 +233,14 @@ export default {
   created () {
     // 取到路由带过来的参数
     let orderID = this.$route.query.orderID
-    axios.post('http://129.211.168.202:8088/order/detail',{
+    axios.post('https://from2121:8443/order/detail',{
       orderID: orderID
     }).then(response => {
       this.orderDetail = response.data.data.order
       this.products = response.data.data.products
       this.frames = response.data.data.frames
       this.refundDetail = response.data.data.refund
-      axios.post('http://129.211.168.202:8088/address/detail',{
+      axios.post('https://from2121:8443/address/detail',{
         addressID: this.orderDetail.addressID
       }).then(response => {
         this.addressDetail = response.data.data
@@ -248,7 +248,7 @@ export default {
         console.log(error)
       })
 
-      axios.post('http://129.211.168.202:8088/coupon/detail',{
+      axios.post('https://from2121:8443/coupon/detail',{
         couponID: this.orderDetail.couponID
       }).then(response => {
         this.couponDetail = response.data.data

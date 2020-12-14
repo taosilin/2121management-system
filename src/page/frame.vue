@@ -86,7 +86,7 @@ export default {
     }
   },
   created() {
-    axios.post('http://129.211.168.202:8088/frame/list',{
+    axios.post('https://from2121:8443/frame/list',{
       page:this.currentPage,
       size:this.pageSize
     })
@@ -96,7 +96,7 @@ export default {
       .catch(error => {       //发生错误
       console.log(error)
       })
-    axios.post('http://129.211.168.202:8088/frame/total')
+    axios.post('https://from2121:8443/frame/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
@@ -135,7 +135,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://129.211.168.202:8088/frame/delete',{
+        axios.post('https://from2121:8443/frame/delete',{
           frameID: this.frameList[index].frameID
         }).then(response => {
           if (response.data.code === 200){
@@ -159,7 +159,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('http://129.211.168.202:8088/frame/list',{
+      axios.post('https://from2121:8443/frame/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -173,7 +173,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('http://129.211.168.202:8088/frame/list',{
+      axios.post('https://from2121:8443/frame/list',{
         page:this.currentPage,
         size:this.pageSize
       })

@@ -308,7 +308,7 @@ export default {
   created() {
     // 取到路由带过来的参数
     let productID = this.$route.query.productID
-    axios.post('http://129.211.168.202:8088/product/detail',{
+    axios.post('https://from2121:8443/product/detail',{
       productID: productID
     }).then(response => {
       this.productDetail = response.data.data.product
@@ -352,7 +352,7 @@ export default {
     // 添加属性attribute
     onAddAttribute(){
       let attributeID = this.inputAttribute + new Date().getTime().toString()
-      axios.post('http://129.211.168.202:8088/attribute/add',{
+      axios.post('https://from2121:8443/attribute/add',{
         attributeID: attributeID,
         productID: this.productDetail.productID,
         attributeName: this.inputAttribute
@@ -384,7 +384,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://129.211.168.202:8088/attribute/delete',{
+        axios.post('https://from2121:8443/attribute/delete',{
           attributeID: this.attributes[i].attribute.attributeID
         }).then(response => {
           if (response.data.code === 200){
@@ -411,7 +411,7 @@ export default {
       if (this.inputValue) {
         let valueID = new Date().getTime().toString()
         // let valueID = this.inputValue + new Date().getTime().toString()
-        axios.post('http://129.211.168.202:8088/value/add',{
+        axios.post('https://from2121:8443/value/add',{
           "valueID": valueID,
           "attributeID": this.attributes[i].attribute.attributeID,
           "valueName": this.inputValue
@@ -438,7 +438,7 @@ export default {
     // 删除属性值value
     handleDeleteValue(i,j) {
       console.log(i,j)
-      axios.post('http://129.211.168.202:8088/value/delete',{
+      axios.post('https://from2121:8443/value/delete',{
         valueID: this.attributes[i].values[j].valueID
       }).then(response => {
         if (response.data.code === 200){
@@ -470,7 +470,7 @@ export default {
     handleUploadImage(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('http://129.211.168.202:8088/spec/uploadImage',formData)
+      axios.post('https://from2121:8443/spec/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           console.log(response)
@@ -485,7 +485,7 @@ export default {
 
     // 添加SKU
     handleAddSKU () {
-      axios.post('http://129.211.168.202:8088/spec/add',{
+      axios.post('https://from2121:8443/spec/add',{
         specID: this.newSKU.specID,
         productID: this.productDetail.productID,
         productSpec: this.sku.join(";"),
@@ -520,7 +520,7 @@ export default {
 
     // 提交编辑SKU
     handleEditSKU() {
-      axios.post('http://129.211.168.202:8088/spec/update',{
+      axios.post('https://from2121:8443/spec/update',{
         specID: this.newSKU.specID,
         quantity: this.newSKU.quantity,
         warning: this.newSKU.warning,
@@ -553,7 +553,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://129.211.168.202:8088/spec/delete',{
+        axios.post('https://from2121:8443/spec/delete',{
           specID : this.specs[index].specID
         }).then(response => {
           if (response.data.code === 200){

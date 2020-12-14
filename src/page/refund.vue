@@ -106,7 +106,7 @@ export default {
     }
   },
   created() {
-    axios.post('http://129.211.168.202:8088/refund/list',{
+    axios.post('https://from2121:8443/refund/list',{
       page:this.currentPage,
       size:this.pageSize
     }).then(response => {
@@ -114,7 +114,7 @@ export default {
     }).catch(error => {       //发生错误
       console.log(error)
     })
-    axios.post('http://129.211.168.202:8088/refund/total')
+    axios.post('https://from2121:8443/refund/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
@@ -139,7 +139,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('http://129.211.168.202:8088/refund/list',{
+      axios.post('https://from2121:8443/refund/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -155,7 +155,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('http://129.211.168.202:8088/refund/list',{
+      axios.post('https://from2121:8443/refund/list',{
         page:this.currentPage,
         size:this.pageSize
       })

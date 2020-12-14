@@ -230,7 +230,7 @@ export default {
     }
   },
   created () {
-    axios.post('http://129.211.168.202:8088/value/attribute',{
+    axios.post('https://from2121:8443/value/attribute',{
       attributeID: "材料"
     }).then(response => {
       this.form.materials = response.data.data
@@ -238,7 +238,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('http://129.211.168.202:8088/value/attribute',{
+    axios.post('https://from2121:8443/value/attribute',{
       attributeID: "形状"
     }).then(response => {
       this.form.shapes = response.data.data
@@ -246,7 +246,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('http://129.211.168.202:8088/value/attribute',{
+    axios.post('https://from2121:8443/value/attribute',{
       attributeID: "鼻托"
     }).then(response => {
       this.form.nosePads = response.data.data
@@ -260,7 +260,7 @@ export default {
     handleUploadCoverImage(param){
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('http://129.211.168.202:8088/frame/uploadImage',formData)
+      axios.post('https://from2121:8443/frame/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -277,7 +277,7 @@ export default {
     handleUploadImageList(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('http://129.211.168.202:8088/frame/uploadImage',formData)
+      axios.post('https://from2121:8443/frame/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -295,7 +295,7 @@ export default {
     handleUploadDescription(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('http://129.211.168.202:8088/frame/uploadImage',formData)
+      axios.post('https://from2121:8443/frame/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -311,7 +311,7 @@ export default {
 
     // 提交添加镜框
     onAdd () {
-      axios.post('http://129.211.168.202:8088/frame/add', {
+      axios.post('https://from2121:8443/frame/add', {
         frameID: this.form.frameID,
         frameName: this.form.frameName,
         price: this.form.price,

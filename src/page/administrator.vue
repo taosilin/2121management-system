@@ -112,7 +112,7 @@ export default {
     }
   },
   created() {
-    axios.post('http://129.211.168.202:8088/admin/list',{
+    axios.post('https://from2121:8443/admin/list',{
       page: this.currentPage,
       size: this.pageSize
     }).then(response => {
@@ -121,7 +121,7 @@ export default {
       console.log(error)
     })
     // 管理员信息总数
-    axios.post('http://129.211.168.202:8088/admin/total')
+    axios.post('https://from2121:8443/admin/total')
       .then(response => {
       this.resultNum = response.data
     }).catch(error => {
@@ -141,7 +141,7 @@ export default {
 
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('http://129.211.168.202:8088/admin/add',{
+          axios.post('https://from2121:8443/admin/add',{
             adminID: this.newAdmin.adminID,
             password: this.newAdmin.password,
             adminName: this.newAdmin.adminName
@@ -197,7 +197,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://129.211.168.202:8088/admin/delete',{
+        axios.post('https://from2121:8443/admin/delete',{
           adminID : this.adminList[index].adminID
         }).then(response => {
           if (response.data.code === 200){
@@ -223,7 +223,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('http://129.211.168.202:8088/admin/list',{
+      axios.post('https://from2121:8443/admin/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -239,7 +239,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('http://129.211.168.202:8088/admin/list',{
+      axios.post('https://from2121:8443/admin/list',{
         page:this.currentPage,
         size:this.pageSize
       })

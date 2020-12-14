@@ -94,7 +94,7 @@ export default {
   },
 
   created() {
-    axios.post('http://129.211.168.202:8088/lens/list',{
+    axios.post('https://from2121:8443/lens/list',{
       page:this.currentPage,
       size:this.pageSize
     })
@@ -124,7 +124,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('http://129.211.168.202:8088/lens/list',{
+      axios.post('https://from2121:8443/lens/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -140,7 +140,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('http://129.211.168.202:8088/lens/list',{
+      axios.post('https://from2121:8443/lens/list',{
         page:this.currentPage,
         size:this.pageSize
       })
