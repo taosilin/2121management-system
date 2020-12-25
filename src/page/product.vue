@@ -99,7 +99,7 @@ export default {
     }
   },
   created () {
-    axios.post('https://from2121:8443/product/list', {
+    axios.post('https://from2121.com:8443/product/list', {
       page: this.currentPage,
       size: this.pageSize
     })
@@ -109,7 +109,7 @@ export default {
       .catch(error => {
         console.log(error)
       })
-    axios.post('https://from2121:8443/product/total')
+    axios.post('https://from2121.com:8443/product/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
@@ -145,7 +145,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('https://from2121:8443/product/delete',{
+        axios.post('https://from2121.com:8443/product/delete',{
           productID: this.productList[index].productID
         }).then(response => {
           if (response.data.code === 200){
@@ -169,7 +169,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('https://from2121:8443/product/list',{
+      axios.post('https://from2121.com:8443/product/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -184,7 +184,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('https://from2121:8443/product/list',{
+      axios.post('https://from2121.com:8443/product/list',{
         page:this.currentPage,
         size:this.pageSize
       })

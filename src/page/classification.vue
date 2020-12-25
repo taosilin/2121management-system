@@ -170,7 +170,7 @@ export default {
     }
   },
   created() {
-    axios.post('https://from2121:8443/class/list',{
+    axios.post('https://from2121.com:8443/class/list',{
       page:this.currentPage,
       size:this.pageSize
     })
@@ -181,14 +181,14 @@ export default {
         console.log(error)
       })
 
-    axios.post('https://from2121:8443/class/total')
+    axios.post('https://from2121.com:8443/class/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/class/superior',{
+    axios.post('https://from2121.com:8443/class/superior',{
       superior: 0
     }).then(response => {
       this.superior = response.data.data
@@ -210,7 +210,7 @@ export default {
         if (valid) {
           if (this.newClass.superior == null)
             this.newClass.superior = 0
-          axios.post('https://from2121:8443/class/add',{
+          axios.post('https://from2121.com:8443/class/add',{
             className: this.newClass.className,
             superior: this.newClass.superior,
             description: this.newClass.description,
@@ -251,7 +251,7 @@ export default {
 
     // 编辑分类
     handleUpdateClass() {
-      axios.post('https://from2121:8443/class/update',{
+      axios.post('https://from2121.com:8443/class/update',{
         classID: this.newClass.classID,
         className: this.newClass.className,
         superior: this.newClass.superior,
@@ -288,7 +288,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('https://from2121:8443/class/delete',{
+        axios.post('https://from2121.com:8443/class/delete',{
           classID : this.classList[index].classID
         }).then(response => {
           if (response.data.code === 200){
@@ -313,7 +313,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('https://from2121:8443/class/list',{
+      axios.post('https://from2121.com:8443/class/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -328,7 +328,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('https://from2121:8443/class/list',{
+      axios.post('https://from2121.com:8443/class/list',{
         page:this.currentPage,
         size:this.pageSize
       })

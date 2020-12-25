@@ -36,7 +36,7 @@ export default {
 
     // 管理员登录
     handleLogin(){
-      axios.post('https://from2121:8443/admin/login',{
+      axios.post('https://from2121.com:8443/admin/login',{
         adminID: this.adminID,
         password: this.password
       }).then(response => {

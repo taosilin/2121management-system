@@ -157,7 +157,7 @@ export default {
     }
   },
   created() {
-    axios.post('https://from2121:8443/coupon/list',{
+    axios.post('https://from2121.com:8443/coupon/list',{
       page:this.currentPage,
       size:this.pageSize
     })
@@ -168,7 +168,7 @@ export default {
         console.log(error)
       })
 
-    axios.post('https://from2121:8443/coupon/total')
+    axios.post('https://from2121.com:8443/coupon/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
@@ -185,7 +185,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('https://from2121:8443/coupon/delete',{
+        axios.post('https://from2121.com:8443/coupon/delete',{
            couponID: this.couponList[index].couponID
         })
         this.$message({
@@ -203,7 +203,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('https://from2121:8443/coupon/list',{
+      axios.post('https://from2121.com:8443/coupon/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -217,7 +217,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('https://from2121:8443/coupon/list',{
+      axios.post('https://from2121.com:8443/coupon/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -236,7 +236,7 @@ export default {
 
     handleAddCoupon(){
       console.log(this.newCoupon)
-      axios.post('https://from2121:8443/coupon/add',{
+      axios.post('https://from2121.com:8443/coupon/add',{
         couponID: this.newCoupon.couponID,
         couponName: this.newCoupon.couponName,
         restriction: this.newCoupon.restriction,

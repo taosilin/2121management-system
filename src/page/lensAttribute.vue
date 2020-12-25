@@ -23,13 +23,13 @@
           <el-button v-else type="success" @click="onAddAttribute">确认添加</el-button>
       </el-row>
 
-      <div v-for="(a,i) in attributes" class="item">
+      <div :key="i" v-for="(a,i) in attributes" class="item">
         <div class="attributeName">
           {{a.attribute.attributeName}}
           <el-button v-if="deleteVisible" type="danger" icon="el-icon-delete" size="small" plain @click="handleDeleteAttribute(i)"></el-button>
         </div>
         <div class="valueList">
-          <el-popconfirm v-for="(v,j) in a.values" title="删除该属性值？" @onConfirm="handleDeleteValue(i,j)">
+          <el-popconfirm :key="j" v-for="(v,j) in a.values" title="删除该属性值？" @onConfirm="handleDeleteValue(i,j)">
             <el-tag slot="reference" :disable-transitions="false" style="margin-right: 10px">
               {{v.valueName}}
             </el-tag>
@@ -67,7 +67,7 @@ export default {
     }
   },
   created() {
-    axios.post('https://from2121:8443/attribute/detail',{
+    axios.post('https://from2121.com:8443/attribute/detail',{
       productID: 'lens'
     }).then(response => {
       this.attributes = response.data.data
@@ -102,7 +102,7 @@ export default {
       if (this.inputValue[i]) {
         let valueID = this.inputValue[i] + new Date().getTime().toString()
         // 属性添加值
-        axios.post('https://from2121:8443/value/add',{
+        axios.post('https://from2121.com:8443/value/add',{
           "valueID": valueID,
           "attributeID": this.attributes[i].attribute.attributeID,
           "valueName": this.inputValue[i]
@@ -129,7 +129,7 @@ export default {
     // 添加属性attribute
     onAddAttribute(){
       let attributeID = this.inputAttribute + new Date().getTime().toString()
-      axios.post('https://from2121:8443/attribute/add',{
+      axios.post('https://from2121.com:8443/attribute/add',{
         attributeID: attributeID,
         productID: "lens",
         attributeName: this.inputAttribute
@@ -162,7 +162,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('https://from2121:8443/attribute/delete',{
+        axios.post('https://from2121.com:8443/attribute/delete',{
           attributeID: this.attributes[i].attribute.attributeID
         }).then(response => {
           if (response.data.code === 200){
@@ -187,7 +187,7 @@ export default {
     // 删除属性值value
     handleDeleteValue(i,j) {
       console.log(i,j)
-      axios.post('https://from2121:8443/value/delete',{
+      axios.post('https://from2121.com:8443/value/delete',{
         valueID: this.attributes[i].values[j].valueID
       }).then(response => {
         if (response.data.code === 200){

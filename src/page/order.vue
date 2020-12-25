@@ -180,7 +180,7 @@ export default {
     }
   },
   created() {
-    axios.post('https://from2121:8443/order/list',{
+    axios.post('https://from2121.com:8443/order/list',{
       sortedBy: this.stateFilter,
       page:this.currentPage,
       size:this.pageSize
@@ -193,14 +193,14 @@ export default {
       })
 
     if (this.stateFilter === '0'){
-      axios.post('https://from2121:8443/order/total')
+      axios.post('https://from2121.com:8443/order/total')
       .then(response => {
         this.resultNum = response.data
       }).catch(error => {
         console.log(error)
       })
     }else {
-      axios.post('https://from2121:8443/order/state',{
+      axios.post('https://from2121.com:8443/order/state',{
         state: this.stateFilter
       })
       .then(response => {
@@ -229,7 +229,7 @@ export default {
     },
 
     handleUpdateOrder(){
-      axios.post('https://from2121:8443/order/update',{
+      axios.post('https://from2121.com:8443/order/update',{
         orderID: this.newOrder.orderID,
         totalAmount: this.newOrder.totalAmount,
         state: this.newOrder.state,
@@ -260,7 +260,7 @@ export default {
 
     //根据订单状态筛选
     onFilterChange(){
-      axios.post('https://from2121:8443/order/list',{
+      axios.post('https://from2121.com:8443/order/list',{
         sortedBy: this.stateFilter,
         page:this.currentPage,
         size:this.pageSize
@@ -271,14 +271,14 @@ export default {
       })
 
       if (this.stateFilter === '0'){
-        axios.post('https://from2121:8443/order/total')
+        axios.post('https://from2121.com:8443/order/total')
           .then(response => {
             this.resultNum = response.data
           }).catch(error => {
           console.log(error)
         })
       }else {
-        axios.post('https://from2121:8443/order/state',{
+        axios.post('https://from2121.com:8443/order/state',{
           state: this.stateFilter
         })
           .then(response => {
@@ -294,7 +294,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('https://from2121:8443/order/list',{
+      axios.post('https://from2121.com:8443/order/list',{
         sortedBy: this.stateFilter,
         page:this.currentPage,
         size:this.pageSize
@@ -311,7 +311,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('https://from2121:8443/order/list',{
+      axios.post('https://from2121.com:8443/order/list',{
         sortedBy: this.stateFilter,
         page:this.currentPage,
         size:this.pageSize

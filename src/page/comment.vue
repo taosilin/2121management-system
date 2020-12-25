@@ -114,7 +114,7 @@ export default {
     }
   },
   created() {
-    axios.post('https://from2121:8443/comment/all',{
+    axios.post('https://from2121.com:8443/comment/all',{
       page:this.currentPage,
       size:this.pageSize
     })
@@ -124,7 +124,7 @@ export default {
       .catch(error => {
         console.log(error)
       })
-    axios.post('https://from2121:8443/comment/total')
+    axios.post('https://from2121.com:8443/comment/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
@@ -134,7 +134,7 @@ export default {
   methods: {
 
     handleReply() {
-      axios.post('https://from2121:8443/comment/reply',{
+      axios.post('https://from2121.com:8443/comment/reply',{
         commentID: this.replyID,
         reply: this.replyInput,
         replyTime: new Date()
@@ -167,7 +167,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('https://from2121:8443/comment/all',{
+      axios.post('https://from2121.com:8443/comment/all',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -182,7 +182,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('https://from2121:8443/comment/all',{
+      axios.post('https://from2121.com:8443/comment/all',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -196,7 +196,7 @@ export default {
 
     // 修改评论状态
     onChangeState(index) {
-      axios.post('https://from2121:8443/comment/update',{
+      axios.post('https://from2121.com:8443/comment/update',{
         commentID: this.commentList[index].commentID,
         state: this.commentList[index].state
       }).then(response => {

@@ -168,7 +168,7 @@ export default {
     let productID = this.$route.query.productID
 
     // 商品详情
-    axios.post('https://from2121:8443/product/detail',{
+    axios.post('https://from2121.com:8443/product/detail',{
       productID: productID
     }).then(response => {
       this.productDetail = response.data.data.product
@@ -189,7 +189,7 @@ export default {
     handleUploadCoverImage(param){
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('https://from2121:8443/product/uploadImage',formData)
+      axios.post('https://from2121.com:8443/product/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -206,7 +206,7 @@ export default {
     handleUploadImageList(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('https://from2121:8443/product/uploadImage',formData)
+      axios.post('https://from2121.com:8443/product/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -223,7 +223,7 @@ export default {
     handleUploadDescription(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('https://from2121:8443/product/uploadImage',formData)
+      axios.post('https://from2121.com:8443/product/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -264,7 +264,7 @@ export default {
         this.productDetail.description = this.newDescription
       }
 
-      axios.post('https://from2121:8443/product/update', {
+      axios.post('https://from2121.com:8443/product/update', {
         productID: this.productDetail.productID,
         productName: this.productDetail.productName,
         sketch: this.productDetail.sketch,

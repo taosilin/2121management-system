@@ -17,7 +17,7 @@
 
         <el-form-item label="材质">
           <el-radio-group v-model="frameDetail.material" size="medium">
-            <el-radio-button v-for="item in materials" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in materials" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
@@ -220,7 +220,7 @@ export default {
     let frameID = this.$route.query.frameID
 
     // 镜框详情
-    axios.post('https://from2121:8443/frame/detail',{
+    axios.post('https://from2121.com:8443/frame/detail',{
       frameID: frameID
     }).then(response => {
       this.frameDetail = response.data.data.frame
@@ -236,7 +236,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/value/attribute',{
+    axios.post('https://from2121.com:8443/value/attribute',{
       attributeID: "材料"
     }).then(response => {
       this.materials = response.data.data
@@ -244,7 +244,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/value/attribute',{
+    axios.post('https://from2121.com:8443/value/attribute',{
       attributeID: "形状"
     }).then(response => {
       this.shapes = response.data.data
@@ -252,7 +252,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/value/attribute',{
+    axios.post('https://from2121.com:8443/value/attribute',{
       attributeID: "鼻托"
     }).then(response => {
       this.nosePads = response.data.data
@@ -267,7 +267,7 @@ export default {
     handleUploadCoverImage(param){
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('https://from2121:8443/frame/uploadImage',formData)
+      axios.post('https://from2121.com:8443/frame/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -284,7 +284,7 @@ export default {
     handleUploadImageList(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('https://from2121:8443/frame/uploadImage',formData)
+      axios.post('https://from2121.com:8443/frame/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -301,7 +301,7 @@ export default {
     handleUploadDescription(param) {
       const formData = new FormData()
       formData.append('imageFile', param.file)
-      axios.post('https://from2121:8443/frame/uploadImage',formData)
+      axios.post('https://from2121.com:8443/frame/uploadImage',formData)
         .then(response => {
           console.log('上传图片成功')
           // console.log(response)
@@ -340,7 +340,7 @@ export default {
         this.frameDetail.description = this.newDescription
       }
 
-      axios.post('https://from2121:8443/frame/update',{
+      axios.post('https://from2121.com:8443/frame/update',{
         frameID: this.frameDetail.frameID,
         frameName: this.frameDetail.frameName,
         price: this.frameDetail.price,

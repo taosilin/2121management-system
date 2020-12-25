@@ -106,37 +106,37 @@
 
         <el-form-item label="折射率">
           <el-radio-group v-model="newLens.refractiveIndex" size="medium">
-            <el-radio-button v-for="item in refractiveIndexs" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in refractiveIndexs" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="材质">
           <el-radio-group v-model="newLens.material" size="medium">
-            <el-radio-button v-for="item in materials" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in materials" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="弧度">
           <el-radio-group v-model="newLens.radian" size="medium">
-            <el-radio-button v-for="item in radians" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in radians" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="品种">
           <el-radio-group v-model="newLens.variety" size="medium">
-            <el-radio-button v-for="item in varietys" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in varietys" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="膜层">
           <el-radio-group v-model="newLens.film" size="medium">
-            <el-radio-button v-for="item in films" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in films" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="设计">
           <el-radio-group v-model="newLens.design" size="medium">
-            <el-radio-button v-for="item in designs" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in designs" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
@@ -182,37 +182,37 @@
 
         <el-form-item label="折射率">
           <el-radio-group v-model="newLens.refractiveIndex" size="medium">
-            <el-radio-button v-for="item in refractiveIndexs" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in refractiveIndexs" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="材质">
           <el-radio-group v-model="newLens.material" size="medium">
-            <el-radio-button v-for="item in materials" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in materials" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="弧度">
           <el-radio-group v-model="newLens.radian" size="medium">
-            <el-radio-button v-for="item in radians" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in radians" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="品种">
           <el-radio-group v-model="newLens.variety" size="medium">
-            <el-radio-button v-for="item in varietys" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in varietys" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="膜层">
           <el-radio-group v-model="newLens.film" size="medium">
-            <el-radio-button v-for="item in films" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in films" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="设计">
           <el-radio-group v-model="newLens.design" size="medium">
-            <el-radio-button v-for="item in designs" :label="item.valueName" ></el-radio-button>
+            <el-radio-button :key="item.id" v-for="item in designs" :label="item.valueName" ></el-radio-button>
           </el-radio-group>
         </el-form-item>
 
@@ -274,7 +274,7 @@ export default {
     }
   },
   created() {
-    axios.post('https://from2121:8443/lens/list',{
+    axios.post('https://from2121.com:8443/lens/list',{
       page: this.currentPage,
       size: this.pageSize
     }).then(response => {
@@ -282,14 +282,14 @@ export default {
       }).catch(error => {       // 发生错误
         console.log(error)
       })
-    axios.post('https://from2121:8443/lens/total')
+    axios.post('https://from2121.com:8443/lens/total')
     .then(response => {
       this.resultNum = response.data
     }).catch(error => {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/value/attribute',{
+    axios.post('https://from2121.com:8443/value/attribute',{
       attributeID: "refractiveIndex"
     }).then(response => {
       this.refractiveIndexs = response.data.data
@@ -297,7 +297,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/value/attribute',{
+    axios.post('https://from2121.com:8443/value/attribute',{
       attributeID: "material"
     }).then(response => {
       this.materials = response.data.data
@@ -305,7 +305,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/value/attribute',{
+    axios.post('https://from2121.com:8443/value/attribute',{
       attributeID: "radian"
     }).then(response => {
       this.radians = response.data.data
@@ -313,7 +313,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/value/attribute',{
+    axios.post('https://from2121.com:8443/value/attribute',{
       attributeID: "variety"
     }).then(response => {
       this.varietys = response.data.data
@@ -321,7 +321,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/value/attribute',{
+    axios.post('https://from2121.com:8443/value/attribute',{
       attributeID: "film"
     }).then(response => {
       this.films = response.data.data
@@ -329,7 +329,7 @@ export default {
       console.log(error)
     })
 
-    axios.post('https://from2121:8443/value/attribute',{
+    axios.post('https://from2121.com:8443/value/attribute',{
       attributeID: "design"
     }).then(response => {
       this.designs = response.data.data
@@ -342,7 +342,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('https://from2121:8443/lens/list',{
+      axios.post('https://from2121.com:8443/lens/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -357,7 +357,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('https://from2121:8443/lens/list',{
+      axios.post('https://from2121.com:8443/lens/list',{
         page:this.currentPage,
         size:this.pageSize
       })
@@ -377,7 +377,7 @@ export default {
 
     // 添加镜片
     handleAddLens(){
-      axios.post('https://from2121:8443/lens/add', {
+      axios.post('https://from2121.com:8443/lens/add', {
         lensID: this.newLens.lensID,
         lensName: this.newLens.lensName,
         price: this.newLens.price,
@@ -422,7 +422,7 @@ export default {
 
     // 编辑镜片
     handleUpdateLens(){
-      axios.post('https://from2121:8443/lens/update', {
+      axios.post('https://from2121.com:8443/lens/update', {
         lensID: this.newLens.lensID,
         lensName: this.newLens.lensName,
         price: this.newLens.price,
@@ -467,7 +467,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('https://from2121:8443/lens/delete',{
+        axios.post('https://from2121.com:8443/lens/delete',{
           lensID : this.lensList[index].lensID
         }).then(response => {
           if (response.data.code === 200){

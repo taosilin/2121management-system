@@ -188,7 +188,7 @@ export default {
     // 取到路由带过来的参数
     this.lensID = this.$route.query.lensID
     // 镜片详情
-    axios.post('https://from2121:8443/lens/detail',{
+    axios.post('https://from2121.com:8443/lens/detail',{
       lensID: this.lensID
     }).then(response => {
       this.lensDetail = response.data.data
@@ -196,7 +196,7 @@ export default {
       console.log(error)
     })
     // 镜片库存列表
-    axios.post('https://from2121:8443/lensstock/list',{
+    axios.post('https://from2121.com:8443/lensstock/list',{
       userID: this.lensID,
       page: this.currentPage,
       size: this.pageSize
@@ -206,7 +206,7 @@ export default {
       console.log(error)
     })
     // 镜片库存总数
-    axios.post('https://from2121:8443/lensstock/total',{
+    axios.post('https://from2121.com:8443/lensstock/total',{
       lensID: this.lensID
     }).then(response => {
       this.resultNum = response.data
@@ -214,7 +214,7 @@ export default {
       console.log(error)
     })
 
-    // axios.post('https://from2121:8443/lens/cyl',{
+    // axios.post('https://from2121.com:8443/lens/cyl',{
     //   lensID: lensID
     // }).then(response => {
     //   this.lensStock = response.data.data
@@ -242,7 +242,7 @@ export default {
     handleAddStock() {
       let stockID = this.lensID + '_' + this.newStock.sph.toString() + '_' + this.newStock.cyl.toString()
 
-      axios.post('https://from2121:8443/lensstock/add', {
+      axios.post('https://from2121.com:8443/lensstock/add', {
         stockID: stockID,
         lensID: this.lensID,
         sph: this.newStock.sph/100,
@@ -281,7 +281,7 @@ export default {
 
     // 保存编辑
     handleUpdateStock(){
-      axios.post('https://from2121:8443/lensstock/update', {
+      axios.post('https://from2121.com:8443/lensstock/update', {
         stockID: this.newStock.stockID,
         stock: this.newStock.stock,
         warning: this.newStock.warning
@@ -316,7 +316,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('https://from2121:8443/lensstock/delete',{
+        axios.post('https://from2121.com:8443/lensstock/delete',{
           stockID : this.stockList[index].stockID
         }).then(response => {
           if (response.data.code === 200){
@@ -341,7 +341,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('https://from2121:8443/lensstock/list',{
+      axios.post('https://from2121.com:8443/lensstock/list',{
         userID: this.lensID,
         page:this.currentPage,
         size:this.pageSize
@@ -357,7 +357,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('https://from2121:8443/lensstock/list',{
+      axios.post('https://from2121.com:8443/lensstock/list',{
         userID: this.lensID,
         page:this.currentPage,
         size:this.pageSize

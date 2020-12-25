@@ -106,7 +106,7 @@ export default {
     }
   },
   created() {
-    axios.post('https://from2121:8443/order/list',{
+    axios.post('https://from2121.com:8443/order/list',{
       sortedBy: '2',
       page:this.currentPage,
       size:this.pageSize
@@ -117,7 +117,7 @@ export default {
       .catch(error => {       // 发生错误
         console.log(error)
       })
-    axios.post('https://from2121:8443/order/state',{
+    axios.post('https://from2121.com:8443/order/state',{
       state: '2'
     }).then(response => {
       this.resultNum = response.data
@@ -144,7 +144,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pageSize = val
-      axios.post('https://from2121:8443/order/list',{
+      axios.post('https://from2121.com:8443/order/list',{
         sortedBy: '2',
         page:this.currentPage,
         size:this.pageSize
@@ -161,7 +161,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.currentPage = val
-      axios.post('https://from2121:8443/order/list',{
+      axios.post('https://from2121.com:8443/order/list',{
         sortedBy: '2',
         page:this.currentPage,
         size:this.pageSize
